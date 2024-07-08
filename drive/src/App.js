@@ -18,12 +18,9 @@ function App() {
     </Router>
   );
 
-  // <div className="App">
-  //     <header className="App-header">
-  //       <h1>Эй Года, сосать хуи готова?(Да)</h1>
-  //     </header>
-  //     <Footer></Footer>
-  //   </div>
+  // Подключите в терминале "npm install react-router-dom" и "npm install react-icons"
+
+ 
 }
 
 export default App;
