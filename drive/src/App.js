@@ -1,5 +1,6 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <header className="App-header">
         <h1>Эй Года, сосать хуи готова?(Да)</h1>
       </header>
+      <Footer></Footer>
     </div>
   );
 }
