@@ -19,7 +19,7 @@ function App() {
   );
 
   // Подключите в терминале "npm install react-router-dom" и "npm install react-icons"
-
+  //Хуй
  
 }
 
