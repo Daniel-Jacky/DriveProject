@@ -9,15 +9,15 @@ const Footer = () => {
       <div className="icon-container">
         <Link to="/" className="footer-icon">
           <FaHome />
-          <span className="icon-label">Дом</span>
+          <span className="icon-label">Home</span>
         </Link>
         <Link to="/tasks" className="footer-icon">
           <FaTasks />
-          <span className="icon-label">Таски</span>
+          <span className="icon-label">Tasks</span>
         </Link>
         <Link to="/friends" className="footer-icon">
           <FaUserFriends />
-          <span className="icon-label">Друзья</span>
+          <span className="icon-label">Friends</span>
         </Link>
       </div>
     </footer>
