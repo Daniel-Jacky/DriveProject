@@ -1,6 +1,7 @@
 import React from 'react'
 import PlayButton from './PlayButton/PlayButton'
 import ProgressBar from './ProgressBar/ProgressBar';
+import './Home.css';
 
 const Home = () => {
   const handleClick = () => {
@@ -9,16 +10,18 @@ const Home = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <header>
+        <div className="NameAndStat">
         <h2 className='User'> Telegramm User</h2>
-        <h1 className='Points'>10.000 Points</h1>
-        <div className='BtnAndBar'>
+        <h2 className='Points'>10.000 Points</h2>
+        </div>
+      </header>
+      <div className="BtnAndBar">
         <PlayButton  onClick={handleClick} className="custom-button">
           Play game
         </PlayButton>
-        <ProgressBar duration={10} /> {/* 10 секунд на полный прогресс */}
+        <ProgressBar/> 
         </div>
-      </header>
     </div>
   )
 }

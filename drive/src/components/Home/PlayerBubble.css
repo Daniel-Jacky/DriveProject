@@ -1,0 +1,6 @@
+.player-car {
+  position: absolute;
+  width: 100px; /* Измените размер по необходимости */
+  height: auto;
+  transform: translate(-50%, -50%); /* Для центрирования изображения на позиции */
+}

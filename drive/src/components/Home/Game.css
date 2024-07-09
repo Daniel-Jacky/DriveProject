@@ -1,0 +1,31 @@
+.game {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  text-align: center;
+}
+
+h2 {
+  color: white;
+}
+
+.ScoreAndTime {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px;
+}
+
+.game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+button {
+  font-size: 24px;
+  padding: 10px 20px;
+  margin-top: 20px;
+}

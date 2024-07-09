@@ -1,0 +1,16 @@
+
+.BtnAndBar {
+    margin-top: auto; 
+    text-align: center; 
+    padding: 20px; 
+  }
+
+.App {
+    display: flex;
+    flex-direction: column;
+    height: 90vh; /* 100% высоты viewport */
+}
+
+.h2{
+    color: black;
+}
