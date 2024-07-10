@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react';
 import PlayButton from './PlayButton/PlayButton'
 import ProgressBar from './ProgressBar/ProgressBar';
 import './Home.css';
 
-const Home = () => {
-  const handleClick = () => {
-    alert('Fudge...you are BITCH!!');
+
+
+const Home = ({ onData }) => {
+  const sendDataToParent = () => {
+    const gameActive = true; // Данные, которые мы хотим передать родителю
+    onData(gameActive); // Вызываем функцию из пропсов и передаем ей данные
   };
+  
+  // const [gameActive, setGameActive] = useState(false);
+  // const startGame = () => {
+  //   setGameActive(true);
+  // };
+  // const endGame = () => {
+  //   setGameActive(false);
+  // };
 
   return (
     <div className="App">
@@ -17,7 +28,7 @@ const Home = () => {
         </div>
       </header>
       <div className="BtnAndBar">
-        <PlayButton  onClick={handleClick} className="custom-button">
+        <PlayButton  onClick={sendDataToParent} className="custom-button">
           Play game
         </PlayButton>
         <ProgressBar/> 

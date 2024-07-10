@@ -5,18 +5,28 @@ import './Game.css';
 
 function Game() {
   const [bubbles, setBubbles] = useState([]);
+  const [explosions, setExplosions] = useState([]); // Новый стейт для управления взрывами
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(730);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const [gameOver, setGameOver] = useState(false);
 
+  const playerWidth = 10; // Ширина машины
+  const playerHeight = 50; // Высота машины
+  const bubbleSize = 40; // Размер пузыря (ширина и высота)
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
+
   useEffect(() => {
     const handleTouchMove = (event) => {
+      event.preventDefault(); // Предотвращение стандартного поведения
       const touch = event.touches[0];
-      setPlayerPosition({ x: touch.clientX, y: touch.clientY });
+      const newX = clamp(touch.clientX, 0, window.innerWidth - playerWidth);
+      const newY = clamp(touch.clientY, 0, window.innerHeight - playerHeight);
+      setPlayerPosition({ x: newX, y: newY });
     };
 
-    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false }); // Установка passive: false
 
     return () => {
       window.removeEventListener('touchmove', handleTouchMove);
@@ -25,7 +35,10 @@ function Game() {
 
   useEffect(() => {
     const handleMouseMove = (event) => {
-      setPlayerPosition({ x: event.clientX, y: event.clientY });
+      event.preventDefault(); // Предотвращение стандартного поведения
+      const newX = clamp(event.clientX, 0, window.innerWidth - playerWidth);
+      const newY = clamp(event.clientY, 0, window.innerHeight - playerHeight);
+      setPlayerPosition({ x: newX, y: newY });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -51,7 +64,8 @@ function Game() {
       const bubbleInterval = setInterval(() => {
         const newBubble = {
           id: Math.random(),
-          x: Math.random() * window.innerWidth,
+          x: Math.random() * (window.innerWidth - bubbleSize),
+          color: Math.random() < 0.15 ? 'red' : 'blue', // 15% шанс на красный пузырь, 85% на голубой
           createdAt: Date.now(),
         };
         setBubbles((prevBubbles) => [...prevBubbles, newBubble]);
@@ -62,25 +76,45 @@ function Game() {
 
   useEffect(() => {
     const checkCollision = () => {
-      const playerRadius = 25; // Радиус машины
-      const bubbleRadius = 25; // Радиус пузыря
       const updatedBubbles = bubbles.filter((bubble) => {
         const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
         const bubbleY = bubbleAge * (window.innerHeight / 5); // Анимация падения
-        const distance = Math.sqrt(
-          (playerPosition.x - bubble.x) ** 2 +
-          (playerPosition.y - bubbleY) ** 2
-        );
-        if (distance < playerRadius + bubbleRadius) {
-          setScore((prevScore) => prevScore + 1);
-          return false;
+
+        const playerLeft = playerPosition.x;
+        const playerRight = playerPosition.x + playerWidth;
+        const playerTop = playerPosition.y;
+        const playerBottom = playerPosition.y + playerHeight;
+
+        const bubbleLeft = bubble.x;
+        const bubbleRight = bubble.x + bubbleSize;
+        const bubbleTop = bubbleY;
+        const bubbleBottom = bubbleY + bubbleSize;
+
+        // Проверка пересечения прямоугольников
+        if (
+          playerLeft < bubbleRight &&
+          playerRight > bubbleLeft &&
+          playerTop < bubbleBottom &&
+          playerBottom > bubbleTop
+        ) {
+          if (bubble.color === 'blue') {
+            setScore((prevScore) => prevScore + 1);
+          } else if (bubble.color === 'red') {
+            setScore((prevScore) => Math.max(prevScore - 30, 0));
+            // Добавляем взрыв
+            setExplosions((prevExplosions) => [
+              ...prevExplosions,
+              { id: bubble.id, x: bubble.x, y: bubbleY },
+            ]);
+          }
+          return false; // Удаляем пузырь из массива при столкновении
         }
         return true;
       });
       setBubbles(updatedBubbles);
     };
 
-    const collisionInterval = setInterval(checkCollision, 50);
+    const collisionInterval = setInterval(checkCollision, 0.2);
     return () => clearInterval(collisionInterval);
   }, [bubbles, playerPosition]);
 
@@ -88,18 +122,27 @@ function Game() {
     <div className="game">
       {!gameOver ? (
         <>
-          <h1>Осталось времени: {timeLeft}</h1>
-          <h1>Счет: {score}</h1>
-          <PlayerBubble x={playerPosition.x - 25} y={playerPosition.y - 25} />
+          <div className='gameTimeAndScore'>
+            <div className='timeLeft'>
+              <h2>{timeLeft}</h2>
+            </div>
+            <div>
+              <h2>{score}</h2>
+            </div>
+          </div>
+          <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           {bubbles.map((bubble) => (
-            <Bubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} />
+            <Bubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} />
+          ))}
+          {explosions.map((explosion) => (
+            <div key={explosion.id} className="explosion" style={{ left: explosion.x, top: explosion.y }}></div>
           ))}
         </>
       ) : (
         <div className="game-over">
           <h1>Игра окончена!</h1>
           <h2>Ваш счет: {score}</h2>
-          <button onClick={() => window.location.reload()}>Назад на главный экран</button>
+          <button onClick={() => window.location.href = '/'}>Назад на главный экран</button>
         </div>
       )}
     </div>

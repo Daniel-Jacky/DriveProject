@@ -1,28 +1,48 @@
-/* .bubble {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: blue;
-    border-radius: 50%;
-    cursor: pointer;
-    animation: fall 5s linear infinite;
-  } */
+.bubble {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 
-  @keyframes fall {
-    0% {
-      top: 0;
-    }
-    100% {
-      top: 100vh;
-    }
+.bubble.blue {
+  background-color: blue;
+}
+
+.bubble.red {
+  background-image: url('./Assets/bomb2.png'); /* Путь к вашему изображению бомбы */
+  background-size: cover;
+  border-radius: 0; /* Убираем закругление */
+}
+
+@keyframes fall {
+  0% {
+    top: -40px;
   }
-  
-  .bubble {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: blue;
-    border-radius: 50%;
+  100% {
+    top: 100vh;
   }
-  
-  
+}
+
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.explosion {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-image: url('./Assets/Explosion.png'); /* Путь к изображению взрыва */
+  background-size: cover;
+  animation: explode 0.5s ease-out forwards;
+}

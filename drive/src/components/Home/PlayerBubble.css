@@ -1,6 +1,7 @@
 .player-car {
   position: absolute;
-  width: 100px; /* Измените размер по необходимости */
+  width: 150px; /* Измените размер по необходимости */
   height: auto;
   transform: translate(-50%, -50%); /* Для центрирования изображения на позиции */
+  background-color: transparent;
 }

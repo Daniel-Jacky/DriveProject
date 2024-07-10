@@ -3,7 +3,7 @@ import './PlayerBubble.css';
 import carImage from './Assets/car.png'; // путь к изображению машины
 
 function PlayerBubble({ x, y }) {
-    debugger
+    
   return (
     <img
       src={carImage}

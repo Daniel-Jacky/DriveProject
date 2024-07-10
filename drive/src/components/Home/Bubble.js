@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Bubble.css';
 
-function Bubble({ x, createdAt }) {
+function Bubble({ x, createdAt, color }) {
   const [y, setY] = useState(0);
 
   useEffect(() => {
@@ -15,10 +15,8 @@ function Bubble({ x, createdAt }) {
   }, [createdAt]);
 
   return (
-    <div className="bubble" style={{ left: x, top: y }}></div>
+    <div className={`bubble ${color}`} style={{ left: x, top: y }}></div>
   );
-
-  
 }
 
 export default Bubble;
