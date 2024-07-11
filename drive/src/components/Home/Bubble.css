@@ -9,7 +9,9 @@
 }
 
 .bubble.blue {
-  background-color: blue;
+  background-image: url('./Assets/d.png'); /* Путь к вашему изображению бомбы */
+  background-size: cover;
+  border-radius: 0; /* Убираем закругление */
 }
 
 .bubble.red {
