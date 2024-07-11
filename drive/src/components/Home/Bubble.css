@@ -18,6 +18,10 @@
   border-radius: 0; /* Убираем закругление */
 }
 
+.bubble.green {
+  background-color: green;
+}
+
 @keyframes fall {
   0% {
     top: -40px;

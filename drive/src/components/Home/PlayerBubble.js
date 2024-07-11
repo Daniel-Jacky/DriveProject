@@ -11,6 +11,7 @@ function PlayerBubble({ x, y }) {
       className="player-car"
       style={{ left: x, top: y }}
     />
+    // <div className="player-bub" style={{top: y, left: x}}></div>
   );
 }
 

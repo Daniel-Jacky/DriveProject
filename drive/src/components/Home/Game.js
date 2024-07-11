@@ -7,12 +7,12 @@ function Game() {
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]); // Новый стейт для управления взрывами
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(730);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const [gameOver, setGameOver] = useState(false);
 
   const playerWidth = 10; // Ширина машины
-  const playerHeight = 50; // Высота машины
+  const playerHeight = 45; // Высота машины
   const bubbleSize = 40; // Размер пузыря (ширина и высота)
 
   const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
@@ -62,15 +62,18 @@ function Game() {
   useEffect(() => {
     if (timeLeft > 0) {
       const bubbleInterval = setInterval(() => {
+        
+        const speed = Math.random() * 2 + 1; // Случайная скорость от 1 до 3
         const newBubble = {
           id: Math.random(),
           x: Math.random() * (window.innerWidth - bubbleSize),
-          color: Math.random() < 0.15 ? 'red' : 'blue', // 15% шанс на красный пузырь, 85% на голубой
+          color: Math.random() < 0.2 ? 'red' : 'blue', // 15% шанс на красный пузырь, 85% на голубой
           createdAt: Date.now(),
+          speed: speed,
         };
         setBubbles((prevBubbles) => [...prevBubbles, newBubble]);
-      }, 500);
-      return () => clearInterval(bubbleInterval);
+      }, 150); // Интервал создания пузырей
+      return () => clearInterval(bubbleInterval); // Очистка интервала при размонтировании компонента
     }
   }, [timeLeft]);
 
@@ -78,7 +81,7 @@ function Game() {
     const checkCollision = () => {
       const updatedBubbles = bubbles.filter((bubble) => {
         const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
-        const bubbleY = bubbleAge * (window.innerHeight / 5); // Анимация падения
+        const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
 
         const playerLeft = playerPosition.x;
         const playerRight = playerPosition.x + playerWidth;
@@ -100,7 +103,7 @@ function Game() {
           if (bubble.color === 'blue') {
             setScore((prevScore) => prevScore + 1);
           } else if (bubble.color === 'red') {
-            setScore((prevScore) => Math.max(prevScore - 30, 0));
+            setScore((prevScore) => Math.max(prevScore - 10, 0));
             // Добавляем взрыв
             setExplosions((prevExplosions) => [
               ...prevExplosions,
@@ -132,7 +135,7 @@ function Game() {
           </div>
           <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           {bubbles.map((bubble) => (
-            <Bubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} />
+            <Bubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
           ))}
           {explosions.map((explosion) => (
             <div key={explosion.id} className="explosion" style={{ left: explosion.x, top: explosion.y }}></div>

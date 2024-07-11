@@ -5,3 +5,12 @@
   transform: translate(-50%, -50%); /* Для центрирования изображения на позиции */
   background-color: transparent;
 }
+
+.player-bub{
+  position: absolute;
+  width: 30px;
+  height: 80px;
+  border-radius: 40px;
+  transform: translate(-50%, -50%);
+  background-color: darkgoldenrod;
+}
