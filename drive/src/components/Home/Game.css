@@ -4,7 +4,7 @@
   width: 100vw;
   overflow: hidden;
   text-align: center;
-  
+  background-color: aqua !important;
 }
 
 h2 {
@@ -37,3 +37,22 @@ button {
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.scores{
+  display: flex;
+  flex-direction: row;
+  width: 55px;
+  justify-content: space-between;
+}
+
+/* .driveCoinLetter{
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: xxx-large;
+}
+
+.points{
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: xxx-large;
+} */

@@ -15,6 +15,15 @@ function Game() {
   const playerHeight = 45; // Высота машины
   const bubbleSize = 40; // Размер пузыря (ширина и высота)
 
+    // Функция для форматирования времени в MM:SS
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+      return `${formattedMinutes}:${formattedSeconds}`;
+    }
+
   const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
 
   useEffect(() => {
@@ -127,10 +136,11 @@ function Game() {
         <>
           <div className='gameTimeAndScore'>
             <div className='timeLeft'>
-              <h2>{timeLeft}</h2>
+              <h2>{formatTime(timeLeft)}</h2>
             </div>
-            <div>
-              <h2>{score}</h2>
+            <div className='scores'>
+              <h2 className='driveCoinLetter'>D</h2>
+              <h2 className='points'>{score}</h2>
             </div>
           </div>
           <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
