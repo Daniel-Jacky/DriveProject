@@ -4,7 +4,7 @@ import Footer from "./components/Footer/Footer";
 import Game from "./components/Home/Game";
 import Home from "./components/Home/Home";
 import Tasks from "./components/Tasks/Tasks";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   const [dataFromChild, setDataFromChild] = useState(false);
@@ -17,7 +17,7 @@ function App() {
     <Router>
       <div className="Main">
         <Routes>
-          <Route path="/" element={<Home onData={handleDataFromChild} />} />
+          <Route path="/DriveProject" element={<Home onData={handleDataFromChild} />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/game" element={<Game />} />
         </Routes>

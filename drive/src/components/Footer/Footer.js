@@ -7,7 +7,7 @@ const Footer = () => {
     return (
       <footer className="footer">
       <div className="icon-container">
-        <Link to="/" className="footer-icon">
+        <Link to="/DriveProject" className="footer-icon">
           <FaHome />
           <span className="icon-label">Home</span>
         </Link>
