@@ -17,7 +17,7 @@ function App() {
     <Router>
       <div className="Main">
         <Routes>
-          <Route path="/DriveProject" element={<Home onData={handleDataFromChild} />} />
+          <Route path="/" element={<Home onData={handleDataFromChild} />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/game" element={<Game />} />
         </Routes>
