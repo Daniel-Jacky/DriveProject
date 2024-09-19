@@ -1,6 +1,4 @@
 
-
-
 .User{
   color: azure;
 }
@@ -9,10 +7,32 @@
   color: azure;
 }
 
+.player-car {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центрирует изображение по осям */
+  background-color: transparent;
+}
+
+.roadline {
+  top: 0;
+  left: 50%;
+  width: 10px;
+  height: 130%; /* Увеличиваем высоту, чтобы был запас для анимации */
+  background: repeating-linear-gradient(
+    to bottom,
+    white 0%,
+    white 13%,
+    transparent 10%,
+    transparent 20%
+  );
+}
+
 .playArea {
     margin-top: auto;
     padding: 20px;
-    background-color: blueviolet;
+    background: #333;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -20,7 +40,7 @@
   }
 
   .playBtn{
-    background-color: chartreuse;
+    background-color: white;
     width: 80px;
     height: 40px;
     border-radius: 20px;
@@ -29,7 +49,7 @@
   }
 
   .dropGame{
-    color: chartreuse;
+    color: white;
     margin-bottom: 10px;
   }
 
@@ -50,7 +70,11 @@
 }
 
 .h2{
-    color: black;
+    color: white;
+}
+
+.timeToPlay{
+  color: white !important;
 }
 
 .NameAndStat {

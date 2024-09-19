@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PlayButton from './PlayButton/PlayButton'
 import ProgressBar from './ProgressBar/ProgressBar';
+import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
 
 
@@ -19,18 +20,24 @@ const Home = ({ onData }) => {
         <h2 className='Points'>10.000 Points</h2>
       </div>
 
+      <img
+      src={carImage}
+      alt="Player Car"
+      className="player-car"
+    />
+
       <div className="playArea">
         <div className='dropGameBox'>
         <h3 className='dropGame'>Drop game</h3>
-        <h4>5</h4>
+        <h4 className='timeToPlay'>5</h4>
         </div>
-        
+        <div className="roadline"></div> {/* Добавляем линию дороги */}
         <PlayButton onClick={sendDataToParent} className="playBtn">
           Play
         </PlayButton>
       </div>
 
-      <ProgressBar />
+      {/* <ProgressBar /> */}
     </div>
   )
 }

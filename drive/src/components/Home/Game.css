@@ -4,11 +4,42 @@
   width: 100vw;
   overflow: hidden;
   text-align: center;
-  background-color: aqua !important;
+  background: #333; /* Цвет асфальта */
+}
+
+.road-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 10px;
+  height: 200%; /* Увеличиваем высоту, чтобы был запас для анимации */
+  background: repeating-linear-gradient(
+    to bottom,
+    white 0%,
+    white 10%,
+    transparent 10%,
+    transparent 20%
+  );
+  transform: translateX(-50%);
+  animation: moveRoad 2s linear infinite; /* Анимация движения дороги */
+}
+
+/* Анимация движения */
+@keyframes moveRoad {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -100%;
+  }
 }
 
 h2 {
-  color: black;
+  color: white;
+}
+
+h1 {
+  color: white;
 }
 
 .ScoreAndTime {

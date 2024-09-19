@@ -134,6 +134,7 @@ function Game() {
     <div className="game">
       {!gameOver ? (
         <>
+        <div className="road-line"></div> {/* Добавляем линию дороги */}
           <div className='gameTimeAndScore'>
             <div className='timeLeft'>
               <h2>{formatTime(timeLeft)}</h2>
@@ -155,7 +156,7 @@ function Game() {
         <div className="game-over">
           <h1>Игра окончена!</h1>
           <h2>Ваш счет: {score}</h2>
-          <button onClick={() => window.location.href = '/#/'}>Назад на главный экран</button>
+          <button onClick={() => window.location.href = '/'}>Назад на главный экран</button>
         </div>
       )}
     </div>
