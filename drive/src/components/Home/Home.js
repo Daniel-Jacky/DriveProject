@@ -4,8 +4,6 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
 
-
-
 const Home = ({ onData }) => {
   const sendDataToParent = () => {
     const gameActive = true; // Данные, которые мы хотим передать родителю
@@ -14,37 +12,38 @@ const Home = ({ onData }) => {
 
   const [userData, setUserData] = useState({
     chatId: '',
-    firstName: '',
-    lastName: '',
     username: ''
   });
 
   // Извлекаем параметры из URL при загрузке компонента
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const chatId = urlParams.get('chatId');
-    const firstName = urlParams.get('firstName');
-    const lastName = urlParams.get('lastName');
-    const username = urlParams.get('username');
+    // Получаем хэш-часть URL
+    const hash = window.location.hash;
+    // Удаляем начальный символ '#' и разделяем на параметры
+    const paramsString = hash.slice(1);
+    const params = new URLSearchParams(paramsString);
+    // Получаем значение параметра username
+    console.log(`Username: ${username}`);
+
+    const chatId = params.get('chatId');
+    const username = params.get('username');
 
     // Устанавливаем полученные данные в state
     setUserData({
       chatId,
-      firstName,
-      lastName,
       username
     });
   }, []); // [] пустой массив для того, чтобы useEffect сработал только при монтировании компонента
 
 
   // Выводим параметры в консоль
-  console.log(`Chat ID: ${userData.chatId}, First Name: ${userData.firstName}, Last Name: ${userData.lastName}, Username: ${userData.username}`);
+  console.log(`Chat ID: ${userData.chatId}, Username: ${userData.username}`);
 
   return (
     <div className="App">
 
       <div className="NameAndStat">
-        <h2 className='User'> {userData.firstName || 'Guest'}</h2>
+        <h2 className='User'> {userData.username || 'Guest'}</h2>
         <h2 className='Points'>10.000 Points</h2>
       </div>
 
