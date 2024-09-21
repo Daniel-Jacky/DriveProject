@@ -12,6 +12,15 @@ const Home = ({ onData }) => {
     onData(gameActive); // Вызываем функцию из пропсов и передаем ей данные
   };
 
+  const urlParams = new URLSearchParams(window.location.search);
+const chatId = urlParams.get('chatId');
+const firstName = urlParams.get('firstName');
+const lastName = urlParams.get('lastName');
+const username = urlParams.get('username');
+
+// Выводим параметры в консоль
+console.log(`Chat ID: ${chatId}, First Name: ${firstName}, Last Name: ${lastName}, Username: ${username}`);
+
   return (
     <div className="App">
 
