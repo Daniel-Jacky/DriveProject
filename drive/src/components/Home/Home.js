@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PlayButton from './PlayButton/PlayButton'
+import PlayButton from './PlayButton/PlayButton';
 import ProgressBar from './ProgressBar/ProgressBar';
 import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
@@ -22,9 +22,7 @@ const Home = ({ onData }) => {
     // Удаляем начальный символ '#' и разделяем на параметры
     const paramsString = hash.slice(1);
     const params = new URLSearchParams(paramsString);
-    // Получаем значение параметра username
-    console.log(`Username: ${username}`);
-
+    
     const chatId = params.get('chatId');
     const username = params.get('username');
 
@@ -33,17 +31,15 @@ const Home = ({ onData }) => {
       chatId,
       username
     });
+
+    // Выводим параметры в консоль
+    console.log(`Chat ID: ${chatId}, Username: ${username}`);
   }, []); // [] пустой массив для того, чтобы useEffect сработал только при монтировании компонента
-
-
-  // Выводим параметры в консоль
-  console.log(`Chat ID: ${userData.chatId}, Username: ${userData.username}`);
 
   return (
     <div className="App">
-
       <div className="NameAndStat">
-        <h2 className='User'> {userData.username || 'Guest'}</h2>
+        <h2 className='User'>{userData.username || 'Guest'}</h2>
         <h2 className='Points'>10.000 Points</h2>
       </div>
 
@@ -66,7 +62,7 @@ const Home = ({ onData }) => {
 
       {/* <ProgressBar /> */}
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
