@@ -15,14 +15,12 @@ const Home = ({ onData }) => {
     username: ''
   });
 
-  // Извлекаем параметры из URL при загрузке компонента
-  useEffect(() => {
+  useEffect(() => {  // Извлекаем параметры из URL при загрузке компонента
     // Получаем хэш-часть URL
     const hash = window.location.hash;
     // Удаляем начальный символ '#' и разделяем на параметры
     const paramsString = hash.slice(1);
     const params = new URLSearchParams(paramsString);
-    
     const chatId = params.get('chatId');
     const username = params.get('username');
 

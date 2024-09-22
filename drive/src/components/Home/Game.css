@@ -56,11 +56,11 @@ h1 {
   text-align: center;
 }
 
-button {
+/* button {
   font-size: 24px;
   padding: 10px 20px;
   margin-top: 20px;
-}
+} */
 
 .gameTimeAndScore{
   display: flex;
