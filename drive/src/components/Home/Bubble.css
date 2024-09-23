@@ -18,7 +18,9 @@
   background-image: url('./Assets/bomb2.png'); /* Путь к вашему изображению бомбы */
   background-size: cover;
   border-radius: 0; /* Убираем закругление */
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8)); /* Красное свечение */
 }
+
 
 .bubble.green {
   background-color: green;

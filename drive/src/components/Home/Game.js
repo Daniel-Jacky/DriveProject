@@ -75,7 +75,7 @@ function Game({onGameStatus}) {
     if (timeLeft > 0) {
       const bubbleInterval = setInterval(() => {
         
-        const speed = Math.random() * 2 + 1; // Случайная скорость от 1 до 3
+        const speed = Math.random() * 2 + 1.5; // Случайная скорость от 1 до 3
         const newBubble = {
           id: Math.random(),
           x: Math.random() * (window.innerWidth - bubbleSize),
@@ -84,7 +84,7 @@ function Game({onGameStatus}) {
           speed: speed,
         };
         setBubbles((prevBubbles) => [...prevBubbles, newBubble]);
-      }, 150); // Интервал создания пузырей
+      }, 100); // Интервал создания пузырей
       return () => clearInterval(bubbleInterval); // Очистка интервала при размонтировании компонента
     }
   }, [timeLeft]);
@@ -160,7 +160,6 @@ function Game({onGameStatus}) {
     <div className="game">
       {!gameOver ? (
         <>
-        <div className="road-line"></div> {/* Добавляем линию дороги */}
           <div className='gameTimeAndScore'>
             <div className='timeLeft'>
               <h2>{formatTime(timeLeft)}</h2>
@@ -170,6 +169,8 @@ function Game({onGameStatus}) {
               <h2 className='points'>{score}</h2>
             </div>
           </div>
+          <div className="side-line side-line-left"></div> {/* Левая линия */}
+        <div className="side-line side-line-right"></div> {/* Правая линия */}
           <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           {bubbles.map((bubble) => (
             <MemoizedBubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />

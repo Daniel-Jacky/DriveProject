@@ -4,33 +4,36 @@
   width: 100vw;
   overflow: hidden;
   text-align: center;
-  background: #484848; /* Цвет асфальта */
+  background: radial-gradient(circle, #000000, #1a1a1a); /* Темный фон с градиентом */
+  overflow: hidden;
 }
 
-.road-line {
+
+/* Боковые линии */
+.side-line {
   position: absolute;
   top: 0;
-  left: 50%;
-  width: 10px;
-  height: 200%; /* Увеличиваем высоту, чтобы был запас для анимации */
-  background: repeating-linear-gradient(
-    to bottom,
-    white 0%,
-    white 10%,
-    transparent 10%,
-    transparent 20%
-  );
-  transform: translateX(-50%);
-  animation: moveRoad 3s linear infinite; /* Анимация движения дороги */
+  width: 5px;
+  height: 100%;
+  animation: side-glow 1.5s infinite alternate ease-in-out;
 }
 
-/* Анимация движения */
-@keyframes moveRoad {
+.side-line-left {
+  left: 2%;
+  background: linear-gradient(180deg, rgba(0, 255, 255, 0.8), rgba(0, 255, 255, 0.3)); /* Неоново голубой */
+}
+
+.side-line-right {
+  right: 2%;
+  background: linear-gradient(180deg, rgba(255, 0, 255, 0.8), rgba(255, 0, 255, 0.3)); /* Неоново розовый */
+}
+
+@keyframes side-glow {
   0% {
-    top: 0;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
   }
   100% {
-    top: -100%;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 1));
   }
 }
 
@@ -72,10 +75,15 @@ h1 {
 .scores{
   display: flex;
   flex-direction: row;
-  width: 55px;
   justify-content: space-between;
 }
 
+.driveCoinLetter{
+  font-weight: bold;
+  font-family: revert;
+  font-size: x-large;
+  margin-right: 5px;
+}
 /* .driveCoinLetter{
   font-weight: bold;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

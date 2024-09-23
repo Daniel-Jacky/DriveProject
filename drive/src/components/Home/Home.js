@@ -33,6 +33,7 @@ const Home = ({ onGameStatus }) => {
     // Выводим параметры в консоль
     console.log(`Chat ID: ${chatId}, Username: ${username}`);
   }, []); // [] пустой массив для того, чтобы useEffect сработал только при монтировании компонента
+  
 
   return (
     <div className="App">
