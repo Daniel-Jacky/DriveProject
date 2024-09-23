@@ -1,0 +1,60 @@
+.whiteText{
+    color: white !important;
+  }
+
+.title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.endOfgamePage {
+    display: flex;
+    flex-direction: column; /* Устанавливаем вертикальное направление */
+    align-items: center; /* Центрируем по горизонтали */
+    justify-content: center; /* Центрируем по вертикали */
+    height: 100vh; /* Занимаем всю высоту экрана */
+    background-color: black; /* Например, добавьте фон для наглядности */
+}
+
+.title {
+    text-align: center; /* Центрируем текст */
+    display: flex;
+    flex-direction: column; /* Устанавливаем вертикальное направление */
+    align-items: center; /* Центрируем по горизонтали */
+    justify-content: center; /* Центрируем по вертикали */
+    height: 100vh; /* Занимаем всю высоту экрана */
+    background-color: black; /* Например, добавьте фон для наглядности */
+}
+
+.whiteText {
+    color: white; /* Пример цвета текста, измените при необходимости */
+}
+
+.homeBackBtn{
+     
+  width: 90%; /* Ширина кнопки */
+  padding: 15px; /* Отступы для увеличения высоты */
+  font-size: 20px; /* Размер текста */
+  margin-bottom: 30px;
+  background-color: rgb(97, 97, 97) !important; /* Цвет фона кнопки */
+  color: white; /* Цвет текста */
+  border: none; /* Убираем рамку */
+  border-radius: 10px; /* Скругленные углы */
+}
+
+.playAnotherTime{
+    width: 90%; /* Ширина кнопки */
+    padding: 15px; /* Отступы для увеличения высоты */
+    font-size: 20px; /* Размер текста */
+    
+    background-color: white !important; /* Цвет фона кнопки */
+    color: black; /* Цвет текста */
+    border: none; /* Убираем рамку */
+    border-radius: 10px; /* Скругленные углы */
+}
+
+.endBtn{
+    width: 100%; /* Ширина кнопки */
+    margin-bottom: 70px;
+  }

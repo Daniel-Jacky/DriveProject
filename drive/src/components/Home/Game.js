@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Bubble from './Bubble';
 import PlayerBubble from './PlayerBubble';
 import './Game.css';
+import EndGamePage from './EndGamePage';
 import { useNavigate } from 'react-router-dom';
 
 function Game({onGameStatus}) {
@@ -9,7 +10,7 @@ function Game({onGameStatus}) {
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]); // Новый стейт для управления взрывами
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(3);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const [gameOver, setGameOver] = useState(false);
 
@@ -141,11 +142,13 @@ function Game({onGameStatus}) {
 
   }, [bubbles, playerPosition]);
 
-
-  const sendGameStatus = () => {
-    const gameActive = false; // Данные, которые мы хотим передать родителю
-    navigate('/')
-    onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
+  const handleRestart = () => {
+    setGameOver(false); // Перезапуск игры
+    setBubbles([]); // Сброс пузырей
+    setExplosions([]); // Сброс взрывов
+    setScore(0); // Сброс очков
+    setTimeLeft(30); // Сброс времени
+    setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 }); // Центрирование игрока
   };
 
   return (
@@ -171,11 +174,7 @@ function Game({onGameStatus}) {
           ))}
         </>
       ) : (
-        <div className="game-over">
-          <h1>Игра окончена!</h1>
-          <h2>Ваш счет: {score}</h2>
-          <button onClick={sendGameStatus}>Назад на главный экран</button>
-        </div>
+        <EndGamePage score={score} navigate={navigate} onGameStatus={onGameStatus} onRestart={handleRestart}  />
       )}
     </div>
   );
