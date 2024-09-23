@@ -1,0 +1,33 @@
+.whiteText{
+    color: white !important;
+  }
+
+.title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.friends-container {
+  display: flex;
+  flex-direction: column; /* Располагаем содержимое вертикально */
+  justify-content: space-between;
+}
+
+.inviteFrens {
+
+  
+  width: 100%; /* Ширина кнопки */
+  padding: 15px; /* Отступы для увеличения высоты */
+  font-size: 20px; /* Размер текста */
+  
+  background-color: white !important; /* Цвет фона кнопки */
+  color: black; /* Цвет текста */
+  border: none; /* Убираем рамку */
+  border-radius: 10px; /* Скругленные углы */
+  
+  cursor: pointer; /* Курсор в виде руки при наведении */
+}
+
+

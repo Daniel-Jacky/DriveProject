@@ -1,0 +1,45 @@
+.footer-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 24px;
+}
+
+.listFlex{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid white; */
+    border-radius: 12px;
+    width: 100%;
+}
+
+.iconAndTask{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.tasksText{
+    margin-left: 20px;
+}
+
+.coor{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.frensPoints{
+    margin-right: 20px;
+    color: white !important;
+  }
+
+
+  h5.whiteText {
+    margin: 7px;
+}

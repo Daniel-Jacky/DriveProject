@@ -5,6 +5,7 @@ import Game from "./components/Home/Game";
 import Home from "./components/Home/Home";
 import Tasks from "./components/Tasks/Tasks";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import Friends from "./components/Friends/Friends";
 
 function App() {
   const [dataFromChild, setDataFromChild] = useState(false);
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home onData={handleDataFromChild} />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/friends" element={<Friends />} />
           <Route path="/game" element={<Game />} />
         </Routes>
         {!dataFromChild && <Footer />}

@@ -113,9 +113,9 @@ function Game() {
             setScore((prevScore) => prevScore + 1);
   
             // Вызов вибрации при сборе голубого пузыря (монетки)
-            if (navigator.vibrate) {
-              navigator.vibrate(100); // Вибрация длительностью 100 миллисекунд
-            }
+            // if (navigator.vibrate) {
+            //   navigator.vibrate(1000); // Вибрация длительностью 100 миллисекунд
+            // }
   
           } else if (bubble.color === 'red') {
             setScore((prevScore) => Math.max(prevScore - 10, 0));
