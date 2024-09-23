@@ -42,11 +42,13 @@ const Home = ({ onGameStatus }) => {
         <h2 className='Points'>10.000 Points</h2>
       </div>
 
+      {/* <div className="imageContainer">
       <img
         src={carImage}
-        alt="Player Car"
         className="player-car"
+        alt="Player Car"
       />
+    </div> */}
 
       <div className="playArea">
         <div className='dropGameBox'>

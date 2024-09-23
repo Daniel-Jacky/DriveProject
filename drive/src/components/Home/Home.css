@@ -7,14 +7,6 @@
   color: azure;
 }
 
-.player-car {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Центрирует изображение по осям */
-  background-color: transparent;
-}
-
 .roadline {
   top: 0;
   left: 50%;
