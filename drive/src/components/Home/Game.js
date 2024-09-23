@@ -1,12 +1,23 @@
-import React, { useState, useEffect, memo } from 'react';
-import Bubble from './Bubble';
-import PlayerBubble from './PlayerBubble';
+import React, { useState, useEffect, memo, Suspense } from 'react';
 import './Game.css';
 import EndGamePage from './EndGamePage';
 import { useNavigate } from 'react-router-dom';
 import { formatTime } from './utils';
 import usePlayerMovement from './usePlayerMovement';
 import useCollisionCheck from './useCollisionCheck';
+
+// Динамическая загрузка компонентов
+const Bubble = React.lazy(() => import('./Bubble'));
+const PlayerBubble = React.lazy(() => import('./PlayerBubble'));
+
+// Пул объектов для пузырей
+const createBubble = (bubbleSize) => ({
+  id: Math.random(),
+  x: Math.random() * (window.innerWidth - bubbleSize),
+  color: Math.random() < 0.15 ? 'red' : 'blue',
+  createdAt: Date.now(),
+  speed: Math.random() * 2 + 1.5,
+});
 
 function Game({ onGameStatus }) {
   const navigate = useNavigate();
@@ -37,16 +48,10 @@ function Game({ onGameStatus }) {
   useEffect(() => {
     if (timeLeft > 0) {
       const bubbleInterval = setInterval(() => {
-        const speed = Math.random() * 2 + 1.5;
-        const newBubble = {
-          id: Math.random(),
-          x: Math.random() * (window.innerWidth - bubbleSize),
-          color: Math.random() < 0.15 ? 'red' : 'blue',
-          createdAt: Date.now(),
-          speed: speed,
-        };
-        setBubbles((prevBubbles) => [...prevBubbles, newBubble]);
-      }, 150);
+        setBubbles((prevBubbles) => {
+          return [...prevBubbles, createBubble(bubbleSize)];
+        });
+      }, 200); // Увеличиваем временной интервал между созданием пузырей
       return () => clearInterval(bubbleInterval);
     }
   }, [timeLeft]);
@@ -55,7 +60,7 @@ function Game({ onGameStatus }) {
 
   // Удаляем пузыри, которые вышли за границы экрана
   useEffect(() => {
-    const interval = setInterval(() => {
+    const removeOffscreenBubbles = () => {
       setBubbles((prevBubbles) => {
         const currentTime = Date.now();
         return prevBubbles.filter((bubble) => {
@@ -64,8 +69,9 @@ function Game({ onGameStatus }) {
           return bubbleY < window.innerHeight; // Удаляем, если пузырь вышел за границы экрана
         });
       });
-    }, 100); // Проверка каждые 100 мс
+    };
 
+    const interval = setInterval(removeOffscreenBubbles, 100); // Проверка каждые 100 мс
     return () => clearInterval(interval);
   }, []);
 
@@ -93,10 +99,15 @@ function Game({ onGameStatus }) {
           </div>
           <div className="side-line side-line-left"></div>
           <div className="side-line side-line-right"></div>
-          <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
-          {bubbles.map((bubble) => (
-            <MemoizedBubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
-          ))}
+          {/* Используем Suspense для ожидания загрузки PlayerBubble */}
+          <Suspense fallback={<div>Loading Player...</div>}>
+            <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
+          </Suspense>
+          <Suspense fallback={<div>Loading Bubbles...</div>}>
+            {bubbles.map((bubble) => (
+              <MemoizedBubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
+            ))}
+          </Suspense>
           {explosions.map((explosion) => (
             <MemoizedExplosion key={explosion.id} x={explosion.x} y={explosion.y} />
           ))}
