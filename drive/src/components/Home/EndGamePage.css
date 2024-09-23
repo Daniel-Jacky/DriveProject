@@ -2,12 +2,6 @@
     color: white !important;
   }
 
-.title{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .endOfgamePage {
     display: flex;
     flex-direction: column; /* Устанавливаем вертикальное направление */
@@ -17,7 +11,7 @@
     background-color: black; /* Например, добавьте фон для наглядности */
 }
 
-.title {
+.scoreAndTextCss {
     text-align: center; /* Центрируем текст */
     display: flex;
     flex-direction: column; /* Устанавливаем вертикальное направление */

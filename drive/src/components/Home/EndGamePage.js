@@ -15,7 +15,7 @@ const EndGamePage = ({score, navigate,onGameStatus, onRestart}) => {
       
   return (
     <div className='endOfgamePage'>
-      <div className='title'>
+      <div className='scoreAndTextCss'>
       <h1 className='whiteText'>Nice!</h1>
       <h3 className='whiteText'>You score {score} DP</h3>
       </div>
