@@ -51,7 +51,7 @@ function Game({ onGameStatus }) {
         setBubbles((prevBubbles) => {
           return [...prevBubbles, createBubble(bubbleSize)];
         });
-      }, 200); // Увеличиваем временной интервал между созданием пузырей
+      }, 170); // Увеличиваем временной интервал между созданием пузырей
       return () => clearInterval(bubbleInterval);
     }
   }, [timeLeft]);
@@ -60,19 +60,22 @@ function Game({ onGameStatus }) {
 
   // Удаляем пузыри, которые вышли за границы экрана
   useEffect(() => {
-    const removeOffscreenBubbles = () => {
-      setBubbles((prevBubbles) => {
-        const currentTime = Date.now();
-        return prevBubbles.filter((bubble) => {
-          const bubbleAge = (currentTime - bubble.createdAt) / 1000; // Возраст пузыря в секундах
+    const handleResize = () => {
+      // Пересчитываем положение пузырей при изменении размера экрана
+      setBubbles((prevBubbles) => 
+        prevBubbles.filter((bubble) => {
+          const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
           const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-          return bubbleY < window.innerHeight; // Удаляем, если пузырь вышел за границы экрана
-        });
-      });
+          return bubbleY < window.innerHeight + bubbleSize; // Учитываем новый размер окна
+        })
+      );
     };
-
-    const interval = setInterval(removeOffscreenBubbles, 100); // Проверка каждые 100 мс
-    return () => clearInterval(interval);
+  
+    window.addEventListener('resize', handleResize);
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const handleRestart = () => {
