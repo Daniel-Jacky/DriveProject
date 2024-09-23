@@ -4,7 +4,7 @@
   width: 100vw;
   overflow: hidden;
   text-align: center;
-  background: #333; /* Цвет асфальта */
+  background: #484848; /* Цвет асфальта */
 }
 
 .road-line {
@@ -21,7 +21,7 @@
     transparent 20%
   );
   transform: translateX(-50%);
-  animation: moveRoad 2s linear infinite; /* Анимация движения дороги */
+  animation: moveRoad 3s linear infinite; /* Анимация движения дороги */
 }
 
 /* Анимация движения */

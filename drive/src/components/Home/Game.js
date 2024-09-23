@@ -76,7 +76,7 @@ function Game() {
         const newBubble = {
           id: Math.random(),
           x: Math.random() * (window.innerWidth - bubbleSize),
-          color: Math.random() < 0.2 ? 'red' : 'blue', // 15% шанс на красный пузырь, 85% на голубой
+          color: Math.random() < 0.15 ? 'red' : 'blue', // 15% шанс на красный пузырь, 85% на голубой
           createdAt: Date.now(),
           speed: speed,
         };
@@ -91,17 +91,17 @@ function Game() {
       const updatedBubbles = bubbles.filter((bubble) => {
         const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
         const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
-
+  
         const playerLeft = playerPosition.x;
         const playerRight = playerPosition.x + playerWidth;
         const playerTop = playerPosition.y;
         const playerBottom = playerPosition.y + playerHeight;
-
+  
         const bubbleLeft = bubble.x;
         const bubbleRight = bubble.x + bubbleSize;
         const bubbleTop = bubbleY;
         const bubbleBottom = bubbleY + bubbleSize;
-
+  
         // Проверка пересечения прямоугольников
         if (
           playerLeft < bubbleRight &&
@@ -111,6 +111,12 @@ function Game() {
         ) {
           if (bubble.color === 'blue') {
             setScore((prevScore) => prevScore + 1);
+  
+            // Вызов вибрации при сборе голубого пузыря (монетки)
+            if (navigator.vibrate) {
+              navigator.vibrate(100); // Вибрация длительностью 100 миллисекунд
+            }
+  
           } else if (bubble.color === 'red') {
             setScore((prevScore) => Math.max(prevScore - 10, 0));
             // Добавляем взрыв
@@ -125,7 +131,7 @@ function Game() {
       });
       setBubbles(updatedBubbles);
     };
-
+  
     const collisionInterval = setInterval(checkCollision, 0.2);
     return () => clearInterval(collisionInterval);
   }, [bubbles, playerPosition]);
