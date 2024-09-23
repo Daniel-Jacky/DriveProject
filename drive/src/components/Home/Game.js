@@ -1,16 +1,16 @@
-import React, { useState, useEffect, memo} from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import Bubble from './Bubble';
 import PlayerBubble from './PlayerBubble';
 import './Game.css';
 import EndGamePage from './EndGamePage';
 import { useNavigate } from 'react-router-dom';
 
-function Game({onGameStatus}) {
+function Game({ onGameStatus }) {
   const navigate = useNavigate(); // Хук для навигации
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]); // Новый стейт для управления взрывами
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(1130);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const [gameOver, setGameOver] = useState(false);
 
@@ -18,14 +18,14 @@ function Game({onGameStatus}) {
   const playerHeight = 45; // Высота машины
   const bubbleSize = 40; // Размер пузыря (ширина и высота)
 
-    // Функция для форматирования времени в MM:SS
-    function formatTime(seconds) {
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = seconds % 60;
-      const formattedMinutes = String(minutes).padStart(2, '0');
-      const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-      return `${formattedMinutes}:${formattedSeconds}`;
-    }
+  // Функция для форматирования времени в MM:SS
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
 
   const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
 
@@ -74,7 +74,7 @@ function Game({onGameStatus}) {
   useEffect(() => {
     if (timeLeft > 0) {
       const bubbleInterval = setInterval(() => {
-        
+
         const speed = Math.random() * 2 + 1.5; // Случайная скорость от 1 до 3
         const newBubble = {
           id: Math.random(),
@@ -90,27 +90,31 @@ function Game({onGameStatus}) {
   }, [timeLeft]);
 
   useEffect(() => {
-    if (!gameOver){
+    if (!gameOver) {
       const checkCollision = () => {
         const updatedBubbles = bubbles.filter((bubble) => {
           const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
           const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
 
-          // Проверка видимости пузыря
-      // if (bubbleY > window.innerHeight || bubbleY + bubbleSize < 0) {
-      //   return false; // Удаляем пузырь, если он вышел за пределы экрана
-      // }
-    
+            // Параметры видимости: проверяем только пузыри в пределах 100 пикселей по X и Y от игрока
+        const isWithinInteractionRange =
+        bubbleY < window.innerHeight && // Пузырь должен быть виден
+        Math.abs(bubble.x - playerPosition.x) < 100 &&
+        Math.abs(bubbleY - playerPosition.y) < 100;
+
+      if (!isWithinInteractionRange) return true; // Оставляем пузырь, если он вне зоны взаимодействия
+
+
           const playerLeft = playerPosition.x;
           const playerRight = playerPosition.x + playerWidth;
           const playerTop = playerPosition.y;
           const playerBottom = playerPosition.y + playerHeight;
-    
+
           const bubbleLeft = bubble.x;
           const bubbleRight = bubble.x + bubbleSize;
           const bubbleTop = bubbleY;
           const bubbleBottom = bubbleY + bubbleSize;
-    
+
           // Проверка пересечения прямоугольников
           if (
             playerLeft < bubbleRight &&
@@ -120,12 +124,6 @@ function Game({onGameStatus}) {
           ) {
             if (bubble.color === 'blue') {
               setScore((prevScore) => prevScore + 1);
-    
-              // Вызов вибрации при сборе голубого пузыря (монетки)
-              // if (navigator.vibrate) {
-              //   navigator.vibrate(1000); // Вибрация длительностью 100 миллисекунд
-              // }
-    
             } else if (bubble.color === 'red') {
               setScore((prevScore) => Math.max(prevScore - 10, 0));
               // Добавляем взрыв
@@ -140,7 +138,7 @@ function Game({onGameStatus}) {
         });
         setBubbles(updatedBubbles);
       };
-    
+
       const collisionInterval = setInterval(checkCollision, 0.2);
       return () => clearInterval(collisionInterval);
     }
@@ -170,7 +168,7 @@ function Game({onGameStatus}) {
             </div>
           </div>
           <div className="side-line side-line-left"></div> {/* Левая линия */}
-        <div className="side-line side-line-right"></div> {/* Правая линия */}
+          <div className="side-line side-line-right"></div> {/* Правая линия */}
           <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           {bubbles.map((bubble) => (
             <MemoizedBubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
