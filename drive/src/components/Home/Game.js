@@ -16,7 +16,7 @@ const createBubble = (bubbleSize) => ({
   x: Math.random() * (window.innerWidth - bubbleSize),
   color: Math.random() < 0.15 ? 'red' : 'blue',
   createdAt: Date.now(),
-  speed: Math.random() * 2 + 1,
+  speed: Math.random() * 2 + 1.5,
 });
 
 function Game({ onGameStatus }) {
