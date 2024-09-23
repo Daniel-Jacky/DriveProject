@@ -4,10 +4,10 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
 
-const Home = ({ onData }) => {
+const Home = ({ onGameStatus }) => {
   const sendDataToParent = () => {
     const gameActive = true; // Данные, которые мы хотим передать родителю
-    onData(gameActive); // Вызываем функцию из пропсов и передаем ей данные
+    onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
   };
 
   const [userData, setUserData] = useState({

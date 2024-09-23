@@ -9,7 +9,7 @@ import Friends from "./components/Friends/Friends";
 
 function App() {
   const [dataFromChild, setDataFromChild] = useState(false);
-
+    debugger
   const handleDataFromChild = (data) => {
     console.log("Data received from child:", data);
     setDataFromChild(data); // Обновляем состояние в родительском компоненте
@@ -18,10 +18,10 @@ function App() {
     <Router>
       <div className="Main">
         <Routes>
-          <Route path="/" element={<Home onData={handleDataFromChild} />} />
+          <Route path="/" element={<Home onGameStatus={handleDataFromChild} />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/friends" element={<Friends />} />
-          <Route path="/game" element={<Game />} />
+          <Route path="/game" element={<Game onGameStatus={handleDataFromChild}/>} />
         </Routes>
         {!dataFromChild && <Footer />}
       </div>
