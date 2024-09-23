@@ -89,53 +89,56 @@ function Game({onGameStatus}) {
   }, [timeLeft]);
 
   useEffect(() => {
-    const checkCollision = () => {
-      const updatedBubbles = bubbles.filter((bubble) => {
-        const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
-        const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
-  
-        const playerLeft = playerPosition.x;
-        const playerRight = playerPosition.x + playerWidth;
-        const playerTop = playerPosition.y;
-        const playerBottom = playerPosition.y + playerHeight;
-  
-        const bubbleLeft = bubble.x;
-        const bubbleRight = bubble.x + bubbleSize;
-        const bubbleTop = bubbleY;
-        const bubbleBottom = bubbleY + bubbleSize;
-  
-        // Проверка пересечения прямоугольников
-        if (
-          playerLeft < bubbleRight &&
-          playerRight > bubbleLeft &&
-          playerTop < bubbleBottom &&
-          playerBottom > bubbleTop
-        ) {
-          if (bubble.color === 'blue') {
-            setScore((prevScore) => prevScore + 1);
-  
-            // Вызов вибрации при сборе голубого пузыря (монетки)
-            // if (navigator.vibrate) {
-            //   navigator.vibrate(1000); // Вибрация длительностью 100 миллисекунд
-            // }
-  
-          } else if (bubble.color === 'red') {
-            setScore((prevScore) => Math.max(prevScore - 10, 0));
-            // Добавляем взрыв
-            setExplosions((prevExplosions) => [
-              ...prevExplosions,
-              { id: bubble.id, x: bubble.x, y: bubbleY },
-            ]);
+    if (!gameOver){
+      const checkCollision = () => {
+        const updatedBubbles = bubbles.filter((bubble) => {
+          const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
+          const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
+    
+          const playerLeft = playerPosition.x;
+          const playerRight = playerPosition.x + playerWidth;
+          const playerTop = playerPosition.y;
+          const playerBottom = playerPosition.y + playerHeight;
+    
+          const bubbleLeft = bubble.x;
+          const bubbleRight = bubble.x + bubbleSize;
+          const bubbleTop = bubbleY;
+          const bubbleBottom = bubbleY + bubbleSize;
+    
+          // Проверка пересечения прямоугольников
+          if (
+            playerLeft < bubbleRight &&
+            playerRight > bubbleLeft &&
+            playerTop < bubbleBottom &&
+            playerBottom > bubbleTop
+          ) {
+            if (bubble.color === 'blue') {
+              setScore((prevScore) => prevScore + 1);
+    
+              // Вызов вибрации при сборе голубого пузыря (монетки)
+              // if (navigator.vibrate) {
+              //   navigator.vibrate(1000); // Вибрация длительностью 100 миллисекунд
+              // }
+    
+            } else if (bubble.color === 'red') {
+              setScore((prevScore) => Math.max(prevScore - 10, 0));
+              // Добавляем взрыв
+              setExplosions((prevExplosions) => [
+                ...prevExplosions,
+                { id: bubble.id, x: bubble.x, y: bubbleY },
+              ]);
+            }
+            return false; // Удаляем пузырь из массива при столкновении
           }
-          return false; // Удаляем пузырь из массива при столкновении
-        }
-        return true;
-      });
-      setBubbles(updatedBubbles);
-    };
-  
-    const collisionInterval = setInterval(checkCollision, 0.2);
-    return () => clearInterval(collisionInterval);
+          return true;
+        });
+        setBubbles(updatedBubbles);
+      };
+    
+      const collisionInterval = setInterval(checkCollision, 0.2);
+      return () => clearInterval(collisionInterval);
+    }
+
   }, [bubbles, playerPosition]);
 
 
