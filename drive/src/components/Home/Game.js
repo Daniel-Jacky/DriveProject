@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo} from 'react';
 import Bubble from './Bubble';
 import PlayerBubble from './PlayerBubble';
 import './Game.css';
@@ -95,6 +95,11 @@ function Game({onGameStatus}) {
         const updatedBubbles = bubbles.filter((bubble) => {
           const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
           const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
+
+          // Проверка видимости пузыря
+      if (bubbleY > window.innerHeight || bubbleY + bubbleSize < 0) {
+        return false; // Удаляем пузырь, если он вышел за пределы экрана
+      }
     
           const playerLeft = playerPosition.x;
           const playerRight = playerPosition.x + playerWidth;
@@ -167,17 +172,25 @@ function Game({onGameStatus}) {
           </div>
           <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           {bubbles.map((bubble) => (
-            <Bubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
+            <MemoizedBubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
           ))}
           {explosions.map((explosion) => (
-            <div key={explosion.id} className="explosion" style={{ left: explosion.x, top: explosion.y }}></div>
+            <MemoizedExplosion key={explosion.id} x={explosion.x} y={explosion.y} />
           ))}
         </>
       ) : (
-        <EndGamePage score={score} navigate={navigate} onGameStatus={onGameStatus} onRestart={handleRestart}  />
+        <EndGamePage score={score} navigate={navigate} onGameStatus={onGameStatus} onRestart={handleRestart} />
       )}
     </div>
   );
 }
+
+// Используем memo для оптимизации рендеринга пузырей
+const MemoizedBubble = memo(Bubble);
+
+// Создаем мемоизированный компонент для взрыва
+const MemoizedExplosion = memo(({ x, y }) => (
+  <div className="explosion" style={{ left: x, top: y }}></div>
+));
 
 export default Game;
