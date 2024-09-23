@@ -1,21 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Bubble.css';
 
 function Bubble({ x, createdAt, color, speed }) {
-  const [y, setY] = useState(0);
+  const bubbleRef = useRef(null);
+  const bubbleSpeed = (window.innerHeight / 6) * speed; // Скорость падения
 
   useEffect(() => {
+    let animationFrameId;
+
     const updatePosition = () => {
       const bubbleAge = (Date.now() - createdAt) / 1000; // Возраст пузыря в секундах
-      setY(bubbleAge * (window.innerHeight / 6) * speed); // Анимация падения с учетом скорости
+      const newY = Math.min(bubbleAge * bubbleSpeed, window.innerHeight); // Ограничиваем до высоты окна
+
+      if (bubbleRef.current) {
+        bubbleRef.current.style.top = `${newY}px`;
+      }
+
+      if (newY < window.innerHeight) {
+        animationFrameId = requestAnimationFrame(updatePosition); // Запускаем следующий кадр
+      }
     };
 
-    const interval = setInterval(updatePosition, 10);
-    return () => clearInterval(interval);
-  }, [createdAt, speed]);
+    updatePosition(); // Начинаем обновление позиции
+
+    return () => {
+      cancelAnimationFrame(animationFrameId); // Очищаем кадры при размонтировании
+    };
+  }, [createdAt, bubbleSpeed]);
 
   return (
-    <div className={`bubble ${color}`} style={{ left: x, top: y }}></div>
+    <div
+      ref={bubbleRef}
+      className={`bubble ${color}`}
+      style={{ left: x, position: 'absolute' }} // Убедитесь, что позиция абсолютная
+    ></div>
   );
 }
 

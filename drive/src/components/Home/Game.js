@@ -4,7 +4,7 @@ import PlayerBubble from './PlayerBubble';
 import './Game.css';
 import EndGamePage from './EndGamePage';
 import { useNavigate } from 'react-router-dom';
-import { formatTime, clamp } from './utils';
+import { formatTime } from './utils';
 import usePlayerMovement from './usePlayerMovement';
 import useCollisionCheck from './useCollisionCheck';
 
@@ -13,7 +13,7 @@ function Game({ onGameStatus }) {
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(1130);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const [gameOver, setGameOver] = useState(false);
 
@@ -53,6 +53,22 @@ function Game({ onGameStatus }) {
 
   useCollisionCheck(bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize);
 
+  // Удаляем пузыри, которые вышли за границы экрана
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBubbles((prevBubbles) => {
+        const currentTime = Date.now();
+        return prevBubbles.filter((bubble) => {
+          const bubbleAge = (currentTime - bubble.createdAt) / 1000; // Возраст пузыря в секундах
+          const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
+          return bubbleY < window.innerHeight; // Удаляем, если пузырь вышел за границы экрана
+        });
+      });
+    }, 100); // Проверка каждые 100 мс
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleRestart = () => {
     setGameOver(false);
     setBubbles([]);
@@ -91,7 +107,6 @@ function Game({ onGameStatus }) {
     </div>
   );
 }
-
 
 // Используем memo для оптимизации рендеринга пузырей
 const MemoizedBubble = memo(Bubble);
