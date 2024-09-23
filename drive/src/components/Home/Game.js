@@ -97,9 +97,9 @@ function Game({onGameStatus}) {
           const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
 
           // Проверка видимости пузыря
-      if (bubbleY > window.innerHeight || bubbleY + bubbleSize < 0) {
-        return false; // Удаляем пузырь, если он вышел за пределы экрана
-      }
+      // if (bubbleY > window.innerHeight || bubbleY + bubbleSize < 0) {
+      //   return false; // Удаляем пузырь, если он вышел за пределы экрана
+      // }
     
           const playerLeft = playerPosition.x;
           const playerRight = playerPosition.x + playerWidth;
