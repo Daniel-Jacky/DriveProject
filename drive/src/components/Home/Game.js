@@ -84,7 +84,7 @@ function Game({onGameStatus}) {
           speed: speed,
         };
         setBubbles((prevBubbles) => [...prevBubbles, newBubble]);
-      }, 100); // Интервал создания пузырей
+      }, 150); // Интервал создания пузырей
       return () => clearInterval(bubbleInterval); // Очистка интервала при размонтировании компонента
     }
   }, [timeLeft]);
