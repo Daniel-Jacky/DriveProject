@@ -4,61 +4,24 @@ import PlayerBubble from './PlayerBubble';
 import './Game.css';
 import EndGamePage from './EndGamePage';
 import { useNavigate } from 'react-router-dom';
+import { formatTime, clamp } from './utils';
+import usePlayerMovement from './usePlayerMovement';
+import useCollisionCheck from './useCollisionCheck';
 
 function Game({ onGameStatus }) {
-  const navigate = useNavigate(); // Хук для навигации
+  const navigate = useNavigate();
   const [bubbles, setBubbles] = useState([]);
-  const [explosions, setExplosions] = useState([]); // Новый стейт для управления взрывами
+  const [explosions, setExplosions] = useState([]);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(1130);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const [gameOver, setGameOver] = useState(false);
 
-  const playerWidth = 10; // Ширина машины
-  const playerHeight = 45; // Высота машины
-  const bubbleSize = 40; // Размер пузыря (ширина и высота)
+  const playerWidth = 10;
+  const playerHeight = 45;
+  const bubbleSize = 40;
 
-  // Функция для форматирования времени в MM:SS
-  function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-    return `${formattedMinutes}:${formattedSeconds}`;
-  }
-
-  const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
-
-  useEffect(() => {
-    const handleTouchMove = (event) => {
-      event.preventDefault(); // Предотвращение стандартного поведения
-      const touch = event.touches[0];
-      const newX = clamp(touch.clientX, 0, window.innerWidth - playerWidth);
-      const newY = clamp(touch.clientY, 0, window.innerHeight - playerHeight);
-      setPlayerPosition({ x: newX, y: newY });
-    };
-
-    window.addEventListener('touchmove', handleTouchMove, { passive: false }); // Установка passive: false
-
-    return () => {
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      event.preventDefault(); // Предотвращение стандартного поведения
-      const newX = clamp(event.clientX, 0, window.innerWidth - playerWidth);
-      const newY = clamp(event.clientY, 0, window.innerHeight - playerHeight);
-      setPlayerPosition({ x: newX, y: newY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
+  usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -74,84 +37,29 @@ function Game({ onGameStatus }) {
   useEffect(() => {
     if (timeLeft > 0) {
       const bubbleInterval = setInterval(() => {
-
-        const speed = Math.random() * 2 + 1.5; // Случайная скорость от 1 до 3
+        const speed = Math.random() * 2 + 1.5;
         const newBubble = {
           id: Math.random(),
           x: Math.random() * (window.innerWidth - bubbleSize),
-          color: Math.random() < 0.15 ? 'red' : 'blue', // 15% шанс на красный пузырь, 85% на голубой
+          color: Math.random() < 0.15 ? 'red' : 'blue',
           createdAt: Date.now(),
           speed: speed,
         };
         setBubbles((prevBubbles) => [...prevBubbles, newBubble]);
-      }, 150); // Интервал создания пузырей
-      return () => clearInterval(bubbleInterval); // Очистка интервала при размонтировании компонента
+      }, 150);
+      return () => clearInterval(bubbleInterval);
     }
   }, [timeLeft]);
 
-  useEffect(() => {
-    if (!gameOver) {
-      const checkCollision = () => {
-        const updatedBubbles = bubbles.filter((bubble) => {
-          const bubbleAge = (Date.now() - bubble.createdAt) / 1000; // Возраст пузыря в секундах
-          const bubbleY = bubbleAge * (window.innerHeight / 6) * bubble.speed; // Анимация падения
-
-            // Параметры видимости: проверяем только пузыри в пределах 100 пикселей по X и Y от игрока
-        const isWithinInteractionRange =
-        bubbleY < window.innerHeight && // Пузырь должен быть виден
-        Math.abs(bubble.x - playerPosition.x) < 100 &&
-        Math.abs(bubbleY - playerPosition.y) < 100;
-
-      if (!isWithinInteractionRange) return true; // Оставляем пузырь, если он вне зоны взаимодействия
-
-
-          const playerLeft = playerPosition.x;
-          const playerRight = playerPosition.x + playerWidth;
-          const playerTop = playerPosition.y;
-          const playerBottom = playerPosition.y + playerHeight;
-
-          const bubbleLeft = bubble.x;
-          const bubbleRight = bubble.x + bubbleSize;
-          const bubbleTop = bubbleY;
-          const bubbleBottom = bubbleY + bubbleSize;
-
-          // Проверка пересечения прямоугольников
-          if (
-            playerLeft < bubbleRight &&
-            playerRight > bubbleLeft &&
-            playerTop < bubbleBottom &&
-            playerBottom > bubbleTop
-          ) {
-            if (bubble.color === 'blue') {
-              setScore((prevScore) => prevScore + 1);
-            } else if (bubble.color === 'red') {
-              setScore((prevScore) => Math.max(prevScore - 10, 0));
-              // Добавляем взрыв
-              setExplosions((prevExplosions) => [
-                ...prevExplosions,
-                { id: bubble.id, x: bubble.x, y: bubbleY },
-              ]);
-            }
-            return false; // Удаляем пузырь из массива при столкновении
-          }
-          return true;
-        });
-        setBubbles(updatedBubbles);
-      };
-
-      const collisionInterval = setInterval(checkCollision, 0.2);
-      return () => clearInterval(collisionInterval);
-    }
-
-  }, [bubbles, playerPosition]);
+  useCollisionCheck(bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize);
 
   const handleRestart = () => {
-    setGameOver(false); // Перезапуск игры
-    setBubbles([]); // Сброс пузырей
-    setExplosions([]); // Сброс взрывов
-    setScore(0); // Сброс очков
-    setTimeLeft(30); // Сброс времени
-    setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 }); // Центрирование игрока
+    setGameOver(false);
+    setBubbles([]);
+    setExplosions([]);
+    setScore(0);
+    setTimeLeft(30);
+    setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   };
 
   return (
@@ -167,8 +75,8 @@ function Game({ onGameStatus }) {
               <h2 className='points'>{score}</h2>
             </div>
           </div>
-          <div className="side-line side-line-left"></div> {/* Левая линия */}
-          <div className="side-line side-line-right"></div> {/* Правая линия */}
+          <div className="side-line side-line-left"></div>
+          <div className="side-line side-line-right"></div>
           <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           {bubbles.map((bubble) => (
             <MemoizedBubble key={bubble.id} x={bubble.x} createdAt={bubble.createdAt} color={bubble.color} speed={bubble.speed} />
@@ -183,6 +91,7 @@ function Game({ onGameStatus }) {
     </div>
   );
 }
+
 
 // Используем memo для оптимизации рендеринга пузырей
 const MemoizedBubble = memo(Bubble);
