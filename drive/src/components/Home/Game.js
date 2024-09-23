@@ -16,7 +16,7 @@ const createBubble = (bubbleSize) => ({
   x: Math.random() * (window.innerWidth - bubbleSize),
   color: Math.random() < 0.15 ? 'red' : 'blue',
   createdAt: Date.now(),
-  speed: Math.random() * 2 + 1.5,
+  speed: Math.random() * 2 + 1,
 });
 
 function Game({ onGameStatus }) {
@@ -51,7 +51,7 @@ function Game({ onGameStatus }) {
         setBubbles((prevBubbles) => {
           return [...prevBubbles, createBubble(bubbleSize)];
         });
-      }, 170); // Увеличиваем временной интервал между созданием пузырей
+      }, 150); // Увеличиваем временной интервал между созданием пузырей
       return () => clearInterval(bubbleInterval);
     }
   }, [timeLeft]);
