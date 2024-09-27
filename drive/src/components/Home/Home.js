@@ -31,13 +31,7 @@ const Home = ({ onGameStatus }) => {
         const token = '074926259:AAH3uW4oybN23rQt_eD9pCqGdapqWz3qtYI';
         const url = `https://api.telegram.org/bot${token}/getUserProfilePhotos?user_id=${chatId}`;
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                // Обработка данных
-                console.log(data);
-            })
-            .catch(error => console.error('Error fetching user profile:', error));
+       
     
         setLocalUserData({
             chatId,
