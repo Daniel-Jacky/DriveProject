@@ -45,7 +45,7 @@ const Home = ({ onGameStatus }) => {
         if (!username) return `https://dummyimage.com/100/cccccc/ffffff.png&text=?`; // Рандомная аватарка для гостя
         // Генерируем аватарку на основе первой буквы имени пользователя
         const firstLetter = username.charAt(0).toUpperCase();
-        return `https://api.adorable.io/avatars/285/${firstLetter}.png`; // URL для генерации аватарки
+        return `https://ui-avatars.com/api/?name=${firstLetter[0]}&background=random`; // URL для генерации аватарки
     };
 
     return (
