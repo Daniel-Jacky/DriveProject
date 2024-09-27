@@ -17,7 +17,7 @@ const Home = ({ onGameStatus }) => {
         username: ''
     });
 
-    useEffect(() => {  
+    useEffect(() => {
         // Получаем хэш-часть URL
         const hash = window.location.hash;
         // Удаляем начальный символ '#' и разделяем на параметры
@@ -27,11 +27,22 @@ const Home = ({ onGameStatus }) => {
         const username = params.get('username');
 
         // Устанавливаем полученные данные в state
-        const avatarUrl = `https://t.me/i/userpic/320/${chatId}.jpg`;
+
+        const token = '074926259:AAH3uW4oybN23rQt_eD9pCqGdapqWz3qtYI';
+        const url = `https://api.telegram.org/bot${token}/getUserProfilePhotos?user_id=${chatId}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Обработка данных
+                console.log(data);
+            })
+            .catch(error => console.error('Error fetching user profile:', error));
+    
         setLocalUserData({
             chatId,
             username,
-            avatarUrl
+            url
         });
 
         // Устанавливаем данные в контекст
@@ -39,7 +50,7 @@ const Home = ({ onGameStatus }) => {
             chatId,
             username,
             score: 0, // Начальное количество очков
-            avatarUrl
+            url
         });
 
         // Выводим параметры в консоль
@@ -51,9 +62,9 @@ const Home = ({ onGameStatus }) => {
             <div className="NameAndStat">
                 <div className="user-info">
                     <h2 className='User'>{userData.username || 'Guest'}</h2>
-                    <img src={userData.avatarUrl} alt="User Avatar" className="user-avatar" />
+                    <img src={userData.url} alt="User Avatar" className="user-avatar" />
                 </div>
-                <h2 className='Points'>{userData.score}10000 Points</h2> {/* Отображаем очки из контекста */}
+                <h2 className='Points'>{userData.score}10001 Points</h2> {/* Отображаем очки из контекста */}
             </div>
             <div className="playArea">
                 <div className='dropGameBox'>

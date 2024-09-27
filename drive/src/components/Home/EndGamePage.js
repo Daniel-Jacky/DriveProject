@@ -7,6 +7,8 @@ const EndGamePage = ({score, navigate,onGameStatus, onRestart}) => {
 
   const { userData } = useUser(); 
 
+  console.log(userData);
+
     const sendGameStatus = () => {
         const gameActive = false; // Данные, которые мы хотим передать родителю
         navigate('/')
