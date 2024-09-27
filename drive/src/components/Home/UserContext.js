@@ -1,17 +1,17 @@
-// UserContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [userData, setUserData] = useState({
-        username: '',
-        score: 0,
-        chatId: ''
-    });
+    // Статичные данные
+    const [username, setUsername] = useState('');
+    const [chatId, setChatId] = useState('');
+
+    // Динамичные данные
+    const [score, setScore] = useState(0);
 
     return (
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{ username, setUsername, chatId, setChatId, score, setScore }}>
             {children}
         </UserContext.Provider>
     );

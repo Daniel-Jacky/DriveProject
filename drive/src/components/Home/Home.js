@@ -1,64 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PlayButton from './PlayButton/PlayButton';
-import ProgressBar from './ProgressBar/ProgressBar';
 import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
 import { useUser } from './UserContext'; // Импортируем контекст пользователя
 
 const Home = ({ onGameStatus }) => {
-    const { setUserData } = useUser(); // Получаем функцию для обновления данных пользователя из контекста
+    const { username, setUsername, chatId, setChatId, score, setScore } = useUser(); // Получаем данные пользователя и функции для их обновления
+
     const sendDataToParent = () => {
         const gameActive = true; // Данные, которые мы хотим передать родителю
         onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
     };
 
-    const [userData, setLocalUserData] = useState({
-        chatId: '',
-        username: ''
-    });
-
     useEffect(() => {
+        // Если chatId уже установлен, не выполняем код
+        if (chatId) return;
+
         // Получаем хэш-часть URL
         const hash = window.location.hash;
         // Удаляем начальный символ '#' и разделяем на параметры
         const paramsString = hash.slice(1);
         const params = new URLSearchParams(paramsString);
-        const chatId = params.get('/?chatId');
-        const username = params.get('username');
-
-        // Устанавливаем полученные данные в state
-
-        const token = '074926259:AAH3uW4oybN23rQt_eD9pCqGdapqWz3qtYI';
-        const url = `https://api.telegram.org/bot${token}/getUserProfilePhotos?user_id=${chatId}`;
-
-       
-    
-        setLocalUserData({
-            chatId,
-            username,
-            url
-        });
+        const newChatId = params.get('chatId'); // Исправлено
+        const newUsername = params.get('username');
 
         // Устанавливаем данные в контекст
-        setUserData({
-            chatId,
-            username,
-            score: 0, // Начальное количество очков
-            url
-        });
+        setChatId(newChatId);
+        setUsername(newUsername);
+        setScore(0); // Начальное количество очков
 
         // Выводим параметры в консоль
-        console.log(`Chat ID: ${chatId}, Username: ${username}`);
-    }, [setUserData]); // Добавили setUserData в зависимости
+        console.log(`Chat ID: ${newChatId}, Username: ${newUsername}`);
+    }, [setChatId, setUsername, chatId]); // Добавили chatId в зависимости
 
     return (
         <div className="App">
             <div className="NameAndStat">
                 <div className="user-info">
-                    <h2 className='User'>{userData.username || 'Guest'}</h2>
-                    <img src={userData.url} alt="User Avatar" className="user-avatar" />
+                    <h2 className='User'>{username || 'Guest'}</h2>
+                    <img alt="User Avatar" className="user-avatar" />
                 </div>
-                <h2 className='Points'>{userData.score}10001 Points</h2> {/* Отображаем очки из контекста */}
+                <h2 className='Points'>{score} Points</h2> {/* Отображаем очки из контекста */}
             </div>
             <div className="playArea">
                 <div className='dropGameBox'>
