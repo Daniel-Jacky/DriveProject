@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PlayButton from './PlayButton/PlayButton';
 import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
@@ -6,7 +6,7 @@ import { useUser } from './UserContext'; // Импортируем контек�
 
 const Home = ({ onGameStatus }) => {
     const { username, setUsername, chatId, setChatId, score, avatar, setAvatar } = useUser(); // Получаем данные пользователя и функции для их обновления
-
+    const [generatedAvatar, setGeneratedAvatar] = useState('');
     const sendDataToParent = () => {
         const gameActive = true; // Данные, которые мы хотим передать родителю
         onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
@@ -28,18 +28,32 @@ const Home = ({ onGameStatus }) => {
         // Устанавливаем данные в контекст
         setChatId(newChatId);
         setUsername(newUsername);
-        setAvatar(newAvatar)
+        if (newAvatar) {
+            setAvatar(newAvatar);
+        } else {
+            const avatarUrl = generateAvatar(newUsername);
+            setAvatar(avatarUrl);
+            setGeneratedAvatar(avatarUrl); // Устанавливаем сгенерированную аватарку
+        }
 
         // Выводим параметры в консоль
         console.log(`Chat ID: ${newChatId}, Username: ${newUsername}`);
     }, [setChatId, setUsername, chatId]); // Добавили chatId в зависимости
+
+    const generateAvatar = (username) => {
+        // Проверяем, есть ли имя пользователя
+        if (!username) return `https://dummyimage.com/100/cccccc/ffffff.png&text=?`; // Рандомная аватарка для гостя
+        // Генерируем аватарку на основе первой буквы имени пользователя
+        const firstLetter = username.charAt(0).toUpperCase();
+        return `https://api.adorable.io/avatars/285/${firstLetter}.png`; // URL для генерации аватарки
+    };
 
     return (
         <div className="App">
             <div className="NameAndStat">
                 <div className="user-info">
                     <h2 className='User'>{username || 'Guest'}</h2>
-                    <img src={avatar} alt="User Avatar" className="user-avatar" />
+                    <img src={avatar || generatedAvatar} alt="User Avatar" className="user-avatar" />
                 </div>
                 <h2 className='Points'>{score} Points</h2> {/* Отображаем очки из контекста */}
             </div>
