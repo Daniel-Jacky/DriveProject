@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatTime } from './utils';
 import usePlayerMovement from './usePlayerMovement';
 import useCollisionCheck from './useCollisionCheck';
+import { useUser } from './UserContext';
 
 // Динамическая загрузка компонентов
 const Bubble = React.lazy(() => import('./Bubble'));
@@ -23,10 +24,12 @@ function Game({ onGameStatus }) {
   const navigate = useNavigate();
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
-  const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [score, setLocalScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(5);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);
+  const { setScore } = useUser();
+  
 
   const playerWidth = 10;
   const playerHeight = 45;
@@ -35,7 +38,10 @@ function Game({ onGameStatus }) {
   usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
 
   useEffect(() => {
-    if (gameOver) return;  // Если игра завершена, не обновляем позицию
+    if (gameOver) {
+      setScore((prevScore) => prevScore + score); // Суммируем старые очки с новыми
+      return;  
+    }
     
     // Устанавливаем стартовую позицию при каждом старте игры
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
@@ -63,7 +69,7 @@ function Game({ onGameStatus }) {
     }
   }, [timeLeft]);
 
-  useCollisionCheck(bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize);
+  useCollisionCheck(bubbles, playerPosition, setBubbles, setLocalScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize);
 
   // Удаляем пузыри, которые вышли за границы экрана
   useEffect(() => {
@@ -89,8 +95,8 @@ function Game({ onGameStatus }) {
     setGameOver(false);
     setBubbles([]);
     setExplosions([]);
-    setScore(0);
-    setTimeLeft(30);
+    setLocalScore(0);
+    setTimeLeft(5);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
     
   };

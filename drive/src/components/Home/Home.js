@@ -5,7 +5,7 @@ import './Home.css';
 import { useUser } from './UserContext'; // Импортируем контекст пользователя
 
 const Home = ({ onGameStatus }) => {
-    const { username, setUsername, chatId, setChatId, score, setScore } = useUser(); // Получаем данные пользователя и функции для их обновления
+    const { username, setUsername, chatId, setChatId, score, avatar, setAvatar } = useUser(); // Получаем данные пользователя и функции для их обновления
 
     const sendDataToParent = () => {
         const gameActive = true; // Данные, которые мы хотим передать родителю
@@ -23,11 +23,12 @@ const Home = ({ onGameStatus }) => {
         const params = new URLSearchParams(paramsString);
         const newChatId = params.get('/?chatId'); 
         const newUsername = params.get('username');
+        const newAvatar = params.get('avatarUrl');
 
         // Устанавливаем данные в контекст
         setChatId(newChatId);
         setUsername(newUsername);
-        setScore(0); // Начальное количество очков
+        setAvatar(newAvatar)
 
         // Выводим параметры в консоль
         console.log(`Chat ID: ${newChatId}, Username: ${newUsername}`);
@@ -38,7 +39,7 @@ const Home = ({ onGameStatus }) => {
             <div className="NameAndStat">
                 <div className="user-info">
                     <h2 className='User'>{username || 'Guest'}</h2>
-                    <img alt="User Avatar" className="user-avatar" />
+                    <img src={avatar} alt="User Avatar" className="user-avatar" />
                 </div>
                 <h2 className='Points'>{score} Points</h2> {/* Отображаем очки из контекста */}
             </div>
