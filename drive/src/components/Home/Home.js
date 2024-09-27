@@ -23,7 +23,7 @@ const Home = ({ onGameStatus }) => {
         // Удаляем начальный символ '#' и разделяем на параметры
         const paramsString = hash.slice(1);
         const params = new URLSearchParams(paramsString);
-        const chatId = params.get('chatId');
+        const chatId = params.get('/?chatId');
         const username = params.get('username');
 
         // Устанавливаем полученные данные в state
