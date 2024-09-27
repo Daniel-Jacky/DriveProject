@@ -1,8 +1,11 @@
 import React from 'react'
 import './EndGamePage.css';
 import { Link } from 'react-router-dom';
+import { useUser } from './UserContext';
 
 const EndGamePage = ({score, navigate,onGameStatus, onRestart}) => {
+
+  const { userData } = useUser(); 
 
     const sendGameStatus = () => {
         const gameActive = false; // Данные, которые мы хотим передать родителю
