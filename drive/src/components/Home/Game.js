@@ -25,12 +25,11 @@ function Game({ onGameStatus }) {
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
   const [score, setLocalScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(15);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);
   const { setScore } = useUser();
   
-
   const playerWidth = 10;
   const playerHeight = 45;
   const bubbleSize = 40;
@@ -96,7 +95,7 @@ function Game({ onGameStatus }) {
     setBubbles([]);
     setExplosions([]);
     setLocalScore(0);
-    setTimeLeft(5);
+    setTimeLeft(15);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
     
   };
