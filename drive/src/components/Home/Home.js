@@ -27,35 +27,36 @@ const Home = ({ onGameStatus }) => {
     // Устанавливаем полученные данные в state
     setUserData({
       chatId,
-      username
+      username,
+      avatarUrl: `https://t.me/i/userpic/320/${chatId}.jpg`
     });
 
     // Выводим параметры в консоль
     console.log(`Chat ID: ${chatId}, Username: ${username}`);
   }, []); // [] пустой массив для того, чтобы useEffect сработал только при монтировании компонента
-  
+
 
   return (
     <div className="App">
       <div className="NameAndStat">
-        <h2 className='User'>{userData.username || 'Guest'}</h2>
+        <div className="user-info">
+          <h2 className='User'>{userData.username || 'Guest'}</h2>
+          <img src={userData.avatarUrl} alt="User Avatar" className="user-avatar" />
+        </div>
         <h2 className='Points'>10.000 Points</h2>
       </div>
-
-      {/* <div className="imageContainer">
-      <img
-        src={carImage}
-        className="player-car"
-        alt="Player Car"
-      />
-    </div> */}
-
       <div className="playArea">
         <div className='dropGameBox'>
           <h3 className='dropGame'>Drop game</h3>
           <h4 className='timeToPlay'>5</h4>
         </div>
-        <div className="roadline"></div> {/* Добавляем линию дороги */}
+        <div className="imageContainer">
+          <img
+            src={carImage}
+            className="playerCarHome"
+            alt="Player Car"
+          />
+        </div>
         <PlayButton onClick={sendDataToParent} className="playBtn">
           Play
         </PlayButton>

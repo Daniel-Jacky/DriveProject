@@ -9,7 +9,7 @@ import Friends from "./components/Friends/Friends";
 
 function App() {
   const [dataFromChild, setDataFromChild] = useState(false);
-    debugger
+    
   const handleDataFromChild = (data) => {
     console.log("Data received from child:", data);
     setDataFromChild(data); // Обновляем состояние в родительском компоненте

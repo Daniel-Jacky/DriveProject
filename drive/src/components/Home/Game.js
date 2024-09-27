@@ -25,7 +25,7 @@ function Game({ onGameStatus }) {
   const [explosions, setExplosions] = useState([]);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
-  const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);
 
   const playerWidth = 10;
@@ -33,6 +33,13 @@ function Game({ onGameStatus }) {
   const bubbleSize = 40;
 
   usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
+
+  useEffect(() => {
+    if (gameOver) return;  // Если игра завершена, не обновляем позицию
+    
+    // Устанавливаем стартовую позицию при каждом старте игры
+    setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
+  }, [gameOver]);  // Восстанавливаем позицию при каждом рестарте игры
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -84,7 +91,8 @@ function Game({ onGameStatus }) {
     setExplosions([]);
     setScore(0);
     setTimeLeft(30);
-    setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
+    
   };
 
   return (
