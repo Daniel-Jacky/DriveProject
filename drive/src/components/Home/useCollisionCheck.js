@@ -13,6 +13,14 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
         }
       };
 
+      const triggerBombHapticFeedback = () => {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); // Вызов вибрации
+        } else {
+          console.error('Telegram Web App API не доступен');
+        }
+      };
+
       const checkCollision = () => {
         const updatedBubbles = bubbles.filter((bubble) => {
           const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
@@ -50,7 +58,7 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
               triggerHapticFeedback(); // Вызываем вибрацию при столкновении с синей пузырем
             } else if (bubble.color === 'red') {
               setScore((prevScore) => Math.max(prevScore - 10, 0));
-              triggerHapticFeedback(); // Вызываем вибрацию при столкновении с красной пузырем
+              triggerBombHapticFeedback(); // Вызываем вибрацию при столкновении с красной пузырем
               setExplosions((prevExplosions) => [
                 ...prevExplosions,
                 { id: bubble.id, x: bubble.x, y: bubbleY },
