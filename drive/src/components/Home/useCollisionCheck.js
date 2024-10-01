@@ -3,6 +3,15 @@ import { useEffect } from 'react';
 const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble) => {
   useEffect(() => {
     if (!gameOver) {
+
+      const triggerHapticFeedback = () => {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.triggerHapticFeedback('medium'); // Вызываем вибрацию
+        } else {
+          console.error('Telegram Web App API не доступен');
+        }
+      };
+
       const checkCollision = () => {
         const updatedBubbles = bubbles.filter((bubble) => {
           const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
@@ -38,18 +47,10 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
             if (bubble.color === 'blue') {
               
               setScore((prevScore) => prevScore + 1);
-              if (typeof window.navigator.vibrate === 'function') {
-                window.navigator.vibrate([200, 100, 200]);
-              } else {
-                console.log('Vibration API not supported in this environment');
-              }
+             triggerHapticFeedback();
             } else if (bubble.color === 'red') {
               setScore((prevScore) => Math.max(prevScore - 10, 0));
-              if (typeof window.navigator.vibrate === 'function') {
-                window.navigator.vibrate([200, 100, 200]);
-              } else {
-                console.log('Vibration API not supported in this environment');
-              }
+              triggerHapticFeedback();
               setExplosions((prevExplosions) => [
                 ...prevExplosions,
                 { id: bubble.id, x: bubble.x, y: bubbleY },
