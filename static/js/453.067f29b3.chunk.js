@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdrive=self.webpackChunkdrive||[]).push([[453],{453:(e,t,s)=>{s.r(t),s.d(t,{default:()=>l});var c=s(43),u=s(579);const l=function(e){let{x:t,y:s,color:l}=e;const n=(0,c.useRef)(null);return(0,c.useEffect)((()=>{n.current&&(n.current.style.top="".concat(s,"px"))}),[s]),(0,u.jsx)("div",{ref:n,className:"bubble ".concat(l),style:{left:t,position:"absolute",top:0}})}}}]);
+//# sourceMappingURL=453.067f29b3.chunk.js.map

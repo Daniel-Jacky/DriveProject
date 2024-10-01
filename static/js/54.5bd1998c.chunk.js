@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdrive=self.webpackChunkdrive||[]).push([[54],{54:(e,r,a)=>{a.r(r),a.d(r,{default:()=>c});var s=a(43),l=a(49),t=a(579);const c=s.memo((e=>{let{x:r,y:a}=e;return(0,t.jsx)("img",{src:l,alt:"Player Car",className:"player-car",style:{left:r,top:a}})}))}}]);
+//# sourceMappingURL=54.5bd1998c.chunk.js.map
