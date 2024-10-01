@@ -29,6 +29,7 @@ function Game({ onGameStatus }) {
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);
   const { setScore } = useUser();
+  const [hitRedBubble, setHitRedBubble] = useState(false);
   
   const playerWidth = 10;
   const playerHeight = 45;
@@ -68,7 +69,7 @@ function Game({ onGameStatus }) {
     }
   }, [timeLeft]);
 
-  useCollisionCheck(bubbles, playerPosition, setBubbles, setLocalScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize);
+  useCollisionCheck(bubbles, playerPosition, setBubbles, setLocalScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble);
 
   // Удаляем пузыри, которые вышли за границы экрана
   useEffect(() => {
@@ -104,6 +105,12 @@ function Game({ onGameStatus }) {
     <div className="game">
       {!gameOver ? (
         <>
+      {hitRedBubble && (
+      <>
+        <div className="cyber-edge cyber-edge-left"></div>
+        <div className="cyber-edge cyber-edge-right"></div>
+      </>
+    )}
           <div className='gameTimeAndScore'>
             <div className='timeLeft'>
               <h2>{formatTime(timeLeft)}</h2>

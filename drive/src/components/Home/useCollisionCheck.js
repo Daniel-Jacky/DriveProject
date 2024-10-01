@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize) => {
+const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble) => {
   useEffect(() => {
     if (!gameOver) {
       const checkCollision = () => {
@@ -37,12 +37,22 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
             // Обработка столкновения
             if (bubble.color === 'blue') {
               setScore((prevScore) => prevScore + 1);
+              if (navigator.vibrate) {
+                navigator.vibrate(100); // Вибрация на 100 мс при столкновении с синим пузырем
+              }
             } else if (bubble.color === 'red') {
               setScore((prevScore) => Math.max(prevScore - 10, 0));
+              if (navigator.vibrate) {
+                navigator.vibrate(100); // Вибрация на 100 мс при столкновении с синим пузырем
+              }
               setExplosions((prevExplosions) => [
                 ...prevExplosions,
                 { id: bubble.id, x: bubble.x, y: bubbleY },
               ]);
+              
+              // Показываем красный экран на 2 секунды
+              setHitRedBubble(true);
+              setTimeout(() => setHitRedBubble(false), 1000);
             }
             return false; // Убираем пузырь из массива
           }
