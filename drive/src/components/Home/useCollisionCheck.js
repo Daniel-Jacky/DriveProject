@@ -4,9 +4,10 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
   useEffect(() => {
     if (!gameOver) {
 
+      // Функция для активации вибрации
       const triggerHapticFeedback = () => {
         if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.triggerHapticFeedback('medium'); // Вызываем вибрацию
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('medium'); // Вызов вибрации
         } else {
           console.error('Telegram Web App API не доступен');
         }
@@ -45,20 +46,19 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
           ) {
             // Обработка столкновения
             if (bubble.color === 'blue') {
-              
               setScore((prevScore) => prevScore + 1);
-             triggerHapticFeedback();
+              triggerHapticFeedback(); // Вызываем вибрацию при столкновении с синей пузырем
             } else if (bubble.color === 'red') {
               setScore((prevScore) => Math.max(prevScore - 10, 0));
-              triggerHapticFeedback();
+              triggerHapticFeedback(); // Вызываем вибрацию при столкновении с красной пузырем
               setExplosions((prevExplosions) => [
                 ...prevExplosions,
                 { id: bubble.id, x: bubble.x, y: bubbleY },
               ]);
               
-              // Показываем красный экран на 2 секунды
+              // Показываем красный экран на 1 секунду
               setHitRedBubble(true);
-              setTimeout(() => setHitRedBubble(false), 1000);
+              setTimeout(() => setHitRedBubble(false), 1000); // Время показа красного экрана
             }
             return false; // Убираем пузырь из массива
           }
@@ -67,11 +67,11 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
         setBubbles(updatedBubbles);
       };
 
-      // Запускаем проверку столкновений каждые 200 мс
-      const collisionInterval = setInterval(checkCollision, 0.5);
+      // Запускаем проверку столкновений каждые 500 мс
+      const collisionInterval = setInterval(checkCollision, 1);
       return () => clearInterval(collisionInterval);
     }
-  }, [bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize]);
+  }, [bubbles, playerPosition, setBubbles, setScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble]);
 };
 
 export default useCollisionCheck;
