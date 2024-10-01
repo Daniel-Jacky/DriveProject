@@ -18,6 +18,11 @@ const EndGamePage = ({score, navigate,onGameStatus, onRestart}) => {
         event.preventDefault(); // Останавливаем стандартное поведение кнопки
         onRestart(); // Сначала перезапускаем игру
         navigate('/game'); // Затем программно осуществляем навигацию на игру
+        if (typeof window.navigator.vibrate === 'function') {
+          window.navigator.vibrate([200, 100, 200]);
+        } else {
+          console.log('Vibration API not supported in this environment');
+        }
       };
 
       const getResultMessage = (score) => {

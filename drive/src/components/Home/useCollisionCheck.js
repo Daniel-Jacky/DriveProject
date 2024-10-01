@@ -36,14 +36,19 @@ const useCollisionCheck = (bubbles, playerPosition, setBubbles, setScore, setExp
           ) {
             // Обработка столкновения
             if (bubble.color === 'blue') {
+              
               setScore((prevScore) => prevScore + 1);
-              if (navigator.vibrate) {
-                navigator.vibrate(100); // Вибрация на 100 мс при столкновении с синим пузырем
+              if (typeof window.navigator.vibrate === 'function') {
+                window.navigator.vibrate([200, 100, 200]);
+              } else {
+                console.log('Vibration API not supported in this environment');
               }
             } else if (bubble.color === 'red') {
               setScore((prevScore) => Math.max(prevScore - 10, 0));
-              if (navigator.vibrate) {
-                navigator.vibrate(100); // Вибрация на 100 мс при столкновении с синим пузырем
+              if (typeof window.navigator.vibrate === 'function') {
+                window.navigator.vibrate([200, 100, 200]);
+              } else {
+                console.log('Vibration API not supported in this environment');
               }
               setExplosions((prevExplosions) => [
                 ...prevExplosions,
