@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/DriveProject/static/css/main.4802fbe4.css",
-    "main.js": "/DriveProject/static/js/main.0693a88c.js",
+    "main.js": "/DriveProject/static/js/main.f7f7f664.js",
     "static/css/453.6dc30269.chunk.css": "/DriveProject/static/css/453.6dc30269.chunk.css",
     "static/js/453.aaeb8ff5.chunk.js": "/DriveProject/static/js/453.aaeb8ff5.chunk.js",
     "static/css/54.63117b96.chunk.css": "/DriveProject/static/css/54.63117b96.chunk.css",
@@ -13,7 +13,7 @@
     "static/media/car.png": "/DriveProject/static/media/car.3c9d44e4cd24597977b4.png",
     "index.html": "/DriveProject/index.html",
     "main.4802fbe4.css.map": "/DriveProject/static/css/main.4802fbe4.css.map",
-    "main.0693a88c.js.map": "/DriveProject/static/js/main.0693a88c.js.map",
+    "main.f7f7f664.js.map": "/DriveProject/static/js/main.f7f7f664.js.map",
     "453.6dc30269.chunk.css.map": "/DriveProject/static/css/453.6dc30269.chunk.css.map",
     "453.aaeb8ff5.chunk.js.map": "/DriveProject/static/js/453.aaeb8ff5.chunk.js.map",
     "54.63117b96.chunk.css.map": "/DriveProject/static/css/54.63117b96.chunk.css.map",
@@ -22,6 +22,6 @@
   },
   "entrypoints": [
     "static/css/main.4802fbe4.css",
-    "static/js/main.0693a88c.js"
+    "static/js/main.f7f7f664.js"
   ]
 }
