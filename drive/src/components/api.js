@@ -1,12 +1,13 @@
 // src/components/api.js
 import axios from 'axios';
 
-const API_URL = 'http://fudg-test2.ru/users';
+const API_URL = 'https://fudg-test2.ru/users';
 
 // Функция для получения данных пользователей
 export const fetchUserData = async () => {
     try {
         const response = await axios.get(API_URL);
+        
         return response.data; // Возвращаем полученные данные
     } catch (error) {
         console.error('Ошибка при получении данных:', error);
