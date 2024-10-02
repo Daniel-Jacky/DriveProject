@@ -29,18 +29,34 @@ function Game({ onGameStatus }) {
   const [gameOver, setGameOver] = useState(false);  // Изначальное значение false
   const { setScore } = useUser();
   const [hitRedBubble, setHitRedBubble] = useState(false);
-  
+
   const playerWidth = 10;
   const playerHeight = 45;
   const bubbleSize = 40;
 
-  usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
+  useEffect(() => {
+    const handleResize = () => {
+      setBubbles((prevBubbles) =>
+        prevBubbles.filter((bubble) => {
+          const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
+          const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
+          return bubbleY < window.innerHeight + bubbleSize;
+        })
+      );
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Восстанавливаем состояние игры при загрузке страницы
   useEffect(() => {
     const savedGameOver = loadFromLocalStorage('gameOver', false);
     const savedScore = loadFromLocalStorage('score', 0);
-    const savedTimeLeft = loadFromLocalStorage('timeLeft', 30);
+    const savedTimeLeft = loadFromLocalStorage('timeLeft', timeLeft);
 
     setGameOver(savedGameOver);
     setLocalScore(savedScore);
@@ -62,14 +78,11 @@ function Game({ onGameStatus }) {
     };
   }, [gameOver, score, timeLeft]);
 
-
-
   useEffect(() => {
     if (gameOver) {
       setScore((prevScore) => prevScore + score); // Суммируем старые очки с новыми
       return;
     }
-    
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   }, [gameOver]);
 
@@ -93,25 +106,9 @@ function Game({ onGameStatus }) {
     }
   }, [timeLeft]);
 
+  usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
+
   useCollisionCheck(bubbles, playerPosition, setBubbles, setLocalScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setBubbles((prevBubbles) => 
-        prevBubbles.filter((bubble) => {
-          const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
-          const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-          return bubbleY < window.innerHeight + bubbleSize;
-        })
-      );
-    };
-
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   const handleRestart = () => {
     setGameOver(false);
@@ -130,10 +127,10 @@ function Game({ onGameStatus }) {
       {!gameOver ? (
         <>
           {hitRedBubble && (
-          <>
-            <div className="cyber-edge cyber-edge-left"></div>
-            <div className="cyber-edge cyber-edge-right"></div>
-          </>
+            <>
+              <div className="cyber-edge cyber-edge-left"></div>
+              <div className="cyber-edge cyber-edge-right"></div>
+            </>
           )}
           <div className='gameTimeAndScore'>
             <div className='timeLeft'>
