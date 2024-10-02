@@ -12,6 +12,7 @@ const EndGamePage = ({score, navigate,onGameStatus, onRestart}) => {
         const gameActive = false; // Данные, которые мы хотим передать родителю
         navigate('/')
         onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
+        onRestart()
       };
     
       const restartGame = (event) => {

@@ -6,6 +6,7 @@ import { formatTime } from './utils';
 import usePlayerMovement from './usePlayerMovement';
 import useCollisionCheck from './useCollisionCheck';
 import { useUser } from './UserContext';
+import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from './storageUtils';
 
 const Bubble = React.lazy(() => import('./Bubble'));
 const PlayerBubble = React.lazy(() => import('./PlayerBubble'));
@@ -37,26 +38,31 @@ function Game({ onGameStatus }) {
 
   // Восстанавливаем состояние игры при загрузке страницы
   useEffect(() => {
-    const savedGameOver = JSON.parse(localStorage.getItem('gameOver'));
-    if (savedGameOver !== null) {
-      setGameOver(savedGameOver);
-    } else {
-      setGameOver(false);  // Если нет сохраненного состояния, начинаем с активной игры
-    }
+    const savedGameOver = loadFromLocalStorage('gameOver', false);
+    const savedScore = loadFromLocalStorage('score', 0);
+    const savedTimeLeft = loadFromLocalStorage('timeLeft', 30);
+
+    setGameOver(savedGameOver);
+    setLocalScore(savedScore);
+    setTimeLeft(savedTimeLeft);
   }, []);
 
-  // Сохраняем состояние перед перезагрузкой страницы
+  // Сохраняем состояние игры при закрытии страницы
   useEffect(() => {
     const handleBeforeUnload = () => {
-      localStorage.setItem('gameOver', JSON.stringify(gameOver));
+      saveToLocalStorage('gameOver', gameOver);
+      saveToLocalStorage('score', score);
+      saveToLocalStorage('timeLeft', timeLeft);
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
-    
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [gameOver]);
+  }, [gameOver, score, timeLeft]);
+
+
 
   useEffect(() => {
     if (gameOver) {
@@ -114,6 +120,9 @@ function Game({ onGameStatus }) {
     setLocalScore(0);
     setTimeLeft(30);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
+    removeFromLocalStorage('score'); // Очищаем сохраненные данные
+    removeFromLocalStorage('timeLeft');
+    removeFromLocalStorage('gameOver');
   };
 
   return (
