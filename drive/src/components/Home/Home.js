@@ -29,7 +29,7 @@ const Home = ({ onGameStatus }) => {
             const hash = window.location.hash;
             const paramsString = hash.slice(1);
             const params = new URLSearchParams(paramsString);
-            let newChatId = params.get('/?chatId');
+            let newChatId = params.get('/?chatId') || chatId;
             const newAvatar = params.get('avatarUrl');
             let newUsername = '';
             let newScore = '';
@@ -39,7 +39,6 @@ const Home = ({ onGameStatus }) => {
                 newUsername = user.username;
                 newScore = user.score;
             }
-
             // Устанавливаем данные в контекст
             setChatId(newChatId);
             setUsername(newUsername);
@@ -55,6 +54,8 @@ const Home = ({ onGameStatus }) => {
             console.log(`Chat ID: ${newChatId}, Username: ${newUsername}`);
         }
     }, [apiData, setChatId, setUsername]);
+
+    console.log(apiData)
 
     const generateAvatar = (username) => {
         if (!username) return `https://dummyimage.com/100/cccccc/ffffff.png&text=?`;
