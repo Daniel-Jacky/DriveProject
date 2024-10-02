@@ -31,10 +31,12 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
     onRestart(); // Сначала перезапускаем игру
   };
 
-  const restartGame = (event) => {
+  const restartGame = async (event) => {
     event.preventDefault(); // Останавливаем стандартное поведение кнопки
     onRestart(); // Сначала перезапускаем игру
     navigate('/game'); // Затем программно осуществляем навигацию на игру
+    const newScore = currentScore + score;
+    await updateUserScore(chatId, newScore);
   };
 
   const getResultMessage = (score) => {

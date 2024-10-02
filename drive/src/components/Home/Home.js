@@ -29,7 +29,7 @@ const Home = ({ onGameStatus }) => {
             const hash = window.location.hash;
             const paramsString = hash.slice(1);
             const params = new URLSearchParams(paramsString);
-            let newChatId = params.get('/?chatId') || chatId;
+            let newChatId = params.get('/?chatId') || chatId ;
             const newAvatar = params.get('avatarUrl');
             let newUsername = '';
             let newScore = '';
@@ -93,38 +93,3 @@ const Home = ({ onGameStatus }) => {
 };
 
 export default Home;
-
-
-
-    // useEffect(() => {
-    //     // Если chatId уже установлен, не выполняем код
-    //     if (chatId) return;
-
-    //     // Получаем хэш-часть URL
-    //     const hash = window.location.hash;
-    //     const paramsString = hash.slice(1);
-    //     const params = new URLSearchParams(paramsString);
-    //     let newChatId = params.get('/?chatId');
-    //     // const newUsername = params.get('username');
-    //     const newAvatar = params.get('avatarUrl');
-    //     let newUsername = '';
-
-    //     for (let i = 0; i < apiData.length; i++) {
-    //         if(newChatId = apiData[i].chatId){
-    //             newUsername = apiData[i].username
-    //         }
-    //     }
-
-    //     // Устанавливаем данные в контекст
-    //     setChatId(newChatId);
-    //     setUsername(newUsername);
-    //     if (newAvatar) {
-    //         setAvatar(newAvatar);
-    //     } else {
-    //         const avatarUrl = generateAvatar(newUsername);
-    //         setAvatar(avatarUrl);
-    //         setGeneratedAvatar(avatarUrl); // Устанавливаем сгенерированную аватарку
-    //     }
-
-    //     console.log(`Chat ID: ${newChatId}, Username: ${newUsername}`);
-    // }, [setChatId, setUsername, chatId]);
