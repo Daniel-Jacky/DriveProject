@@ -13,9 +13,16 @@ function App() {
   const handleDataFromChild = (data) => {
     console.log("Data received from child:", data);
     setDataFromChild(data); // Обновляем состояние в родительском компоненте
+    localStorage.setItem('gameActive', JSON.stringify(data)); // Сохраняем состояние в localStorage
   };
 
   useEffect(() => {
+    // Восстанавливаем состояние из localStorage при загрузке страницы
+    const savedGameActive = JSON.parse(localStorage.getItem('gameActive'));
+    if (savedGameActive !== null) {
+      setDataFromChild(savedGameActive);
+    }
+
     // Проверяем доступность Telegram Web App API и разворачиваем приложение
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.expand(); // Разворачиваем приложение на весь экран
@@ -33,13 +40,10 @@ function App() {
           <Route path="/friends" element={<Friends />} />
           <Route path="/game" element={<Game onGameStatus={handleDataFromChild} />} />
         </Routes>
-        {!dataFromChild && <Footer />}
+        {!dataFromChild && <Footer />} {/* Показываем футер только если игра не активна */}
       </div>
     </Router>
   );
-
-  // Подключите в терминале "npm install react-router-dom" и "npm install react-icons"
-  // Фуджила 
 }
 
 export default App;

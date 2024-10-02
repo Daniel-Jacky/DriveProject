@@ -7,11 +7,9 @@ import usePlayerMovement from './usePlayerMovement';
 import useCollisionCheck from './useCollisionCheck';
 import { useUser } from './UserContext';
 
-// Динамическая загрузка компонентов
 const Bubble = React.lazy(() => import('./Bubble'));
 const PlayerBubble = React.lazy(() => import('./PlayerBubble'));
 
-// Пул объектов для пузырей
 const createBubble = (bubbleSize) => ({
   id: Math.random(),
   x: Math.random() * (window.innerWidth - bubbleSize),
@@ -27,7 +25,7 @@ function Game({ onGameStatus }) {
   const [score, setLocalScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
-  const [gameOver, setGameOver] = useState(false);
+  const [gameOver, setGameOver] = useState(false);  // Изначальное значение false
   const { setScore } = useUser();
   const [hitRedBubble, setHitRedBubble] = useState(false);
   
@@ -37,15 +35,37 @@ function Game({ onGameStatus }) {
 
   usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
 
+  // Восстанавливаем состояние игры при загрузке страницы
+  useEffect(() => {
+    const savedGameOver = JSON.parse(localStorage.getItem('gameOver'));
+    if (savedGameOver !== null) {
+      setGameOver(savedGameOver);
+    } else {
+      setGameOver(false);  // Если нет сохраненного состояния, начинаем с активной игры
+    }
+  }, []);
+
+  // Сохраняем состояние перед перезагрузкой страницы
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.setItem('gameOver', JSON.stringify(gameOver));
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [gameOver]);
+
   useEffect(() => {
     if (gameOver) {
       setScore((prevScore) => prevScore + score); // Суммируем старые очки с новыми
-      return;  
+      return;
     }
     
-    // Устанавливаем стартовую позицию при каждом старте игры
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
-  }, [gameOver]);  // Восстанавливаем позицию при каждом рестарте игры
+  }, [gameOver]);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -61,31 +81,27 @@ function Game({ onGameStatus }) {
   useEffect(() => {
     if (timeLeft > 0) {
       const bubbleInterval = setInterval(() => {
-        setBubbles((prevBubbles) => {
-          return [...prevBubbles, createBubble(bubbleSize)];
-        });
-      }, 150); // Увеличиваем временной интервал между созданием пузырей
+        setBubbles((prevBubbles) => [...prevBubbles, createBubble(bubbleSize)]);
+      }, 150);
       return () => clearInterval(bubbleInterval);
     }
   }, [timeLeft]);
 
   useCollisionCheck(bubbles, playerPosition, setBubbles, setLocalScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble);
 
-  // Удаляем пузыри, которые вышли за границы экрана
   useEffect(() => {
     const handleResize = () => {
-      // Пересчитываем положение пузырей при изменении размера экрана
       setBubbles((prevBubbles) => 
         prevBubbles.filter((bubble) => {
           const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
           const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-          return bubbleY < window.innerHeight + bubbleSize; // Учитываем новый размер окна
+          return bubbleY < window.innerHeight + bubbleSize;
         })
       );
     };
-  
+
     window.addEventListener('resize', handleResize);
-  
+    
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -98,19 +114,18 @@ function Game({ onGameStatus }) {
     setLocalScore(0);
     setTimeLeft(30);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
-    
   };
 
   return (
     <div className="game">
       {!gameOver ? (
         <>
-      {hitRedBubble && (
-      <>
-        <div className="cyber-edge cyber-edge-left"></div>
-        <div className="cyber-edge cyber-edge-right"></div>
-      </>
-    )}
+          {hitRedBubble && (
+          <>
+            <div className="cyber-edge cyber-edge-left"></div>
+            <div className="cyber-edge cyber-edge-right"></div>
+          </>
+          )}
           <div className='gameTimeAndScore'>
             <div className='timeLeft'>
               <h2>{formatTime(timeLeft)}</h2>
@@ -122,7 +137,6 @@ function Game({ onGameStatus }) {
           </div>
           <div className="side-line side-line-left"></div>
           <div className="side-line side-line-right"></div>
-          {/* Используем Suspense для ожидания загрузки PlayerBubble */}
           <Suspense fallback={<div>Loading Player...</div>}>
             <PlayerBubble x={playerPosition.x} y={playerPosition.y} />
           </Suspense>
@@ -142,10 +156,8 @@ function Game({ onGameStatus }) {
   );
 }
 
-// Используем memo для оптимизации рендеринга пузырей
 const MemoizedBubble = memo(Bubble);
 
-// Создаем мемоизированный компонент для взрыва
 const MemoizedExplosion = memo(({ x, y }) => (
   <div className="explosion" style={{ left: x, top: y }}></div>
 ));
