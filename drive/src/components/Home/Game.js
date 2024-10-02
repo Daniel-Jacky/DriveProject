@@ -24,7 +24,7 @@ function Game({ onGameStatus }) {
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
   const [score, setLocalScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(5);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);  // Изначальное значение false
   const { setScore } = useUser();
@@ -115,7 +115,7 @@ function Game({ onGameStatus }) {
     setBubbles([]);
     setExplosions([]);
     setLocalScore(0);
-    setTimeLeft(30);
+    setTimeLeft(5);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
     removeFromLocalStorage('score'); // Очищаем сохраненные данные
     removeFromLocalStorage('timeLeft');

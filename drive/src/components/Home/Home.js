@@ -51,8 +51,9 @@ const Home = ({ onGameStatus }) => {
         // Функция для получения данных из API
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://test-fudg-api.com:3000/endpoint');
+                const response = await axios.get('http://fudg-test2.ru/users');
                 setApiData(response.data); // Устанавливаем полученные данные в состояние
+                debugger
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
             }
