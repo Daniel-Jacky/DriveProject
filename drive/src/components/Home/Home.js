@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Импортируем axios
 import PlayButton from './PlayButton/PlayButton';
 import carImage from './Assets/car.png'; // путь к изображению машины
 import './Home.css';
 import { useUser } from './UserContext'; // Импортируем контекст пользователя
+import { fetchUserData, getUserByChatId } from '../api'; // Импортируем функции из api.js
 
 const Home = ({ onGameStatus }) => {
     const { username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar } = useUser(); // Получаем данные пользователя и функции для их обновления
@@ -16,42 +16,34 @@ const Home = ({ onGameStatus }) => {
     };
 
     useEffect(() => {
-        // Функция для получения данных из API
         const fetchData = async () => {
-            try {
-                const response = await axios.get('http://fudg-test2.ru/users');
-                setApiData(response.data); // Устанавливаем полученные данные в состояние
-            } catch (error) {
-                console.error('Ошибка при получении данных:', error);
-            }
+            const data = await fetchUserData(); // Получаем данные из API
+            setApiData(data); // Устанавливаем полученные данные в состояние
         };
 
         fetchData(); // Вызов функции для получения данных
     }, []); // Пустой массив зависимостей, чтобы вызвать один раз при монтировании компонента
 
-
     useEffect(() => {
         if (apiData) {
-            const data = apiData
             const hash = window.location.hash;
             const paramsString = hash.slice(1);
             const params = new URLSearchParams(paramsString);
             let newChatId = params.get('/?chatId');
-            // const newUsername = params.get('username');
             const newAvatar = params.get('avatarUrl');
             let newUsername = '';
             let newScore = '';
-    
-            for (let i = 0; i < data.length; i++) {
-                if(newChatId = data[i].chatId){
-                    newUsername = data[i].username
-                    newScore = data[i].score
-                }
+
+            const user = getUserByChatId(apiData, newChatId); // Получаем пользователя по chatId
+            if (user) {
+                newUsername = user.username;
+                newScore = user.score;
             }
+
             // Устанавливаем данные в контекст
             setChatId(newChatId);
             setUsername(newUsername);
-            setScore(newScore)
+            setScore(newScore);
             if (newAvatar) {
                 setAvatar(newAvatar);
             } else {
@@ -59,17 +51,16 @@ const Home = ({ onGameStatus }) => {
                 setAvatar(avatarUrl);
                 setGeneratedAvatar(avatarUrl); // Устанавливаем сгенерированную аватарку
             }
-    
+
             console.log(`Chat ID: ${newChatId}, Username: ${newUsername}`);
         }
-      }, [apiData, setChatId, setUsername, chatId]);
+    }, [apiData, setChatId, setUsername]);
 
     const generateAvatar = (username) => {
         if (!username) return `https://dummyimage.com/100/cccccc/ffffff.png&text=?`;
         const firstLetter = username.charAt(0).toUpperCase();
         return `https://ui-avatars.com/api/?name=${firstLetter[0]}&background=random`;
     };
-    console.log(apiData)
 
     return (
         <div className="App">
@@ -96,14 +87,11 @@ const Home = ({ onGameStatus }) => {
                     Play
                 </PlayButton>
             </div>
-            {/* <ProgressBar /> */}
         </div>
     );
-}
+};
 
 export default Home;
-
-
 
 
 
