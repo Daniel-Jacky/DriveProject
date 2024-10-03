@@ -21,10 +21,11 @@ export const getUserByChatId = (data, chatId) => {
 };
 
 // Функция для обновления очков пользователя
-export const updateUserScore = async (chatId, newScore) => {
+export const updateUserScore = async (chatId, newScore, newGamesLeft) => {
     try {
         const response = await axios.put(`${API_URL}/${chatId}`, {
             score: newScore,
+            gamesLeft: newGamesLeft,
         });
         return response.data; // Возвращаем данные после обновления
     } catch (error) {

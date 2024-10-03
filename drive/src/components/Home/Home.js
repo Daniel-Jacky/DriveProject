@@ -6,7 +6,7 @@ import { useUser } from './UserContext'; // Импортируем контек�
 import { fetchUserData, getUserByChatId } from '../api'; // Импортируем функции из api.js
 
 const Home = ({ onGameStatus }) => {
-    const { username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar } = useUser(); // Получаем данные пользователя и функции для их обновления
+    const { username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar,gamesLeft, setGamesLeft } = useUser(); // Получаем данные пользователя и функции для их обновления
     const [generatedAvatar, setGeneratedAvatar] = useState('');
     const [apiData, setApiData] = useState(null); // Состояние для хранения данных из API
 
@@ -33,16 +33,19 @@ const Home = ({ onGameStatus }) => {
             const newAvatar = params.get('avatarUrl');
             let newUsername = '';
             let newScore = '';
+            let newGamesLeft = ''
 
             const user = getUserByChatId(apiData, newChatId); // Получаем пользователя по chatId
             if (user) {
                 newUsername = user.username;
                 newScore = user.score;
+                newGamesLeft = user.gamesLeft
             }
             // Устанавливаем данные в контекст
             setChatId(newChatId);
             setUsername(newUsername);
             setScore(newScore);
+            setGamesLeft(newGamesLeft)
             if (newAvatar) {
                 setAvatar(newAvatar);
             } else {
@@ -56,6 +59,7 @@ const Home = ({ onGameStatus }) => {
     }, [apiData, setChatId, setUsername]);
 
     console.log(apiData)
+    console.log(gamesLeft)
 
     const generateAvatar = (username) => {
         if (!username) return `https://dummyimage.com/100/cccccc/ffffff.png&text=?`;
@@ -75,7 +79,7 @@ const Home = ({ onGameStatus }) => {
             <div className="playArea">
                 <div className='dropGameBox'>
                     <h3 className='dropGame'>Drop game</h3>
-                    <h4 className='timeToPlay'>5</h4>
+                    <h4 className='timeToPlay'>{gamesLeft}</h4>
                 </div>
                 <div className="imageContainer">
                     <img
@@ -84,7 +88,7 @@ const Home = ({ onGameStatus }) => {
                         alt="Player Car"
                     />
                 </div>
-                <PlayButton onClick={sendDataToParent} className="playBtn">
+                <PlayButton onClick={sendDataToParent} className="playBtn" >
                     Play
                 </PlayButton>
             </div>

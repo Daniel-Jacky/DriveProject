@@ -96,3 +96,9 @@
   width: 150px;
   height: auto;
 }
+
+.playBtn:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+  opacity: 0.9;
+}

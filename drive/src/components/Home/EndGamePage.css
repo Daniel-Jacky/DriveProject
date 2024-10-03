@@ -48,6 +48,12 @@
     border-radius: 10px; /* Скругленные углы */
 }
 
+.playAnotherTime:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
 .endBtn{
     width: 100%; /* Ширина кнопки */
     margin-bottom: 70px;
