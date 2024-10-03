@@ -13,6 +13,7 @@ const Home = ({ onGameStatus }) => {
     const sendDataToParent = () => {
         const gameActive = true; // Данные, которые мы хотим передать родителю
         onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
+        
     };
 
     useEffect(() => {
