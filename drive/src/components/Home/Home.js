@@ -69,6 +69,7 @@ const Home = ({ onGameStatus }) => {
 
     return (
         <div className="App">
+            <h4>1.0</h4>
             <div className="NameAndStat">
                 <div className="user-info">
                     <h2 className='User'>{username || 'Guest'}</h2>
