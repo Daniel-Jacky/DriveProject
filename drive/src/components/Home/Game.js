@@ -24,33 +24,47 @@ function Game({ onGameStatus }) {
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
   const [score, setLocalScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(10);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
-  const [gameOver, setGameOver] = useState(false);  // Изначальное значение false
+  const [gameOver, setGameOver] = useState(false);
   const { setScore } = useUser();
   const [hitRedBubble, setHitRedBubble] = useState(false);
+  const [loading, setLoading] = useState(true); // Добавляем состояние для отслеживания загрузки
 
   const playerWidth = 10;
   const playerHeight = 45;
   const bubbleSize = 40;
 
   useEffect(() => {
-    const handleResize = () => {
-      setBubbles((prevBubbles) =>
-        prevBubbles.filter((bubble) => {
-          const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
-          const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-          return bubbleY < window.innerHeight + bubbleSize;
-        })
-      );
+    // Инициализация объектов (пузыри, игрок и т.д.)
+    const initializeGame = async () => {
+      // Имитация загрузки данных или выполнения задач перед началом игры
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Задержка для имитации загрузки (2 секунды)
+      setLoading(false); // Отключаем экран загрузки после инициализации
     };
 
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    initializeGame();
   }, []);
+
+    useEffect(() => {
+      if (!loading) {
+        const handleResize = () => {
+          setBubbles((prevBubbles) =>
+            prevBubbles.filter((bubble) => {
+              const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
+              const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
+              return bubbleY < window.innerHeight + bubbleSize;
+            })
+          );
+        };
+  
+        window.addEventListener('resize', handleResize);
+  
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }
+    }, [loading]);
 
   // Восстанавливаем состояние игры при загрузке страницы
   useEffect(() => {
@@ -87,24 +101,28 @@ function Game({ onGameStatus }) {
   }, [gameOver]);
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    } else {
-      setGameOver(true);
+    if(!loading){
+      if (timeLeft > 0) {
+        const timer = setInterval(() => {
+          setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+        }, 1000);
+        return () => clearInterval(timer);
+      } else {
+        setGameOver(true);
+      }
     }
-  }, [timeLeft]);
+  }, [timeLeft, loading]);
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      const bubbleInterval = setInterval(() => {
-        setBubbles((prevBubbles) => [...prevBubbles, createBubble(bubbleSize)]);
-      }, 150);
-      return () => clearInterval(bubbleInterval);
+    if(!loading){
+      if (timeLeft > 0) {
+        const bubbleInterval = setInterval(() => {
+          setBubbles((prevBubbles) => [...prevBubbles, createBubble(bubbleSize)]);
+        }, 150);
+        return () => clearInterval(bubbleInterval);
+      }
     }
-  }, [timeLeft]);
+  }, [timeLeft,loading]);
 
   usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
 
@@ -115,12 +133,20 @@ function Game({ onGameStatus }) {
     setBubbles([]);
     setExplosions([]);
     setLocalScore(0);
-    setTimeLeft(5);
+    setTimeLeft(10);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
     removeFromLocalStorage('score'); // Очищаем сохраненные данные
     removeFromLocalStorage('timeLeft');
     removeFromLocalStorage('gameOver');
   };
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="game">

@@ -39,11 +39,9 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
   }, [chatId]);
 
   const sendGameStatus = async () => {
-    const gameActive = false; // Данные, которые мы хотим передать родителю
     const newScore = currentScore + score; // Суммируем текущие и новые очки
     setGamesLeft(newGamesLeft)
     await updateUserScore(chatId, newScore,  newGamesLeft); // Обновляем очки
-    onGameStatus(gameActive); // Вызываем функцию из пропсов и передаем ей данные
     navigate('/'); // Перенаправляем на главную страницу
     onRestart(); // Сначала перезапускаем игру
   };

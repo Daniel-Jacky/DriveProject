@@ -8,7 +8,7 @@ import './Home.css';
 import { useUser } from './UserContext'; // Импортируем контекст пользователя
 import { fetchUserData, getUserByChatId } from '../api'; // Импортируем функции из api.js
 
-const Home = ({ onGameStatus }) => {
+const Home = ({ }) => {
     const {
         username, setUsername, chatId, setChatId, 
         score, setScore, avatar, setAvatar, 
@@ -19,11 +19,6 @@ const Home = ({ onGameStatus }) => {
     const [generatedAvatar, setGeneratedAvatar] = useState('');
     const [apiData, setApiData] = useState(null); // Состояние для хранения данных из API
     const [isLoadingSkeleton, setIsLoadingSkeleton] = useState(true); // Состояние загрузки скелетона
-
-
-    const sendDataToParent = () => {
-        onGameStatus(true); // Передаем в родительский компонент статус игры
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,7 +68,7 @@ const Home = ({ onGameStatus }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>1.0</h4>
+                <h4>1.1</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
@@ -115,7 +110,7 @@ const Home = ({ onGameStatus }) => {
                     {isLoadingSkeleton ? (
                         <Skeleton width={80} height={40} borderRadius={20} />
                     ) : (
-                        <PlayButton onClick={sendDataToParent} className="playBtn">
+                        <PlayButton  className="playBtn">
                             Play
                         </PlayButton>
                     )}
