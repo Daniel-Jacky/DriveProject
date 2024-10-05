@@ -1,10 +1,18 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
 import { FaTasks, FaTelegramPlane,FaInstagram } from 'react-icons/fa';
+import { useUser } from '../../UserContext';
+import { getCheckUserSubscribe} from '../../api'; // Импортируем функции из api.js
+
 import './List.css';
 
 const List = () => {
   const [records, setRecords] = useState([]);
+  const { chatId } = useUser();
+
+  const checkTask = async () => {
+    await getCheckUserSubscribe(chatId); // Обновляем очки
+  };
 
   useEffect(() => {
     const initialRecords = [
@@ -29,7 +37,7 @@ const List = () => {
                   <h5 className='whiteText'>{record.content}</h5>
                 </div>
               </div>
-              <button className="playBtn">
+              <button className="playBtn" onClick={checkTask}>
                 Start
               </button>
             </div>

@@ -1,0 +1,36 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрирует по вертикали */
+    align-items: center;     /* Центрирует по горизонтали */
+    min-height: 100vh;       /* Контейнер занимает всю высоту экрана */
+    position: relative;      /* Для позиционирования кнопки */
+}
+
+.continueBtn {
+    width: 100%; /* Ширина кнопки */
+    padding: 15px; /* Отступы для увеличения высоты */
+    font-size: 15px; /* Размер текста */
+    background-color: white !important; /* Цвет фона кнопки */
+    color: black; /* Цвет текста */
+    border: none; /* Убираем рамку */
+    cursor: pointer; /* Курсор в виде руки при наведении */
+    border-radius: 3px;
+    position: absolute;
+    bottom: 5px;        
+  }
+
+.mrgH2{
+    margin-bottom: 10px;
+    color: white;
+    margin: 0;
+    text-align: center; /* Для центрирования текста */
+}
+
+.mrgH3{
+    margin-bottom: 10px;
+    color: white;
+    margin: 0;
+    text-align: center; /* Для центрирования текста */
+}

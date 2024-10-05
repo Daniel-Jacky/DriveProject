@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { useUser } from '../UserContext';
+import { useUser } from '../../UserContext';
 
 const PlayButton = ({ onClick, children, className }) => {
 

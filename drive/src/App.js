@@ -6,6 +6,7 @@ import Home from "./components/Home/Home";
 import Tasks from "./components/Tasks/Tasks";
 import { HashRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Friends from "./components/Friends/Friends";
+import DailyRewards from "./components/Home/DailyRewards";
 
 // Компонент для управления маршрутизацией и состояниями
 const MainApp = ({ }) => {
@@ -18,8 +19,9 @@ const MainApp = ({ }) => {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/friends" element={<Friends />} />
         <Route path="/game" element={<Game />} />
+        <Route path="/rewards" element={<DailyRewards />} />
       </Routes>
-      {location.pathname !== '/game' && <Footer />} {/* Футер не показываем на странице /game */}
+      {(location.pathname !== '/game' && location.pathname !== '/rewards') && <Footer />} {/* Футер не показываем на странице /game */}
     </div>
   );
 }

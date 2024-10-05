@@ -1,11 +1,11 @@
 // src/components/EndGamePage.js
 import React, { useEffect, useState } from 'react';
 import './EndGamePage.css';
-import { useUser } from './UserContext';
-import { updateUserScore, fetchUserData, getUserByChatId} from '../api'; // Импортируем функции из api.js
+import { useUser } from '../UserContext';
+import { updateUserScore, getUserByChatId} from '../api'; // Импортируем функции из api.js
 
 const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
-  const { chatId, gamesLeft, setGamesLeft } = useUser();
+  const { chatId, gamesLeft, setGamesLeft, lastTimeGamesAdded } = useUser();
   const [currentScore, setCurrentScore] = useState(0); 
   const [newGamesLeft, setNewGamesLeft] = useState(gamesLeft);// Состояние для текущих очков
   const [isDecremented, setIsDecremented] = useState(false);
@@ -27,8 +27,7 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
   useEffect(() => {
     const getCurrentScore = async () => {
       try {
-        const apiData = await fetchUserData(chatId);
-        const userData = getUserByChatId(apiData, chatId)
+        const userData = await getUserByChatId(chatId);
         setCurrentScore(userData.score || 0); // Устанавливаем текущее значение очков или 0
       } catch (error) {
         console.error('Ошибка при получении текущих очков:', error);
@@ -37,6 +36,7 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
 
     getCurrentScore();
   }, [chatId]);
+
 
   const sendGameStatus = async () => {
     const newScore = currentScore + score; // Суммируем текущие и новые очки
@@ -51,7 +51,7 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
     onRestart(); // Сначала перезапускаем игру
     navigate('/game'); // Затем программно осуществляем навигацию на игру
     const newScore = currentScore + score;
-    setGamesLeft(newGamesLeft)
+    setGamesLeft(newGamesLeft);
     await updateUserScore(chatId, newScore,  newGamesLeft); // Обновляем очки
   };
 

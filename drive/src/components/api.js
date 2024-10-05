@@ -2,22 +2,18 @@
 import axios from 'axios';
 
 const API_URL = 'https://fudg-test2.ru/users';
+const API_TASK_URL = 'https://fudg-test2.ru/taskcheck/goida/'
 
 // Функция для получения данных пользователей
-export const fetchUserData = async () => {
-    try {
-        const response = await axios.get(API_URL);
-        
+// Функция для получения данных пользователя по chatId
+export const getUserByChatId = async (chatId) => {
+    try {  
+        const response = await axios.get(`${API_URL}/${chatId}`);
         return response.data; // Возвращаем полученные данные
     } catch (error) {
         console.error('Ошибка при получении данных:', error);
-        return []; // Возвращаем пустой массив в случае ошибки
+        return null; // Возвращаем null в случае ошибки
     }
-};
-
-// Функция для получения текущего пользователя по chatId
-export const getUserByChatId = (data, chatId) => {
-    return data.find(user => user.chatId === chatId) || null; // Ищем пользователя по chatId
 };
 
 // Функция для обновления очков пользователя
@@ -25,11 +21,37 @@ export const updateUserScore = async (chatId, newScore, newGamesLeft) => {
     try {
         const response = await axios.put(`${API_URL}/${chatId}`, {
             score: newScore,
-            gamesLeft: newGamesLeft,
+            gamesLeft: newGamesLeft
         });
         return response.data; // Возвращаем данные после обновления
     } catch (error) {
         console.error('Ошибка при обновлении очков:', error);
         throw error; // Пробрасываем ошибку дальше
+    }
+};
+
+export const updateUserTimeGamesAdded = async (chatId, newGamesLeft, currentStreak, newLastTimeGamesAdded, updatedToday) => {
+    try {
+        const response = await axios.put(`${API_URL}/${chatId}`, {
+            gamesLeft: newGamesLeft,
+            currentStreak: currentStreak,
+            lastTimeGamesAdded: newLastTimeGamesAdded,
+            updatedToday: updatedToday
+        });
+        return response.data; // Возвращаем данные после обновления
+    } catch (error) {
+        console.error('Ошибка при обновлении очков:', error);
+        throw error; // Пробрасываем ошибку дальше
+    }
+};
+
+
+export const getCheckUserSubscribe = async (chatId) => {
+    try {  
+        const response = await axios.get(`${API_TASK_URL}/${chatId}`);
+        return response.data; // Возвращаем полученные данные
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        return null; // Возвращаем null в случае ошибки
     }
 };

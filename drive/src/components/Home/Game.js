@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatTime } from './utils';
 import usePlayerMovement from './usePlayerMovement';
 import useCollisionCheck from './useCollisionCheck';
-import { useUser } from './UserContext';
+import { useUser } from '../UserContext';
 import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from './storageUtils';
 
 const Bubble = React.lazy(() => import('./Bubble'));
