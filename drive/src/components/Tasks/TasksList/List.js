@@ -23,9 +23,10 @@ const List = () => {
 
   const checkTask = async (id) => {
     setIsLoading(true);  // Запускаем спиннер
-    const newId = id - 1;
 
-    if (records[newId].reason === "subscribeHuch") {
+    const record = records.filter(item => item.id === id)
+
+    if (record[0].reason === "subscribeHuch") {
       const getInfoFromTask = await getCheckUserSubscribe(chatId); // Выполнение задачи
       if (getInfoFromTask === 'Subbed') {
         let newScore = '';
