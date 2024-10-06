@@ -44,7 +44,32 @@
     margin-right: 10px;
   }
 
+  .playBtn.completed {
+    background-color: #f06aff; /* Розовый цвет, если задача выполнена */
+    cursor: not-allowed; /* Запрещаем взаимодействие */
+    font-weight: bold;
+    color: black;
+  }
+  
+  .playBtn:disabled {
+    cursor: not-allowed; /* Убираем возможность нажатия на кнопку, если она отключена */
+  }
 
   h5.whiteText {
     margin: 7px;
 }
+
+/* Спиннер */
+.spinnerBtn {
+    border: 3px solid #f3f3f3; /* Светлый цвет фона спиннера */
+    border-top: 3px solid #ef61ff; /* Синий цвет крутящегося сегмента */
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    animation: spin 1s linear infinite; /* Анимация вращения */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

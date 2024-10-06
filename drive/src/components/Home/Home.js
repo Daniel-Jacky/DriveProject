@@ -14,7 +14,7 @@ const Home = ({ }) => {
         username, setUsername, chatId, setChatId,
         score, setScore, avatar, setAvatar,
         gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded,  updatedToday, setUpdatedToday,
-        checkRewards, setCheckRewards
+        checkRewards, setCheckRewards, setLocalSaveScore
     } = useUser(); // Получаем данные пользователя и функции для их обновления
 
 
@@ -52,6 +52,7 @@ const Home = ({ }) => {
             if (user) {
                 setUsername(user.username);
                 setScore(user.score);
+                setLocalSaveScore(user.score)
                 setGamesLeft(user.gamesLeft);
                 setLastTimeGamesAdded(user.lastTimeGamesAdded)
                 setCurrentStreak(user.currentStreak)
@@ -102,7 +103,7 @@ const Home = ({ }) => {
             console.log(user)
 
         }
-    }, [apiData, chatId, setChatId, setUsername, setScore, setAvatar, setGamesLeft]);
+    }, [apiData, chatId, setChatId, setUsername, setScore, setAvatar, setGamesLeft, setLocalSaveScore]);
 
     const generateAvatar = (username) => {
         if (!username) return 'https://dummyimage.com/100/cccccc/ffffff.png&text=?';
@@ -118,7 +119,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>1.2</h4>
+                <h4>1.3</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">

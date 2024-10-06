@@ -12,6 +12,8 @@ export const UserProvider = ({ children }) => {
     const [lastTimeGamesAdded, setLastTimeGamesAdded] = useState(localStorage.getItem('lastTimeGamesAdded') || '');
     const [updatedToday, setUpdatedToday] = useState(localStorage.getItem('updatedToday') || '');
     const [checkRewards, setCheckRewards] = useState(localStorage.getItem('checkRewards') || '');
+    const [localSaveScore, setLocalSaveScore] = useState(localStorage.getItem('localSaveScore') || 0);
+    
 
 
     // Динамичные данные, которые не обязательно сохранять в localStorage
@@ -66,12 +68,17 @@ export const UserProvider = ({ children }) => {
         }
     }, [checkRewards]);
 
+    useEffect(() => {
+        if (localSaveScore) {
+            localStorage.setItem('localSaveScore', localSaveScore);
+        }
+    }, [localSaveScore]);
 
 
     return (
         <UserContext.Provider value={{ username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar,
          gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, 
-         updatedToday, setUpdatedToday, checkRewards, setCheckRewards }}>
+         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore }}>
             {children}
         </UserContext.Provider>
     );

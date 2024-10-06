@@ -28,7 +28,7 @@ html, body {
 
 .spinner {
   border: 10px solid #f3f3f3; /* Светлый цвет фона спиннера */
-  border-top: 10px solid #e5ff00; /* Синий цвет крутящегося сегмента */
+  border-top: 10px solid #ef61ff; /* Синий цвет крутящегося сегмента */
   border-radius: 50%;
   width: 50px;
   height: 50px;
