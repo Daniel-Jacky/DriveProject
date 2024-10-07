@@ -51,6 +51,29 @@ const Home = ({ }) => {
                 console.log(addRed)
             }
 
+
+            // Получаем параметр из ссылки
+            const urlParams = new URLSearchParams(window.location.search);
+            const startAppParam = urlParams.get('startapp');
+
+            // Проверяем, есть ли в параметре нужная строка "ref_"
+            if (startAppParam && startAppParam.startsWith('ref_')) {
+                const refCode = startAppParam.substring(4); // Извлекаем значение после "ref_"
+                console.log('Referral code:', refCode);
+
+                // Здесь можно вызвать метод для отправки этого параметра на сервер
+                // Например, через API или использование в Telegram Web App логике
+
+                const firstname = '';
+                const lastname = '';
+                const username = params.get('username');
+                const newAvatar = params.get('avatarUrl');
+                const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
+                console.log(addRed)
+            } else {
+                console.log('Параметр ref_ не найден.');
+            }
+
         };
 
         fetchData(); // Вызов асинхронной функции
@@ -135,7 +158,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.3</h4>
+                <h4>5.3.4</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
