@@ -28,7 +28,41 @@ const Home = ({ }) => {
             let hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
             let newChatId = params.get('/?chatId') || chatId;
+// ref
+            const decodedUrl = decodeURIComponent(hash);
+            const startParamPos = decodedUrl.indexOf('start_param=');
 
+            // Если параметр найден, извлекаем его значение
+            if (startParamPos !== -1) {
+                // Извлекаем всё после 'start_param='
+                const startParamValue = decodedUrl.substring(startParamPos + 'start_param='.length);
+                
+                // Если есть дополнительные параметры, обрезаем строку до следующего параметра
+                const endPos = startParamValue.indexOf('&');
+                const startParam = endPos !== -1 ? startParamValue.substring(0, endPos) : startParamValue;
+                
+                console.log('start_param:', startParam); // Выведет "ref_aedbb335-473b-439d-9ec2-860fc46ebea5"
+                if (startParam && startParam.startsWith('ref_')) {
+                    const refCode = startParam.substring(4); // Извлекаем значение после "ref_"
+                    console.log('Referral code:', refCode);
+    
+                    // Здесь можно вызвать метод для отправки этого параметра на сервер
+                    // Например, через API или использование в Telegram Web App логике
+    
+                    const firstname = '';
+                    const lastname = '';
+                    const username = params.get('username');
+                    const newAvatar = params.get('avatarUrl');
+                    const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
+                    console.log(addRed)
+                } else {
+                    console.log('Параметр ref_ не найден.');
+                }
+                
+            } else {
+                console.log('Параметр start_param не найден.');
+            }
+// ref
             if (newChatId) {
                 const user = await getUserByChatId(newChatId); // Получаем данные пользователя
                 setApiData(user); // Устанавливаем данные пользователя
@@ -39,25 +73,7 @@ const Home = ({ }) => {
             // Получаем параметр из ссылки
             // const urlParams = new URLSearchParams(window.location.hash);
             // const urlParams = 'tgWebAppData=user%3D%257B%2522id%2522%253A6578624309%252C%2522first_name%2522%253A%2522Daniel%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522danielgi97%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522allows_write_to_pm%2522%253Atrue%257D%26chat_instance%3D-1023297304681969391%26chat_type%3Dprivate%26start_param%3Dref_aedbb335-473b-439d-9ec2-860fc46ebea5%26auth_date%3D1728337660%26hash%3Dd4f93ccb815f9a6a9cf50f18871fc4dea72d14029f0321d9013f7dadf6132e39&tgWebAppVersion=7.10&tgWebAppPlatform=weba&tgWebAppThemeParams=%7B%22bg_color%22%3A%22%23ffffff%22%2C%22text_color%22%3A%22%23000000%22%2C%22hint_color%22%3A%22%23707579%22%2C%22link_color%22%3A%22%233390ec%22%2C%22button_color%22%3A%22%233390ec%22%2C%22button_text_color%22%3A%22%23ffffff%22%2C%22secondary_bg_color%22%3A%22%23f4f4f5%22%2C%22header_bg_color%22%3A%22%23ffffff%22%2C%22accent_text_color%22%3A%22%233390ec%22%2C%22section_bg_color%22%3A%22%23ffffff%22%2C%22section_header_text_color%22%3A%22%23707579%22%2C%22subtitle_text_color%22%3A%22%23707579%22%2C%22destructive_text_color%22%3A%22%23e53935%22%7D"';
-            const startParam = params.get('start_param');
-
-            if (startParam && startParam.startsWith('ref_')) {
-                const refCode = startParam.substring(4); // Извлекаем значение после "ref_"
-                console.log('Referral code:', refCode);
-
-                // Здесь можно вызвать метод для отправки этого параметра на сервер
-                // Например, через API или использование в Telegram Web App логике
-
-                const firstname = '';
-                const lastname = '';
-                const username = params.get('username');
-                const newAvatar = params.get('avatarUrl');
-                const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
-                console.log(addRed)
-            } else {
-                console.log('Параметр ref_ не найден.');
-            }
-
+           
         };
 
         fetchData(); // Вызов асинхронной функции
@@ -142,7 +158,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.7</h4>
+                <h4>5.3.8</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
