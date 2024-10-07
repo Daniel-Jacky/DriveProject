@@ -83,8 +83,8 @@ export const updateCompleteTask = async (id, isCompleted) => {
 export const addRefFriend = async (chatId, firstname, lastname, username, avatarUrl, friendUrl) => {
     try {
         const response = await axios.post(`${API_REF_FRIEND}`, {
-            chatId: chatId,
-            firstname: firstname,
+            chtId: chatId,
+            name: firstname,
             lastname: lastname,
             username: username,
             avatarUrl: avatarUrl,
