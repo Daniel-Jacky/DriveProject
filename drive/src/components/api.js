@@ -5,6 +5,7 @@ const API_URL = 'https://fudg-test2.ru/users';
 const API_TASK_URL = 'https://fudg-test2.ru/users';
 const API_TASK_CHECK_URL = 'https://fudg-test2.ru/taskcheck/goida/'
 const API_UPDATE_TASK = 'https://fudg-test2.ru/users/tasks'
+const API_REF_FRIEND = 'https://fudg-test2.ru/user/reg'
 
 // Функция для получения данных пользователей
 // Функция для получения данных пользователя по chatId
@@ -79,3 +80,19 @@ export const updateCompleteTask = async (id, isCompleted) => {
     }
 };
 
+export const addRefFriend = async (chatId, firstname, lastname, username, avatarUrl, friendUrl) => {
+    try {
+        const response = await axios.post(`${API_REF_FRIEND}`, {
+            chatId: chatId,
+            firstname: firstname,
+            lastname: lastname,
+            username: username,
+            avatarUrl: avatarUrl,
+            friendUrl: friendUrl
+        });
+        return response.data; // Возвращаем данные после обновления
+    } catch (error) {
+        console.error('Ошибка при обновлении очков:', error);
+        throw error; // Пробрасываем ошибку дальше
+    }
+};

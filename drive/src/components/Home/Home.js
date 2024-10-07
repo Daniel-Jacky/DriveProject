@@ -6,14 +6,14 @@ import PlayButton from './PlayButton/PlayButton';
 import carImage from './Assets/car.png'; // Путь к изображению машины
 import './Home.css';
 import { useUser } from '../UserContext'; // Импортируем контекст пользователя
-import { getUserByChatId, updateUserTimeGamesAdded } from '../api'; // Импортируем функции из api.js
+import { getUserByChatId, updateUserTimeGamesAdded, addRefFriend } from '../api'; // Импортируем функции из api.js
 import { useNavigate } from 'react-router-dom';
 
 const Home = ({ }) => {
     const {
         username, setUsername, chatId, setChatId,
         score, setScore, avatar, setAvatar,
-        gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded,  updatedToday, setUpdatedToday,
+        gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, updatedToday, setUpdatedToday,
         checkRewards, setCheckRewards, setLocalSaveScore
     } = useUser(); // Получаем данные пользователя и функции для их обновления
 
@@ -25,19 +25,32 @@ const Home = ({ }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const hash = window.location.hash;
+            let hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
-            const newChatId = params.get('/?chatId') || chatId;
+            let newChatId = params.get('/?chatId') || chatId;
 
             if (newChatId) {
                 const user = await getUserByChatId(newChatId); // Получаем данные пользователя
                 setApiData(user); // Устанавливаем данные пользователя
             }
-            if(isLoadingSkeleton){
-                
-            }
-            
             setIsLoadingSkeleton(false); // Убираем состояние загрузки скелетона
+            debugger
+            let friendLink;
+            if (hash.includes("ref")) {
+                debugger
+                const match = hash.match(/ref_([a-zA-Z0-9-]+)/);
+                if (match) {
+                    friendLink = match[1];
+                    console.log(friendLink); // Выведет "aedbb335-473b-439d-9ec2-860fc46ebea5"
+                }
+                const firstname = '';
+                const lastname = '';
+                const username = params.get('username');
+                const newAvatar = params.get('avatarUrl');
+                const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, friendLink);
+                console.log(addRed)
+            }
+
         };
 
         fetchData(); // Вызов асинхронной функции
@@ -75,8 +88,8 @@ const Home = ({ }) => {
             const currentDate = new Date(),
                 lastStreak = new Date(user.lastTimeGamesAdded),
                 isStreak = currentDate - lastStreak,
-                  isStreakDifferentInHours = Math.floor(isStreak / (1000 * 60 * 60));
-                // isStreakDifferentInHours = 25;
+                isStreakDifferentInHours = Math.floor(isStreak / (1000 * 60 * 60));
+            // isStreakDifferentInHours = 25;
             if (isStreakDifferentInHours > 24 && isStreakDifferentInHours < 48 && !user.updatedToday) {
                 setCheckRewards(false)
                 let newCurrentStreak = '';
@@ -122,7 +135,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.2</h4>
+                <h4>5.3.3</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
