@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './Bubble.css';
 
-function Bubble({ x, createdAt, color, speed }) {
+function Bubble({ x, createdAt, color, speed, onRemove }) { // Добавляем onRemove для удаления пузыря
   const bubbleRef = useRef(null);
   const bubbleSpeed = useRef((window.innerHeight / 6) * speed); // Скорость падения вычисляется один раз
 
@@ -13,11 +13,13 @@ function Bubble({ x, createdAt, color, speed }) {
       const newY = Math.min(bubbleAge * bubbleSpeed.current, window.innerHeight); // Ограничиваем до высоты окна
 
       if (bubbleRef.current) {
-        // Используем transform для плавной анимации
         bubbleRef.current.style.top = `${newY}px`;
       }
 
-      if (newY < window.innerHeight) {
+      // Если пузырь достигает нижней границы экрана, удаляем его
+      if (newY >= window.innerHeight) {
+        if (onRemove) onRemove(); // Удаляем пузырь из списка
+      } else {
         animationFrameId = requestAnimationFrame(updatePosition); // Запускаем следующий кадр
       }
     };
@@ -27,7 +29,7 @@ function Bubble({ x, createdAt, color, speed }) {
     return () => {
       cancelAnimationFrame(animationFrameId); // Очищаем кадры при размонтировании
     };
-  }, [createdAt]);
+  }, [createdAt, onRemove]);
 
   return (
     <div
