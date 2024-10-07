@@ -38,6 +38,7 @@ function Game({ onGameStatus }) {
   const { setScore } = useUser();
   const [hitRedBubble, setHitRedBubble] = useState(false);
   const [loading, setLoading] = useState(true);
+  
 
   const playerWidth = 10;
   const playerHeight = 45;
@@ -55,7 +56,11 @@ function Game({ onGameStatus }) {
 
   useEffect(() => {
     if (!loading) {
-      const handleResize = () => {
+      // Здесь можно выполнять действия по обновлению DOM, например, пересчет позиций элементов
+      const handleDOMUpdate = () => {
+        // Обновляем положение игрока
+        setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
+        // Обновляем пузыри
         setBubbles((prevBubbles) =>
           prevBubbles.filter((bubble) => {
             const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
@@ -65,6 +70,30 @@ function Game({ onGameStatus }) {
         );
       };
 
+      // Вызовем функцию для обновления DOM сразу после первого рендера
+      handleDOMUpdate();
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (!loading) {
+      const handleResize = () => {
+        // Обновляем положение игрока при изменении размеров окна
+        setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
+        // Обновляем положение пузырей
+        setBubbles((prevBubbles) =>
+          prevBubbles.filter((bubble) => {
+            const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
+            const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
+            return bubbleY < window.innerHeight + bubbleSize;
+          })
+        );
+      };
+
+      // Вызовем пересчет размеров окна сразу после загрузки
+      handleResize();
+
+      // Обработчик изменения размера окна
       window.addEventListener('resize', handleResize);
 
       return () => {
