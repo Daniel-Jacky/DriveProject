@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as Icons from 'react-icons/fa'; // Импортируем все иконки
-import { FaCheck } from 'react-icons/fa';
-import { FaSpinner } from 'react-icons/fa';
+import { FaCheck, FaSpinner } from 'react-icons/fa';
+import { SkeletonTheme } from 'react-loading-skeleton'; // Импортируем компоненты из библиотеки скелетонов
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Не забудьте подключить стили для скелетона
 import { useUser } from '../../UserContext';
 import { getUsersTasks, getCheckUserSubscribe, updateUserScore, updateCompleteTask } from '../../api'; // Импортируем функции из api.js
 import './List.css';
@@ -9,51 +11,45 @@ import './List.css';
 const List = () => {
   const [records, setRecords] = useState([]);
   const { chatId, gamesLeft, setScore, localSaveScore, setLocalSaveScore } = useUser();
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // Состояние для спиннера
+  const [isLoading, setIsLoading] = useState(true); // Состояние для загрузки данных
+  const [isTaskLoading, setIsTaskLoading] = useState(false); // Состояние для спиннера задачи
 
   useEffect(() => {
     const fetchData = async () => {
       const getUsers = await getUsersTasks(chatId); // Получаем данные пользователя
       setRecords(getUsers);
-      console.log(getUsers)
+      setIsLoading(false); // Отключаем загрузку после получения данных
     };
     fetchData();
   }, [chatId]);
 
   const checkTask = async (id) => {
-    setIsLoading(true);  // Запускаем спиннер
+    setIsTaskLoading(true);  // Запускаем спиннер задачи
 
-    const record = records.filter(item => item.id === id)
-    let isCompleted = ''
-    if (record[0].reason === "subscribeHuch") {
+    const record = records.find(item => item.id === id);
+    let isCompleted = '';
+    if (record.reason === "subscribeHuch") {
       const getInfoFromTask = await getCheckUserSubscribe(chatId); // Выполнение задачи
-          if (getInfoFromTask === 'Subbed') {
-            let newScore = '';
-             isCompleted = true;
-            for (let i = 0; i < records.length; i++) {
-              if (id === records[i].id) {
-                newScore = Number(localSaveScore) + records[i].points;
-              }
-            }
-      
-            await updateUserScore(chatId, newScore, gamesLeft);
-            await updateCompleteTask(id, isCompleted);
-      
-            // Обновляем состояние записей после выполнения задачи
-            setRecords((prevRecords) =>
-              prevRecords.map((record) =>
-                record.id === id ? { ...record, isCompleted: true } : record
-              )
-            );
-      
-            setScore(newScore);
-            setLocalSaveScore(newScore);
-          } else {
-            window.open(`https://t.me/hoochYou`);
-      } 
+      if (getInfoFromTask === 'Subbed') {
+        let newScore = Number(localSaveScore) + record.points;
+        isCompleted = true;
 
-    } else if (record[0].reason === "farm3000"){
+        await updateUserScore(chatId, newScore, gamesLeft);
+        await updateCompleteTask(id, isCompleted);
+
+        // Обновляем состояние записей после выполнения задачи
+        setRecords((prevRecords) =>
+          prevRecords.map((record) =>
+            record.id === id ? { ...record, isCompleted: true } : record
+          )
+        );
+
+        setScore(newScore);
+        setLocalSaveScore(newScore);
+      } else {
+        window.open(`https://t.me/hoochYou`);
+      }
+    } else if (record.reason === "farm3000") {
       if (Number(localSaveScore) === 3000) {
         isCompleted = true;
         await updateCompleteTask(id, isCompleted);
@@ -61,51 +57,73 @@ const List = () => {
           prevRecords.map((record) =>
             record.id === id ? { ...record, isCompleted: true } : record
           )
-        )
+        );
       }
     }
 
-
-  setIsLoading(false);  // Останавливаем спиннер после завершения
-
+    setIsTaskLoading(false);  // Останавливаем спиннер после завершения
   };
-  
+
+  const renderSkeleton = () => (
+    <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
+      <div className="skeleton">
+        <div>
+          <Skeleton className="skeleton-icon" />
+        </div>
+        <Skeleton className="skeleton-text" />
+        <div>
+          <Skeleton className="skeleton-button" />
+        </div>
+      </div>
+    </SkeletonTheme>
+  );
 
   return (
     <div>
-      <ul className="coor">
-        {records.map((record) => {
-          const IconComponent = Icons[record.icon]; // Динамически выбираем компонент иконки
-          return (
-            <li key={record.id}>
-              <div className="listFlex">
-                <div className="iconAndTask">
-                  {IconComponent && <IconComponent className="footer-icon" />} {/* Рендерим иконку */}
-                  <div className="tasksText">
-                    <h5 className="whiteText">{record.title}</h5>
-                    <h5 className="whiteText">{record.content}</h5>
-                  </div>
-                </div>
-                <button
-                  className={`playBtn ${record.isCompleted ? 'completed' : ''}`}
-                  onClick={() => checkTask(record.id)}
-                  disabled={record.isCompleted} // Блокируем кнопку, если задача выполнена
-                >
-                 {(isLoading && record.isCompleted) ? (
-                  <FaSpinner className="spinnerBtn" />
-                ) : record.isCompleted ? (
-                  <FaCheck />
-                ) : record.reason === 'farm3000' ? (
-                  `${localSaveScore}/3000`
-                ) : (
-                  'Start'
-                )}
-                </button>
-              </div>
+      {isLoading ? (
+        // Рендерим фиксированное количество скелетонов
+        <ul className="coor">
+          {Array.from({ length: 3 }, (_, index) => (
+            <li key={index}>
+              {renderSkeleton()}
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      ) : (
+        <ul className="coor">
+          {records.map((record) => {
+            const IconComponent = Icons[record.icon]; // Динамически выбираем компонент иконки
+            return (
+              <li key={record.id}>
+                <div className="listFlex">
+                  <div className="iconAndTask">
+                    {IconComponent && <IconComponent className="footer-icon" />} {/* Рендерим иконку */}
+                    <div className="tasksText">
+                      <h5 className="whiteText">{record.title}</h5>
+                      <h5 className="whiteText">{record.content}</h5>
+                    </div>
+                  </div>
+                  <button
+                    className={`playBtn ${record.isCompleted ? 'completed' : ''}`}
+                    onClick={() => checkTask(record.id)}
+                    disabled={record.isCompleted} // Блокируем кнопку, если задача выполнена
+                  >
+                    {(isTaskLoading && record.isCompleted) ? (
+                      <FaSpinner className="spinnerBtn" />
+                    ) : record.isCompleted ? (
+                      <FaCheck />
+                    ) : record.reason === 'farm3000' ? (
+                      `${localSaveScore}/3000`
+                    ) : (
+                      'Start'
+                    )}
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 };

@@ -12,7 +12,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    /* border: 1px solid white; */
     border-radius: 12px;
     width: 100%;
     margin-top: 15px;
@@ -59,6 +58,44 @@
 
   h5.whiteText {
     margin: 7px;
+}
+
+
+.skeleton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.skeleton-text {
+  flex-grow: 1;
+  background-color: #ccc;
+  height: 20px;
+  border-radius: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 150px;
+}
+
+.skeleton-button {
+  width: 70px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+  background-color: #ccc;
+} 
+
+.skeleton-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin-left: 10px;
+  font-size: 24px;
 }
 
 /* Спиннер */
