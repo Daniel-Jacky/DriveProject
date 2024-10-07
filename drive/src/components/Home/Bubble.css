@@ -6,6 +6,8 @@
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  will-change: transform;
+  transform: translateZ(0); /* Триггер для аппаратного ускорения */
 }
 
 .bubble.blue {
