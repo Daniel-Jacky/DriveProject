@@ -3,16 +3,17 @@ import './Bubble.css';
 
 function Bubble({ x, createdAt, color, speed }) {
   const bubbleRef = useRef(null);
-  const bubbleSpeed = (window.innerHeight / 6) * speed; // Скорость падения
+  const bubbleSpeed = useRef((window.innerHeight / 6) * speed); // Скорость падения вычисляется один раз
 
   useEffect(() => {
     let animationFrameId;
 
     const updatePosition = () => {
       const bubbleAge = (Date.now() - createdAt) / 1000; // Возраст пузыря в секундах
-      const newY = Math.min(bubbleAge * bubbleSpeed, window.innerHeight); // Ограничиваем до высоты окна
+      const newY = Math.min(bubbleAge * bubbleSpeed.current, window.innerHeight); // Ограничиваем до высоты окна
 
       if (bubbleRef.current) {
+        // Используем transform для плавной анимации
         bubbleRef.current.style.top = `${newY}px`;
       }
 
@@ -26,7 +27,7 @@ function Bubble({ x, createdAt, color, speed }) {
     return () => {
       cancelAnimationFrame(animationFrameId); // Очищаем кадры при размонтировании
     };
-  }, [createdAt, bubbleSpeed]);
+  }, [createdAt]);
 
   return (
     <div

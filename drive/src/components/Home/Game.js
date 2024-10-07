@@ -11,60 +11,67 @@ import { saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage } from
 const Bubble = React.lazy(() => import('./Bubble'));
 const PlayerBubble = React.lazy(() => import('./PlayerBubble'));
 
-const createBubble = (bubbleSize) => ({
-  id: Math.random(),
-  x: Math.random() * (window.innerWidth - bubbleSize),
-  color: Math.random() < 0.15 ? 'red' : 'blue',
-  createdAt: Date.now(),
-  speed: Math.random() * 2 + 1,
-});
+// Пул объектов для пузырей
+const bubblePool = [];
+
+const createOrReuseBubble = (bubbleSize) => {
+  const bubble = bubblePool.length > 0 ? bubblePool.pop() : { id: Math.random() };
+  bubble.x = Math.random() * (window.innerWidth - bubbleSize);
+  bubble.color = Math.random() < 0.15 ? 'red' : 'blue';
+  bubble.createdAt = Date.now();
+  bubble.speed = Math.random() * 2 + 1;
+  return bubble;
+};
+
+const removeBubbleFromPool = (bubble) => {
+  bubblePool.push(bubble); // Возвращаем пузырь в пул
+};
 
 function Game({ onGameStatus }) {
   const navigate = useNavigate();
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
   const [score, setLocalScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);
   const { setScore } = useUser();
   const [hitRedBubble, setHitRedBubble] = useState(false);
-  const [loading, setLoading] = useState(true); // Добавляем состояние для отслеживания загрузки
+  const [loading, setLoading] = useState(true);
 
   const playerWidth = 10;
   const playerHeight = 45;
   const bubbleSize = 40;
+  const maxBubbles = 90; // Ограничение на количество пузырей
 
   useEffect(() => {
-    // Инициализация объектов (пузыри, игрок и т.д.)
     const initializeGame = async () => {
-      // Имитация загрузки данных или выполнения задач перед началом игры
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Задержка для имитации загрузки (2 секунды)
-      setLoading(false); // Отключаем экран загрузки после инициализации
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setLoading(false);
     };
 
     initializeGame();
   }, []);
 
-    useEffect(() => {
-      if (!loading) {
-        const handleResize = () => {
-          setBubbles((prevBubbles) =>
-            prevBubbles.filter((bubble) => {
-              const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
-              const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-              return bubbleY < window.innerHeight + bubbleSize;
-            })
-          );
-        };
-  
-        window.addEventListener('resize', handleResize);
-  
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-      }
-    }, [loading]);
+  useEffect(() => {
+    if (!loading) {
+      const handleResize = () => {
+        setBubbles((prevBubbles) =>
+          prevBubbles.filter((bubble) => {
+            const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
+            const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
+            return bubbleY < window.innerHeight + bubbleSize;
+          })
+        );
+      };
+
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, [loading]);
 
   // Восстанавливаем состояние игры при загрузке страницы
   useEffect(() => {
@@ -94,14 +101,14 @@ function Game({ onGameStatus }) {
 
   useEffect(() => {
     if (gameOver) {
-      setScore((prevScore) => prevScore + score); // Суммируем старые очки с новыми
+      setScore((prevScore) => prevScore + score);
       return;
     }
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   }, [gameOver]);
 
   useEffect(() => {
-    if(!loading){
+    if (!loading) {
       if (timeLeft > 0) {
         const timer = setInterval(() => {
           setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
@@ -113,16 +120,23 @@ function Game({ onGameStatus }) {
     }
   }, [timeLeft, loading]);
 
+  // Оптимизация генерации пузырей с ограничением на количество
   useEffect(() => {
-    if(!loading){
+    if (!loading) {
       if (timeLeft > 0) {
         const bubbleInterval = setInterval(() => {
-          setBubbles((prevBubbles) => [...prevBubbles, createBubble(bubbleSize)]);
+          setBubbles((prevBubbles) => {
+            const newBubbles = [...prevBubbles, createOrReuseBubble(bubbleSize)];
+            if (newBubbles.length > maxBubbles) {
+              removeBubbleFromPool(newBubbles.shift()); // Удаляем старые пузыри и возвращаем в пул
+            }
+            return newBubbles;
+          });
         }, 150);
         return () => clearInterval(bubbleInterval);
       }
     }
-  }, [timeLeft,loading]);
+  }, [timeLeft, loading]);
 
   usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
 
@@ -133,9 +147,9 @@ function Game({ onGameStatus }) {
     setBubbles([]);
     setExplosions([]);
     setLocalScore(0);
-    setTimeLeft(10);
+    setTimeLeft(30);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
-    removeFromLocalStorage('score'); // Очищаем сохраненные данные
+    removeFromLocalStorage('score');
     removeFromLocalStorage('timeLeft');
     removeFromLocalStorage('gameOver');
   };
