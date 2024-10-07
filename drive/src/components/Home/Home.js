@@ -55,7 +55,10 @@ const Home = ({ }) => {
             // Получаем параметр из ссылки
             const urlParams = new URLSearchParams(window.location.search);
             const startAppParam = urlParams.get('startapp');
-
+            console.log(urlParams + ' urlParams')
+            console.log(startAppParam + ' startAppParam')
+            console.log(hash + ' hash')
+            console.log(params + ' params')
             // Проверяем, есть ли в параметре нужная строка "ref_"
             if (startAppParam && startAppParam.startsWith('ref_')) {
                 const refCode = startAppParam.substring(4); // Извлекаем значение после "ref_"
