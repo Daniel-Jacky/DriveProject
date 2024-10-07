@@ -6,7 +6,7 @@ import PlayButton from './PlayButton/PlayButton';
 import carImage from './Assets/car.png'; // Путь к изображению машины
 import './Home.css';
 import { useUser } from '../UserContext'; // Импортируем контекст пользователя
-import { getUserByChatId, updateUserTimeGamesAdded, addRefFriend } from '../api'; // Импортируем функции из api.js
+import { getUserByChatId, updateUserTimeGamesAdded } from '../api'; // Импортируем функции из api.js
 import { useNavigate } from 'react-router-dom';
 
 const Home = ({ }) => {
