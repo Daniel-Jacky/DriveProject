@@ -27,55 +27,14 @@ const Home = ({ }) => {
         const fetchData = async () => {
             let hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
-            let newChatId = params.get('/?chatId') || chatId;
+            const newChatId = params.get('/?chatId') || chatId;
 
             if (newChatId) {
                 const user = await getUserByChatId(newChatId); // Получаем данные пользователя
                 setApiData(user); // Устанавливаем данные пользователя
             }
             setIsLoadingSkeleton(false); // Убираем состояние загрузки скелетона
-            debugger
-            let friendLink;
-            if (hash.includes("ref")) {
-                debugger
-                const match = hash.match(/ref_([a-zA-Z0-9-]+)/);
-                if (match) {
-                    friendLink = match[1];
-                    console.log(friendLink); // Выведет "aedbb335-473b-439d-9ec2-860fc46ebea5"
-                }
-                const firstname = '';
-                const lastname = '';
-                const username = params.get('username');
-                const newAvatar = params.get('avatarUrl');
-                const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, friendLink);
-                console.log(addRed)
-            }
-
-
-            // Получаем параметр из ссылки
-            const urlParams = new URLSearchParams(window.location.search);
-            const startAppParam = urlParams.get('startapp');
-            console.log(urlParams + ' urlParams')
-            console.log(startAppParam + ' startAppParam')
-            console.log(hash + ' hash')
-            console.log(params + ' params')
-            // Проверяем, есть ли в параметре нужная строка "ref_"
-            if (startAppParam && startAppParam.startsWith('ref_')) {
-                const refCode = startAppParam.substring(4); // Извлекаем значение после "ref_"
-                console.log('Referral code:', refCode);
-
-                // Здесь можно вызвать метод для отправки этого параметра на сервер
-                // Например, через API или использование в Telegram Web App логике
-
-                const firstname = '';
-                const lastname = '';
-                const username = params.get('username');
-                const newAvatar = params.get('avatarUrl');
-                const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
-                console.log(addRed)
-            } else {
-                console.log('Параметр ref_ не найден.');
-            }
+            
 
         };
 
@@ -161,7 +120,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.4</h4>
+                <h4>5.3.5</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
