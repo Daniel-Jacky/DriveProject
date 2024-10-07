@@ -35,14 +35,16 @@
     padding: 0;
 }
 
-.playBtn{
-    background-color: white;
-    width: 70px;
-    height: 40px;
-    border-radius: 20px;
-    font-size: revert-layer;
-    margin-right: 10px;
-  }
+.playBtn {
+  background-color: white;
+  width: 70px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+  color: black;
+  font-size: x-small;
+  font-weight: bold;
+}
 
   .playBtn.completed {
     background-color: #f06aff; /* Розовый цвет, если задача выполнена */
@@ -61,15 +63,10 @@
 
 /* Спиннер */
 .spinnerBtn {
-    border: 3px solid #f3f3f3; /* Светлый цвет фона спиннера */
-    border-top: 3px solid #ef61ff; /* Синий цвет крутящегося сегмента */
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    animation: spin 1s linear infinite; /* Анимация вращения */
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
