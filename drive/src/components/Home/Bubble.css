@@ -6,7 +6,7 @@
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  will-change: transform;
+  will-change: top;
   transform: translateZ(0); /* Триггер для аппаратного ускорения */
 }
 
