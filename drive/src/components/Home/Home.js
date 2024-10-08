@@ -25,7 +25,7 @@ const Home = ({ }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            let hash = window.location.hash;
+            const hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
             let newChatId = params.get('/?chatId') || chatId;
 // ref
@@ -33,35 +33,62 @@ const Home = ({ }) => {
             const startParamPos = decodedUrl.indexOf('start_param=');
 
             // Если параметр найден, извлекаем его значение
-            if (startParamPos !== -1) {
-                // Извлекаем всё после 'start_param='
-                const startParamValue = decodedUrl.substring(startParamPos + 'start_param='.length);
-                
-                // Если есть дополнительные параметры, обрезаем строку до следующего параметра
-                const endPos = startParamValue.indexOf('&');
-                const startParam = endPos !== -1 ? startParamValue.substring(0, endPos) : startParamValue;
-                
-                console.log('start_param:', startParam); // Выведет "ref_aedbb335-473b-439d-9ec2-860fc46ebea5"
-                if (startParam && startParam.startsWith('ref_')) {
-                    const refCode = startParam.substring(4); // Извлекаем значение после "ref_"
-                    console.log('Referral code:', refCode);
-    
-                    // Здесь можно вызвать метод для отправки этого параметра на сервер
-                    // Например, через API или использование в Telegram Web App логике
-    
-                    const firstname = '';
-                    const lastname = '';
-                    const username = params.get('username');
-                    const newAvatar = params.get('avatarUrl');
-                    const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
-                    console.log(addRed)
-                } else {
-                    console.log('Параметр ref_ не найден.');
-                }
-                
-            } else {
-                console.log('Параметр start_param не найден.');
-            }
+                    if (startParamPos !== -1) {
+                        // Извлекаем всё после 'start_param='
+                        const startParamValue = decodedUrl.substring(startParamPos + 'start_param='.length);
+                        
+                        // Если есть дополнительные параметры, обрезаем строку до следующего параметра
+                        const endPos = startParamValue.indexOf('&');
+                        const startParam = endPos !== -1 ? startParamValue.substring(0, endPos) : startParamValue;
+                        
+                        console.log('start_param:', startParam); // Выведет "ref_aedbb335-473b-439d-9ec2-860fc46ebea5"
+                        if (startParam && startParam.startsWith('ref_')) {
+                            const refCode = startParam.substring(4); // Извлекаем значение после "ref_"
+                            console.log('Referral code:', refCode);
+
+                            // 1. Извлекаем параметр tgWebAppData
+                            const params1 = new URLSearchParams(hash);
+                            const tgWebAppData = params1.get('tgWebAppData');
+
+                            // 2. Декодируем первый уровень URL-кодировки
+                            const decodedData = decodeURIComponent(tgWebAppData);
+
+                            // 3. Убираем префикс 'user='
+                            const cleanData = decodedData.replace('user=', '');
+
+                            // 4. Декодируем второй уровень URL-кодировки
+                            const userDataString = decodeURIComponent(cleanData);
+
+                            // 5. Отрезаем лишние данные после JSON (находим первый '&')
+                            const jsonPart = userDataString.split('&')[0];
+
+                            // 6. Преобразуем строку в объект и извлекаем username
+
+                            let username;
+                            let firstname;
+                            let lastname;
+                            try {
+                                const userData = JSON.parse(jsonPart);
+                                username = userData.username;
+                                firstname = userData.first_name
+                                lastname = userData.lastname
+                                console.log(username); // Выведет 'danielgi97'
+                            } catch (e) {
+                                console.error('Ошибка парсинга JSON:', e);
+                            }
+            
+                            // Здесь можно вызвать метод для отправки этого параметра на сервер
+                            // Например, через API или использование в Telegram Web App логике
+                            const newAvatar = params.get('avatarUrl');
+                            const addRed = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
+                            console.log(addRed)
+                        } else {
+                            console.log('Параметр ref_ не найден.');
+                        }
+                        
+                    } else {
+                        console.log('Параметр start_param не найден.');
+                    }
 // ref
             if (newChatId) {
                 const user = await getUserByChatId(newChatId); // Получаем данные пользователя
@@ -158,7 +185,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.9</h4>
+                <h4>5.3.10</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
