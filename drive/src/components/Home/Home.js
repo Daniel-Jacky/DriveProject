@@ -49,7 +49,7 @@ const Home = ({ }) => {
 
                             // 1. Извлекаем параметр tgWebAppData
                             const params1 = new URLSearchParams(hash);
-                            const tgWebAppData = params1.get('tgWebAppData');
+                            const tgWebAppData = params1.get('#/?tgWebAppData');
 
                             // 2. Декодируем первый уровень URL-кодировки
                             const decodedData = decodeURIComponent(tgWebAppData);
@@ -186,7 +186,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.11</h4>
+                <h4>5.3.12</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
