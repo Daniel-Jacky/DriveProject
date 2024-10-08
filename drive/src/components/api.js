@@ -1,13 +1,14 @@
 // src/components/api.js
 import axios from 'axios';
 
-const API_URL = 'https://fudg-test2.ru/users';
-const API_TASK_URL = 'https://fudg-test2.ru/users';
-const API_TASK_CHECK_URL = 'https://fudg-test2.ru/taskcheck/goida/'
-const API_UPDATE_TASK = 'https://fudg-test2.ru/users/tasks'
-const API_REF_FRIEND = 'https://fudg-test2.ru/user/reg'
+const API_URL            = 'https://fudg-test2.ru/users',
+      API_TASK_URL       = 'https://fudg-test2.ru/users',
+      API_TASK_CHECK_URL = 'https://fudg-test2.ru/taskcheck/goida/',
+      API_UPDATE_TASK    = 'https://fudg-test2.ru/users/tasks',
+      API_REF_FRIEND     = 'https://fudg-test2.ru/user/reg',
+      API_FRIENDS_LIST   = 'https://fudg-test2.ru//friends',
+      API_INVITE_FRIEND  = 'https://fudg-test2.ru/invites';
 
-// Функция для получения данных пользователей
 // Функция для получения данных пользователя по chatId
 export const getUserByChatId = async (chatId) => {
     try {  
@@ -94,5 +95,25 @@ export const addRefFriend = async (chatId, firstname, lastname, username, avatar
     } catch (error) {
         console.error('Ошибка при обновлении очков:', error);
         throw error; // Пробрасываем ошибку дальше
+    }
+};
+
+export const getUsersFriends = async (chatId) => {
+    try {  
+        const response = await axios.get(`${API_FRIENDS_LIST}/${chatId}`);
+        return response.data; // Возвращаем полученные данные
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        return null; // Возвращаем null в случае ошибки
+    }
+};
+
+export const getInviteLink = async (chatId) => {
+    try {  
+        const response = await axios.get(`${API_INVITE_FRIEND}/${chatId}`);
+        return response.data; // Возвращаем полученные данные
+    } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        return null; // Возвращаем null в случае ошибки
     }
 };

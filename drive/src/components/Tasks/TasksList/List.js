@@ -10,7 +10,7 @@ import './List.css';
 
 const List = () => {
   const [records, setRecords] = useState([]);
-  const { chatId, gamesLeft, setScore, localSaveScore, setLocalSaveScore } = useUser();
+  const { chatId, gamesLeft, setScore, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount } = useUser();
   const [isLoading, setIsLoading] = useState(true); // Состояние для загрузки данных
   const [isTaskLoading, setIsTaskLoading] = useState(false); // Состояние для спиннера задачи
 
@@ -18,6 +18,7 @@ const List = () => {
     const fetchData = async () => {
       const getUsers = await getUsersTasks(chatId); // Получаем данные пользователя
       setRecords(getUsers);
+      console.log(getUsers)
       setIsLoading(false); // Отключаем загрузку после получения данных
     };
     fetchData();
@@ -58,8 +59,18 @@ const List = () => {
             record.id === id ? { ...record, isCompleted: true } : record
           )
         );
-      }
-    }
+        } 
+      } else if (record.reason === "addFriends") {
+        if (Number(friendsCount) === 3) {
+          isCompleted = true;
+          await updateCompleteTask(id, isCompleted);
+          setRecords((prevRecords) =>
+            prevRecords.map((record) =>
+              record.id === id ? { ...record, isCompleted: true } : record
+            )
+          );
+          } 
+        }
 
     setIsTaskLoading(false);  // Останавливаем спиннер после завершения
   };
@@ -114,6 +125,8 @@ const List = () => {
                       <FaCheck />
                     ) : record.reason === 'farm3000' ? (
                       `${localSaveScore}/3000`
+                    ) : record.reason === 'addFriends' ? (
+                      `${friendsCount}/3`
                     ) : (
                       'Start'
                     )}

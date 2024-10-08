@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
     const [lastTimeGamesAdded, setLastTimeGamesAdded] = useState(localStorage.getItem('lastTimeGamesAdded') || '');
     const [updatedToday, setUpdatedToday] = useState(localStorage.getItem('updatedToday') || '');
     const [checkRewards, setCheckRewards] = useState(localStorage.getItem('checkRewards') || '');
+    const [friendsCount, setFriendsCount] = useState(localStorage.getItem('friendsCount') || 0);
     const [localSaveScore, setLocalSaveScore] = useState(localStorage.getItem('localSaveScore') || 0);
     
 
@@ -69,6 +70,12 @@ export const UserProvider = ({ children }) => {
     }, [checkRewards]);
 
     useEffect(() => {
+        if (friendsCount) {
+            localStorage.setItem('friendsCount', friendsCount);
+        }
+    }, [checkRewards]);
+
+    useEffect(() => {
         if (localSaveScore) {
             localStorage.setItem('localSaveScore', localSaveScore);
         }
@@ -78,7 +85,7 @@ export const UserProvider = ({ children }) => {
     return (
         <UserContext.Provider value={{ username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar,
          gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, 
-         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore }}>
+         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount }}>
             {children}
         </UserContext.Provider>
     );

@@ -43,3 +43,9 @@
   h5.whiteText {
     margin: 7px;
 }
+
+.countFriends{
+    color: white !important;
+    margin-left: 20px;
+    margin-bottom: 0;
+}

@@ -29,7 +29,7 @@ const Home = ({ }) => {
             const params = new URLSearchParams(hash.slice(1));
             let newChatId = params.get('/?chatId') || chatId;
             // ref
-            debugger
+            
             const decodedUrl = decodeURIComponent(hash);
             const startParamPos = decodedUrl.indexOf('start_param=');
 
@@ -94,7 +94,6 @@ const Home = ({ }) => {
                 console.log('Параметр start_param не найден.');
             }
             // ref
-
 
             // if (newChatId) {
             //     const user = await getUserByChatId(newChatId); // Получаем данные пользователя
@@ -190,7 +189,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.14</h4>
+                <h4>5.4.15</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">

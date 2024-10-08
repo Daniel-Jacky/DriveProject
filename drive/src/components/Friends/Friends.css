@@ -16,17 +16,69 @@
 }
 
 .inviteFrens {
-
   width: 100%; /* Ширина кнопки */
   padding: 15px; /* Отступы для увеличения высоты */
   font-size: 20px; /* Размер текста */
-  
   background-color: white !important; /* Цвет фона кнопки */
   color: black; /* Цвет текста */
   border: none; /* Убираем рамку */
   border-radius: 10px; /* Скругленные углы */
-  
   cursor: pointer; /* Курсор в виде руки при наведении */
+  z-index: 1000;
+ 
 }
 
+.friends-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
 
+.skeletonFriend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.skeletonFriend-text {
+  flex-grow: 1;
+  background-color: #ccc;
+  height: 20px;
+  border-radius: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 150px;
+}
+
+.skeletonFriend-score {
+  flex-grow: 1;
+  background-color: #ccc;
+  height: 20px;
+  margin-right: 20px;
+  width: 50px;
+}
+
+.skeletonFriend-button {
+  margin-right: 10px;
+  background-color: #ccc;
+  width: 100%; /* Ширина кнопки */
+  padding: 15px; /* Отступы для увеличения высоты */
+  color: black; /* Цвет текста */
+  border: none; /* Убираем рамку */
+  border-radius: 10px; /* Скругленные углы */
+  margin-top: 20px;
+} 
+
+.skeletonFriend-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 24px;
+}
