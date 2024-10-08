@@ -35,7 +35,7 @@ const Home = ({ }) => {
 
             // Если параметр найден, извлекаем его значение
             const user = await getUserByChatId(newChatId);    // Проверим, что chatId присутствует в базе, если не присутвует создаем по реф ссылке
-            if (user.chatId === newChatId) {
+            if (user !== null) {
                 setApiData(user)
             } else if (startParamPos !== -1) {
                 // Извлекаем всё после 'start_param='
@@ -190,7 +190,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>5.3.13</h4>
+                <h4>5.3.14</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">
