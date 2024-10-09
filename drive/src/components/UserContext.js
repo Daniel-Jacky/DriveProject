@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
     const [checkRewards, setCheckRewards] = useState(localStorage.getItem('checkRewards') || '');
     const [friendsCount, setFriendsCount] = useState(localStorage.getItem('friendsCount') || 0);
     const [localSaveScore, setLocalSaveScore] = useState(localStorage.getItem('localSaveScore') || 0);
+    const [totalFarm, setTotalFarm] = useState(localStorage.getItem('totalFarm') || 0);
     
 
 
@@ -81,11 +82,17 @@ export const UserProvider = ({ children }) => {
         }
     }, [localSaveScore]);
 
+    useEffect(() => {
+        if (totalFarm) {
+            localStorage.setItem('totalFarm', totalFarm);
+        }
+    }, [totalFarm]);
+
 
     return (
         <UserContext.Provider value={{ username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar,
          gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, 
-         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount }}>
+         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount, totalFarm, setTotalFarm }}>
             {children}
         </UserContext.Provider>
     );

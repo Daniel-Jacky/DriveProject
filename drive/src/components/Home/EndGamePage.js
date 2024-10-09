@@ -5,7 +5,7 @@ import { useUser } from '../UserContext';
 import { updateUserScore, getUserByChatId} from '../api'; // Импортируем функции из api.js
 
 const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
-  const { chatId, gamesLeft, setGamesLeft, lastTimeGamesAdded } = useUser();
+  const { chatId, gamesLeft, setGamesLeft, totalFarm, setTotalFarm } = useUser();
   const [currentScore, setCurrentScore] = useState(0); 
   const [newGamesLeft, setNewGamesLeft] = useState(gamesLeft);// Состояние для текущих очков
   const [isDecremented, setIsDecremented] = useState(false);
@@ -39,9 +39,11 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
 
 
   const sendGameStatus = async () => {
-    const newScore = currentScore + score; // Суммируем текущие и новые очки
-    setGamesLeft(newGamesLeft)
-    await updateUserScore(chatId, newScore,  newGamesLeft); // Обновляем очки
+    const newScore     = currentScore + score, // Суммируем текущие и новые очки
+          newTotalFarm = totalFarm + score;
+    setGamesLeft(newGamesLeft);
+    setTotalFarm(newTotalFarm);
+    await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
     navigate('/'); // Перенаправляем на главную страницу
     onRestart(); // Сначала перезапускаем игру
   };
@@ -50,9 +52,11 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
     event.preventDefault(); // Останавливаем стандартное поведение кнопки
     onRestart(); // Сначала перезапускаем игру
     navigate('/game'); // Затем программно осуществляем навигацию на игру
-    const newScore = currentScore + score;
+    const newScore     = currentScore + score, // Суммируем текущие и новые очки
+          newTotalFarm = totalFarm + score;
     setGamesLeft(newGamesLeft);
-    await updateUserScore(chatId, newScore,  newGamesLeft); // Обновляем очки
+    setTotalFarm(newTotalFarm);
+    await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
   };
 
   const getResultMessage = (score) => {

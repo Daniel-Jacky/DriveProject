@@ -13,6 +13,17 @@
   display: flex;
   flex-direction: column; /* Располагаем содержимое вертикально */
   justify-content: space-between;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.friends-list {
+  flex-grow: 1; /* Контейнер растет по высоте, занимает оставшееся пространство */
+  padding: 10px;
+  margin-bottom: 10px;
+  scroll-behavior: smooth; /* Плавная прокрутка */
+  overscroll-behavior: contain; 
+  -webkit-overflow-scrolling: touch; /* Для плавного скролла на iOS */
 }
 
 .inviteFrens {
@@ -25,8 +36,11 @@
   border-radius: 10px; /* Скругленные углы */
   cursor: pointer; /* Курсор в виде руки при наведении */
   z-index: 1000;
- 
+  position: fixed; /* Фиксируем кнопку */
+  bottom: 80px; /* Отступ сверху футера, 60px для безопасности */
 }
+
+
 
 .friends-avatar {
   width: 50px;

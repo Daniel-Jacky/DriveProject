@@ -5,20 +5,22 @@ import { SkeletonTheme } from 'react-loading-skeleton'; // Импортируе�
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Не забудьте подключить стили для скелетона
 import { useUser } from '../../UserContext';
-import { getUsersTasks, getCheckUserSubscribe, updateUserScore, updateCompleteTask } from '../../api'; // Импортируем функции из api.js
+import { getUsersTasks, getCheckUserSubscribe, updateUserScore, updateCompleteTask, getUsersFriends } from '../../api'; // Импортируем функции из api.js
 import './List.css';
 
 const List = () => {
   const [records, setRecords] = useState([]);
-  const { chatId, gamesLeft, setScore, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount } = useUser();
+  const { chatId, gamesLeft, setScore, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount, totalFarm } = useUser();
   const [isLoading, setIsLoading] = useState(true); // Состояние для загрузки данных
   const [isTaskLoading, setIsTaskLoading] = useState(false); // Состояние для спиннера задачи
 
   useEffect(() => {
     const fetchData = async () => {
-      const getUsers = await getUsersTasks(chatId); // Получаем данные пользователя
-      setRecords(getUsers);
-      console.log(getUsers)
+      const getUserTasks = await getUsersTasks(chatId); // Получаем данные пользователя
+      setRecords(getUserTasks);
+      console.log(getUserTasks)
+      const getFriends = await getUsersFriends(chatId)
+      setFriendsCount(getFriends.length)
       setIsLoading(false); // Отключаем загрузку после получения данных
     };
     fetchData();
@@ -28,11 +30,12 @@ const List = () => {
     setIsTaskLoading(true);  // Запускаем спиннер задачи
 
     const record = records.find(item => item.id === id);
-    let isCompleted = '';
+    let isCompleted = '',
+        newScore = 0;
     if (record.reason === "subscribeHuch") {
       const getInfoFromTask = await getCheckUserSubscribe(chatId); // Выполнение задачи
       if (getInfoFromTask === 'Subbed') {
-        let newScore = Number(localSaveScore) + record.points;
+          newScore = Number(localSaveScore) + record.points;
         isCompleted = true;
 
         await updateUserScore(chatId, newScore, gamesLeft);
@@ -51,9 +54,11 @@ const List = () => {
         window.open(`https://t.me/hoochYou`);
       }
     } else if (record.reason === "farm3000") {
-      if (Number(localSaveScore) === 3000) {
+      if (Number(totalFarm) >= 3000) {
         isCompleted = true;
+        newScore = Number(localSaveScore) + record.points;
         await updateCompleteTask(id, isCompleted);
+        await updateUserScore(chatId, newScore, gamesLeft, totalFarm);
         setRecords((prevRecords) =>
           prevRecords.map((record) =>
             record.id === id ? { ...record, isCompleted: true } : record
@@ -61,9 +66,11 @@ const List = () => {
         );
         } 
       } else if (record.reason === "addFriends") {
-        if (Number(friendsCount) === 3) {
+        if (Number(friendsCount) >= 3) {
           isCompleted = true;
+          newScore = Number(localSaveScore) + record.points;
           await updateCompleteTask(id, isCompleted);
+          await updateUserScore(chatId, newScore, gamesLeft, totalFarm);
           setRecords((prevRecords) =>
             prevRecords.map((record) =>
               record.id === id ? { ...record, isCompleted: true } : record
@@ -112,6 +119,7 @@ const List = () => {
                     <div className="tasksText">
                       <h5 className="whiteText">{record.title}</h5>
                       <h5 className="whiteText">{record.content}</h5>
+                      <h5 className="whiteText">+{record.points} Drive points</h5>
                     </div>
                   </div>
                   <button
@@ -124,9 +132,9 @@ const List = () => {
                     ) : record.isCompleted ? (
                       <FaCheck />
                     ) : record.reason === 'farm3000' ? (
-                      `${localSaveScore}/3000`
+                      `${totalFarm >= 3000 ? 3000 : totalFarm}/3000`
                     ) : record.reason === 'addFriends' ? (
-                      `${friendsCount}/3`
+                      `${friendsCount >= 3 ? 3 : friendsCount}/3`
                     ) : (
                       'Start'
                     )}

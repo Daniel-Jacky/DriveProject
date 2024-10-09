@@ -14,7 +14,7 @@ const Home = ({ }) => {
         username, setUsername, chatId, setChatId,
         score, setScore, avatar, setAvatar,
         gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, updatedToday, setUpdatedToday,
-        checkRewards, setCheckRewards, setLocalSaveScore
+        checkRewards, setCheckRewards, setLocalSaveScore, totalFarm, setTotalFarm
     } = useUser(); // Получаем данные пользователя и функции для их обновления
 
 
@@ -112,6 +112,7 @@ const Home = ({ }) => {
 
     useEffect(() => {
         if (apiData) {
+            console.log(apiData)
             const user = apiData;
             const hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
@@ -127,6 +128,7 @@ const Home = ({ }) => {
                 setLastTimeGamesAdded(user.lastTimeGamesAdded)
                 setCurrentStreak(user.currentStreak)
                 setUpdatedToday(user.updatedToday)
+                setTotalFarm(user.totalFarm)
             }
 
             setChatId(newChatId);
@@ -189,7 +191,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>9.4.15</h4>
+                <h4>9.5.16</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">

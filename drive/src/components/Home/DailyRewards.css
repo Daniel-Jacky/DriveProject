@@ -18,7 +18,7 @@
     cursor: pointer; /* Курсор в виде руки при наведении */
     border-radius: 3px;
     position: absolute;
-    bottom: 5px;        
+    bottom: 30px;        
   }
 
 .mrgH2{
