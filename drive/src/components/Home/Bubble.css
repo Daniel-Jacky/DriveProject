@@ -6,24 +6,24 @@
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  will-change: transform;
+  will-change: top;
   transform: translateZ(0); /* Триггер для аппаратного ускорения */
-  transition: transform 0.1s ease-out; /* Плавный переход для transform */
   pointer-events: none; /* Чтобы пузырь не перехватывал события мыши */
 }
 
 .bubble.blue {
-  background-image: url('./Assets/d.png'); 
+  background-image: url('./Assets/dcoin.webp'); 
   background-size: cover;
   border-radius: 0; /* Убираем закругление */
 }
 
 .bubble.red {
-  /* background-image: url('./Assets/bomb2.png');  */
-  background-color: orange;
+  background-image: url('./Assets/bomb2.webp'); 
+  /* background-color: orange; */
   background-size: cover;
   border-radius: 0; /* Убираем закругление */
-  /* filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));  */
+  will-change: top; /* Подсказка для браузера */
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8)); 
   /* Красное свечение */
 }
 
@@ -56,7 +56,7 @@
   position: absolute;
   width: 50px;
   height: 50px;
-  background-image: url('./Assets/Explosion.png'); /* Путь к изображению взрыва */
+  background-image: url('./Assets/Explosion.webp'); /* Путь к изображению взрыва */
   background-size: cover;
   animation: explode 0.5s ease-out forwards;
 }

@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import PlayButton from './PlayButton/PlayButton';
-import carImage from './Assets/car.png'; // Путь к изображению машины
+import carImage from './Assets/car.webp'; // Путь к изображению машины
 import './Home.css';
 import { useUser } from '../UserContext'; // Импортируем контекст пользователя
 import { getUserByChatId, updateUserTimeGamesAdded, addRefFriend } from '../api'; // Импортируем функции из api.js
@@ -189,7 +189,7 @@ const Home = ({ }) => {
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
-                <h4>7.4.15</h4>
+                <h4>8.4.15</h4>
                 <div className="NameAndStat">
                     <div className="user-info">
                         <h2 className="User">

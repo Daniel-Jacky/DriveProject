@@ -13,7 +13,7 @@ function Bubble({ x, createdAt, color, speed, onRemove }) {
       const newY = Math.min(bubbleAge * bubbleSpeed.current, window.innerHeight); // Ограничиваем до высоты окна
 
       if (bubbleRef.current) {
-        bubbleRef.current.style.transform = `translateY(${newY}px)`;
+        bubbleRef.current.style.top = `${newY}px`;
       }
 
       // Если пузырь достигает нижней границы экрана, удаляем его
