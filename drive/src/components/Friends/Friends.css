@@ -14,7 +14,7 @@
   flex-direction: column; /* Располагаем содержимое вертикально */
   justify-content: space-between;
   overflow-y: auto;
-  max-height: 80vh;
+  max-height: 85vh;
 }
 
 .friends-list {

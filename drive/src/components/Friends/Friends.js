@@ -13,10 +13,19 @@ const Friends = () => {
   const [records, setRecords] = useState([]);
   const [isTouching, setIsTouching] = useState(false); // Отслеживаем касание
   const [lastTouchY, setLastTouchY] = useState(0); // Последняя позиция касания
+  const [gameLink, setПameLink] = useState(''); // Последняя позиция касания
   const listRef = useRef(null); // Реф для списка друзей
 
-  const inviteFriend = async () => {
-    const gameLink = await getInviteLink(chatId);
+  useEffect(() => {
+    const fetchData = async () => {
+      const usersLink = await getInviteLink(chatId);
+      setПameLink(usersLink)
+    };
+    fetchData();
+  }, [chatId]);
+
+
+  const inviteFriend = () => {
     const inviteLink = gameLink
     const message = `Привет! Я приглашаю тебя поиграть в Драйв!`;
     window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
@@ -28,6 +37,13 @@ const Friends = () => {
     
   //   // Отправка сообщения в Telegram через пользовательский механизм
   //   // Например, можно использовать Telegram Web App API для отправки сообщения
+  //   window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
+  // };
+
+    // const inviteFriend = async () => {
+  //   const gameLink = await getInviteLink(chatId);
+  //   const inviteLink = gameLink
+  //   const message = `Привет! Я приглашаю тебя поиграть в Драйв!`;
   //   window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
   // };
   
