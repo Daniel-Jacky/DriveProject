@@ -21,8 +21,8 @@
   background-image: url('./Assets/bomb2.webp'); 
   /* background-color: orange; */
   background-size: cover;
-  border-radius: 0; /* Убираем закругление */
-  will-change: top; /* Подсказка для браузера */
+  border-radius: 25px; /* Убираем закругление */
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.8); /* Эффект тени */
   /* filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));  */
   /* Красное свечение */
 }
@@ -58,5 +58,32 @@
   height: 50px;
   background-image: url('./Assets/Explosion.webp'); /* Путь к изображению взрыва */
   background-size: cover;
-  animation: explode 0.5s ease-out forwards;
+  transform: scale(0); /* Начальное состояние */
+  opacity: 0; /* Начальная непрозрачность */
+  will-change: transform, opacity; /* Подсказка браузеру для оптимизации */
+  animation: explode 0.4s ease-out forwards;
 }
+
+@keyframes explode {
+  0% {
+    transform: scale(0); /* Начинаем с 0 */
+    opacity: 0; /* Полностью прозрачный */
+  }
+  50% {
+    transform: scale(1.5); /* Увеличиваем размер */
+    opacity: 1; /* Полностью видимый */
+  }
+  100% {
+    transform: scale(1); /* Возвращаемся к нормальному размеру */
+    opacity: 0; /* Уменьшаем прозрачность до 0 */
+  }
+}
+
+/* .explosion {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-image: url('./Assets/Explosion.webp'); 
+  background-size: cover;
+  animation: explode 0.5s ease-out forwards;
+} */

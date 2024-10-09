@@ -39,11 +39,23 @@ function Game({ onGameStatus }) {
   const [hitRedBubble, setHitRedBubble] = useState(false);
   const [loading, setLoading] = useState(true);
   
-
   const playerWidth = 10;
   const playerHeight = 45;
   const bubbleSize = 40;
   const maxBubbles = 90; // Ограничение на количество пузырей
+
+  // Восстанавливаем состояние игры при загрузке страницы
+  useEffect(() => {
+    const savedGameOver = loadFromLocalStorage('gameOver', false);
+    const savedScore = loadFromLocalStorage('score', 0);
+    const savedTimeLeft = loadFromLocalStorage('timeLeft', timeLeft);
+    const savedBubbles = loadFromLocalStorage('bubbles', []); // Загружаем пузырьки
+
+    setGameOver(savedGameOver);
+    setLocalScore(savedScore);
+    setTimeLeft(savedTimeLeft);
+    setBubbles(savedBubbles); // Восстанавливаем пузырьки
+  }, []);
 
   useEffect(() => {
     const initializeGame = async () => {
@@ -55,63 +67,37 @@ function Game({ onGameStatus }) {
   }, []);
 
   useEffect(() => {
-    if (!loading) {
-      // Здесь можно выполнять действия по обновлению DOM, например, пересчет позиций элементов
-      const handleDOMUpdate = () => {
-        // Обновляем положение игрока
-        setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
-        // Обновляем пузыри
-        setBubbles((prevBubbles) =>
-          prevBubbles.filter((bubble) => {
-            const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
-            const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-            return bubbleY < window.innerHeight + bubbleSize;
-          })
-        );
-      };
+    if (loading) return;
 
-      // Вызовем функцию для обновления DOM сразу после первого рендера
+    const handleDOMUpdate = () => {
+      // Обновляем положение игрока
+      setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
+      // Обновляем пузыри
+      setBubbles((prevBubbles) =>
+        prevBubbles.filter((bubble) => {
+          const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
+          const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
+          return bubbleY < window.innerHeight + bubbleSize;
+        })
+      );
+    };
+
+    // Вызовем функцию для обновления DOM сразу после первого рендера
+    handleDOMUpdate();
+
+    // Обработчик изменения размера окна
+    const handleResize = () => {
+      setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
       handleDOMUpdate();
-    }
+    };
+
+    // Обработчик изменения размера окна
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [loading]);
-
-  useEffect(() => {
-    if (!loading) {
-      const handleResize = () => {
-        // Обновляем положение игрока при изменении размеров окна
-        setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
-        // Обновляем положение пузырей
-        setBubbles((prevBubbles) =>
-          prevBubbles.filter((bubble) => {
-            const bubbleAge = (Date.now() - bubble.createdAt) / 1000;
-            const bubbleY = Math.min(bubbleAge * (window.innerHeight / 6) * bubble.speed, window.innerHeight);
-            return bubbleY < window.innerHeight + bubbleSize;
-          })
-        );
-      };
-
-      // Вызовем пересчет размеров окна сразу после загрузки
-      handleResize();
-
-      // Обработчик изменения размера окна
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }
-  }, [loading]);
-
-  // Восстанавливаем состояние игры при загрузке страницы
-  useEffect(() => {
-    const savedGameOver = loadFromLocalStorage('gameOver', false);
-    const savedScore = loadFromLocalStorage('score', 0);
-    const savedTimeLeft = loadFromLocalStorage('timeLeft', timeLeft);
-
-    setGameOver(savedGameOver);
-    setLocalScore(savedScore);
-    setTimeLeft(savedTimeLeft);
-  }, []);
 
   // Сохраняем состояние игры при закрытии страницы
   useEffect(() => {
@@ -119,6 +105,7 @@ function Game({ onGameStatus }) {
       saveToLocalStorage('gameOver', gameOver);
       saveToLocalStorage('score', score);
       saveToLocalStorage('timeLeft', timeLeft);
+      saveToLocalStorage('bubbles', bubbles); // Сохраняем пузырьки
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -126,7 +113,7 @@ function Game({ onGameStatus }) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [gameOver, score, timeLeft]);
+  }, [gameOver, score, timeLeft, bubbles]);
 
   useEffect(() => {
     if (gameOver) {
@@ -161,14 +148,13 @@ function Game({ onGameStatus }) {
             }
             return newBubbles;
           });
-        }, 200);
+        }, 150);
         return () => clearInterval(bubbleInterval);
       }
     }
   }, [timeLeft, loading]);
 
   usePlayerMovement(playerWidth, playerHeight, setPlayerPosition);
-
   useCollisionCheck(bubbles, playerPosition, setBubbles, setLocalScore, setExplosions, gameOver, playerWidth, playerHeight, bubbleSize, setHitRedBubble);
 
   const handleRestart = () => {
@@ -181,6 +167,7 @@ function Game({ onGameStatus }) {
     removeFromLocalStorage('score');
     removeFromLocalStorage('timeLeft');
     removeFromLocalStorage('gameOver');
+    removeFromLocalStorage('bubbles'); // Очистка сохраненных пузырьков
   };
 
   if (loading) {
@@ -232,7 +219,6 @@ function Game({ onGameStatus }) {
 }
 
 const MemoizedBubble = memo(Bubble);
-
 const MemoizedExplosion = memo(({ x, y }) => (
   <div className="explosion" style={{ left: x, top: y }}></div>
 ));
