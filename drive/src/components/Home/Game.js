@@ -17,7 +17,7 @@ const bubblePool = [];
 const createOrReuseBubble = (bubbleSize) => {
   const bubble = bubblePool.length > 0 ? bubblePool.pop() : { id: Math.random() };
   bubble.x = Math.random() * (window.innerWidth - bubbleSize);
-  bubble.color = Math.random() < 0.15 ? 'red' : 'blue';
+  bubble.color = Math.random() < 0.1 ? 'red' : 'blue';
   bubble.createdAt = Date.now();
   bubble.speed = Math.random() * 2 + 1;
   return bubble;
@@ -161,7 +161,7 @@ function Game({ onGameStatus }) {
             }
             return newBubbles;
           });
-        }, 150);
+        }, 200);
         return () => clearInterval(bubbleInterval);
       }
     }
