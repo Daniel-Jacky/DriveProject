@@ -13,8 +13,7 @@
 }
 
 .bubble.blue {
-  /* background-image: url('./Assets/d.png');  */
-  background-color: aqua;
+  background-image: url('./Assets/d.png'); 
   background-size: cover;
   border-radius: 0; /* Убираем закругление */
 }
