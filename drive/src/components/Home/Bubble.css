@@ -23,7 +23,7 @@
   background-size: cover;
   border-radius: 0; /* Убираем закругление */
   will-change: top; /* Подсказка для браузера */
-  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8)); 
+  /* filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));  */
   /* Красное свечение */
 }
 
