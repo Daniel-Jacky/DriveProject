@@ -10,10 +10,7 @@ function Bubble({ x, createdAt, color, speed, onRemove }) {
 
     const updatePosition = () => {
       const bubbleAge = (Date.now() - createdAt) / 1000; // Возраст пузыря в секундах
-      const newY = Math.min(
-        (bubbleAge * bubbleSpeed.current) + (0.5 * Math.pow(bubbleAge, 2)),
-        window.innerHeight
-      );
+      const newY = Math.min(bubbleAge * bubbleSpeed.current, window.innerHeight); // Ограничиваем до высоты окна
 
       if (bubbleRef.current) {
         bubbleRef.current.style.transform = `translateY(${newY}px)`;
