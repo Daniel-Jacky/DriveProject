@@ -6,8 +6,10 @@
   animation-name: fall;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  will-change: top;
+  will-change: transform;
   transform: translateZ(0); /* Триггер для аппаратного ускорения */
+  transition: transform 0.1s ease-out; /* Плавный переход для transform */
+  pointer-events: none; /* Чтобы пузырь не перехватывал события мыши */
 }
 
 .bubble.blue {
@@ -19,7 +21,7 @@
 
 .bubble.red {
   /* background-image: url('./Assets/bomb2.png');  */
-  background-color: red;
+  background-color: orange;
   background-size: cover;
   border-radius: 0; /* Убираем закругление */
   /* filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));  */

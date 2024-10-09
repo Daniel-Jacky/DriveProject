@@ -1,26 +1,29 @@
 import React, { useEffect, useRef } from 'react';
 import './Bubble.css';
 
-function Bubble({ x, createdAt, color, speed, onRemove }) { // Добавляем onRemove для удаления пузыря
+function Bubble({ x, createdAt, color, speed, onRemove }) {
   const bubbleRef = useRef(null);
-  const bubbleSpeed = useRef((window.innerHeight / 6) * speed); // Скорость падения вычисляется один раз
+  const bubbleSpeed = useRef((window.innerHeight / 6) * speed);
 
   useEffect(() => {
     let animationFrameId;
 
     const updatePosition = () => {
       const bubbleAge = (Date.now() - createdAt) / 1000; // Возраст пузыря в секундах
-      const newY = Math.min(bubbleAge * bubbleSpeed.current, window.innerHeight); // Ограничиваем до высоты окна
+      const newY = Math.min(
+        (bubbleAge * bubbleSpeed.current) + (0.5 * Math.pow(bubbleAge, 2)),
+        window.innerHeight
+      );
 
       if (bubbleRef.current) {
-        bubbleRef.current.style.top = `${newY}px`;
+        bubbleRef.current.style.transform = `translateY(${newY}px)`;
       }
 
       // Если пузырь достигает нижней границы экрана, удаляем его
       if (newY >= window.innerHeight) {
-        if (onRemove) onRemove(); // Удаляем пузырь из списка
+        if (onRemove) onRemove();
       } else {
-        animationFrameId = requestAnimationFrame(updatePosition); // Запускаем следующий кадр
+        animationFrameId = requestAnimationFrame(updatePosition);
       }
     };
 
@@ -35,7 +38,11 @@ function Bubble({ x, createdAt, color, speed, onRemove }) { // Добавляе�
     <div
       ref={bubbleRef}
       className={`bubble ${color}`}
-      style={{ left: x, position: 'absolute' }} // Убедитесь, что позиция абсолютная
+      style={{
+        left: x,
+        position: 'absolute',
+        top: 0, // Убедитесь, что мы начинаем с верхней части экрана
+      }}
     ></div>
   );
 }
