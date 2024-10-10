@@ -23,28 +23,63 @@
 }
 
 .playArea {
+  margin-top: auto;
+  padding: 20px;
+  background: linear-gradient(to right, #0a0a0a, #111111, #1a1a1a); /* Тёмная дорога с лёгким градиентом */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  box-shadow: 0 0 15px  rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8); /* Эффект неонового свечения */
+  position: relative;
+}
+
+/* Анимация для движущихся полос */
+@keyframes moveStripe {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+  /* .playArea {
     margin-top: auto;
     padding: 20px;
-    background: #333;
+    background: linear-gradient(135deg, #8B008B, #008B8B); 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); 
+} */
+
+  .playBtn {
+    background-color: #101010;
+    color: #fff;
+    border: 2px solid #0ff;
+    box-shadow:  0 0 20px #ff00ff, 0 0 40px #ff00ff;
+    transition: background-color 0.5s, box-shadow 0.5s;
   }
 
-  .playBtn{
-    background-color: white;
-    width: 80px;
-    height: 40px;
-    border-radius: 20px;
-    font-size: large;
-    
+  .playBtn:hover {
+    background-color: #0ff;
+    box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
   }
 
-  .dropGame{
-    color: white;
-    margin-bottom: 10px;
-  }
+  /* .dropGame {
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #ff00ff;
+  } */
+
+   /* h2, h4, h6 {
+    color: #0ff !important;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff !important;
+  } */
 
   .dropGameBox{
     display: flex;
@@ -54,12 +89,11 @@
     height: 100%;
   }
 
-
-
 .App {
     display: flex;
     flex-direction: column;
-    height: 90vh; /* 100% высоты viewport */
+    height: 85vh; /* 100% высоты viewport */
+    overflow-y: auto;
 }
 
 .h2{
@@ -74,7 +108,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
 }
 
 .user-info {
@@ -93,7 +126,7 @@
 }
 
 .playerCarHome{
-  width: 150px;
+  width: 140px;
   height: auto;
 }
 
@@ -111,4 +144,77 @@ h4{
 
 h6{
   color: #8b8b8b;
+}
+
+.homeFarmPoints {
+  width: 100%;
+  padding: 15px 25px;
+  font-size: 20px;
+  background: linear-gradient(to right, #ff6ec7, #01f7f7); /* Неоновый градиент */
+  color: white; /* Цвет текста */
+  border: 2px solid #ff6ec7; /* Рамка с неоновым эффектом */
+  border-radius: 15px; /* Скругленные углы */
+  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8); /* Эффект свечения для текста */
+  box-shadow: 0px 0px 20px rgba(255, 0, 255, 0.7), 0px 0px 20px rgba(0, 255, 255, 0.7); /* Эффект свечения для кнопки */
+  cursor: pointer;
+  z-index: 1000;
+  position: fixed;
+  bottom: 80px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Анимация при наведении */
+}
+
+/* Эффект при наведении */
+.homeFarmPoints:hover {
+  box-shadow: 0px 0px 25px rgba(255, 0, 255, 1), 0px 0px 25px rgba(0, 255, 255, 1); /* Увеличение свечения */
+}
+
+.home-list {
+  flex-grow: 1; /* Контейнер растет по высоте, занимает оставшееся пространство */
+  scroll-behavior: smooth; /* Плавная прокрутка */
+  overscroll-behavior: contain; 
+  -webkit-overflow-scrolling: touch; /* Для плавного скролла на iOS */
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: none;
+        transform: translate(0, 0);
+        color: transparent;
+    }
+    20% {
+        text-shadow: -2px 2px 0 #ff00cc, 2px -2px 0 #00ffff;
+        transform: translate(-2px, 2px);
+        color: rgba(255, 20, 147, 0.8);
+    }
+    40% {
+        text-shadow: 2px -2px 0 #ff00cc, -2px 2px 0 #00ffff;
+        transform: translate(2px, -2px);
+        color: rgba(255, 20, 147, 1);
+    }
+    60%, 100% {
+        text-shadow: 0 0 10px rgba(255, 20, 147, 1), 0 0 20px rgba(255, 20, 147, 0.8), 0 0 30px rgba(255, 20, 147, 1);
+        color: rgba(255, 20, 147, 1);
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes neonGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(255, 20, 147, 1), 0 0 10px rgba(255, 20, 147, 0.8), 0 0 15px rgba(255, 20, 147, 0.7);
+    }
+    50% {
+        text-shadow: 0 0 15px rgba(255, 20, 147, 1), 0 0 30px rgba(255, 20, 147, 0.8), 0 0 45px rgba(255, 20, 147, 0.7);
+    }
+}
+
+.neon-text {
+    font-size: 25px;
+    font-family: 'Pacifico', cursive; /* Шрифт в стиле неона */
+    color: rgba(255, 20, 147, 1);
+    text-align: center;
+    letter-spacing: 4px;
+    animation: glitch 1.5s ease-in-out 1, neonGlow 2s ease-in-out infinite;
+    z-index: 9; /* Текст на заднем фоне */
 }

@@ -118,3 +118,17 @@ export const getInviteLink = async (chatId) => {
         return null; // Возвращаем null в случае ошибки
     }
 };
+
+export const updateUserFarmButtonRewards = async (chatId, lastClickOnFarmBtn, isRewardsUpdated, farmPoints) => {
+    try {
+        const response = await axios.put(`${API_URL}/${chatId}`, {
+            lastTimeRewardsAdded: lastClickOnFarmBtn,
+            rewardsUpdated: isRewardsUpdated,
+            farmPoints: farmPoints
+        });
+        return response.data; // Возвращаем данные после обновления
+    } catch (error) {
+        console.error('Ошибка при обновлении очков:', error);
+        throw error; // Пробрасываем ошибку дальше
+    }
+};

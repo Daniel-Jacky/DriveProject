@@ -31,23 +31,6 @@ const Friends = () => {
     window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
   };
 
-  // const inviteFriend = () => {
-  //   const inviteLink = "https://t.me/drive_official_bot?start=invite"; // Замените на свой URL
-  //   const message = `Привет! Я приглашаю тебя поиграть в Драйв! Вот ссылка: ${inviteLink}`;
-    
-  //   // Отправка сообщения в Telegram через пользовательский механизм
-  //   // Например, можно использовать Telegram Web App API для отправки сообщения
-  //   window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
-  // };
-
-    // const inviteFriend = async () => {
-  //   const gameLink = await getInviteLink(chatId);
-  //   const inviteLink = gameLink
-  //   const message = `Привет! Я приглашаю тебя поиграть в Драйв!`;
-  //   window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
-  // };
-  
-
   useEffect(() => {
     const fetchData = async () => {
       const getFriends = await getUsersFriends(chatId); 

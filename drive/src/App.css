@@ -1,10 +1,22 @@
-
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: black;
-  overflow: hidden
+  background: linear-gradient(to top, #000000, #000022, #000044, #0a002a); /* Глубокий тёмный градиент для ночного неба */
+  overflow: hidden;
+}
+
+/* Анимация для плавного неонового свечения */
+@keyframes neonPulse {
+  0% {
+    background: linear-gradient(to top, #000000, #000022, #000044, #0a002a);
+  }
+  50% {
+    background: linear-gradient(to top, #000000, #000044, #0a002a, #220044);
+  }
+  100% {
+    background: linear-gradient(to top, #000000, #000022, #000044, #0a002a);
+  }
 }
 
 .whiteText{

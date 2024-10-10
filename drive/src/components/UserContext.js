@@ -15,6 +15,9 @@ export const UserProvider = ({ children }) => {
     const [friendsCount, setFriendsCount] = useState(localStorage.getItem('friendsCount') || 0);
     const [localSaveScore, setLocalSaveScore] = useState(localStorage.getItem('localSaveScore') || 0);
     const [totalFarm, setTotalFarm] = useState(localStorage.getItem('totalFarm') || 0);
+    const [lastTimeRewardsAdded, setLastTimeRewardsAdded] = useState(localStorage.getItem('lastTimeRewardsAdded') || '');
+    const [rewardsUpdated, setRewardsUpdated] = useState(localStorage.getItem('rewardsUpdated') || '');
+    const [farmPoints, setFarmPoints] = useState(localStorage.getItem('farmPoints') || 0.000);
     
 
 
@@ -88,11 +91,31 @@ export const UserProvider = ({ children }) => {
         }
     }, [totalFarm]);
 
+    useEffect(() => {
+        if (lastTimeRewardsAdded) {
+            localStorage.setItem('lastTimeRewardsAdded', lastTimeRewardsAdded);
+        }
+    }, [lastTimeRewardsAdded]);
+    
+    useEffect(() => {
+        if (rewardsUpdated) {
+            localStorage.setItem('rewardsUpdated', rewardsUpdated);
+        }
+    }, [rewardsUpdated]);
+
+    useEffect(() => {
+        if (farmPoints) {
+            localStorage.setItem('farmPoints', farmPoints);
+        }
+    }, [farmPoints]);
+
+
 
     return (
         <UserContext.Provider value={{ username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar,
          gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, 
-         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount, totalFarm, setTotalFarm }}>
+         updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount, totalFarm, setTotalFarm,
+         lastTimeRewardsAdded, setLastTimeRewardsAdded, rewardsUpdated, setRewardsUpdated, farmPoints, setFarmPoints }}>
             {children}
         </UserContext.Provider>
     );
