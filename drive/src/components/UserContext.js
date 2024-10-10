@@ -18,6 +18,7 @@ export const UserProvider = ({ children }) => {
     const [lastTimeRewardsAdded, setLastTimeRewardsAdded] = useState(localStorage.getItem('lastTimeRewardsAdded') || '');
     const [rewardsUpdated, setRewardsUpdated] = useState(localStorage.getItem('rewardsUpdated') || '');
     const [farmPoints, setFarmPoints] = useState(localStorage.getItem('farmPoints') || 0.000);
+    const [firstname, setFirstname] = useState(localStorage.getItem('firstname') || '');
     
 
 
@@ -109,13 +110,19 @@ export const UserProvider = ({ children }) => {
         }
     }, [farmPoints]);
 
+    useEffect(() => {
+        if (firstname) {
+            localStorage.setItem('firstname', firstname);
+        }
+    }, [firstname]);
+
 
 
     return (
         <UserContext.Provider value={{ username, setUsername, chatId, setChatId, score, setScore, avatar, setAvatar,
          gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, 
          updatedToday, setUpdatedToday, checkRewards, setCheckRewards, localSaveScore, setLocalSaveScore, friendsCount, setFriendsCount, totalFarm, setTotalFarm,
-         lastTimeRewardsAdded, setLastTimeRewardsAdded, rewardsUpdated, setRewardsUpdated, farmPoints, setFarmPoints }}>
+         lastTimeRewardsAdded, setLastTimeRewardsAdded, rewardsUpdated, setRewardsUpdated, farmPoints, setFarmPoints, firstname, setFirstname }}>
             {children}
         </UserContext.Provider>
     );

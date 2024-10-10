@@ -1,3 +1,8 @@
+.neon-text {
+  font-family: 'Monoton', cursive;
+  color: #ff6ec7; /* Неоново-розовый цвет */
+  text-shadow: 0 0 10px rgba(255, 110, 199, 0.8), 0 0 20px rgba(255, 110, 199, 0.5);
+}
 
 .User{
   color: azure;
@@ -115,20 +120,25 @@
   align-items: center;
   align-content: center;
   flex-direction: column;
-  margin-bottom: 30px;
 }
 
 .user-avatar {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-right: 10px;
 }
 
-.playerCarHome{
+.playerCarYellowHome{
   width: 140px;
   height: auto;
 }
+
+.playerCarHome{
+  width: 50px;
+  height: auto;
+}
+
+
 
 .playBtn:disabled {
   background-color: grey;

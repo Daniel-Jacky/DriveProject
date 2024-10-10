@@ -1,9 +1,10 @@
 .player-car {
   position: absolute;
-  width: 150px; /* Измените размер по необходимости */
+  width: 50px; /* Измените размер по необходимости */
   height: auto;
   transform: translate(-50%, -50%); /* Для центрирования изображения на позиции */
   background-color: transparent;
+  left: 50%; /* Ставим элемент по центру экрана */
 }
 
 .player-bub{

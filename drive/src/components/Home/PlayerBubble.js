@@ -1,6 +1,6 @@
 import React from 'react';
 import './PlayerBubble.css';
-import carImage from './Assets/car.webp'; // путь к изображению машины
+import carImage from './Assets/purpleCar.webp'; // путь к изображению машины
 
 function PlayerBubble({ x, y }) {
     

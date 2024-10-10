@@ -42,7 +42,7 @@ function Game({ onGameStatus }) {
   const playerWidth = 10;
   const playerHeight = 45;
   const bubbleSize = 40;
-  const maxBubbles = 90; // Ограничение на количество пузырей
+  const maxBubbles = 200; // Ограничение на количество пузырей
 
   // Восстанавливаем состояние игры при загрузке страницы
   useEffect(() => {

@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import PlayButton from './PlayButton/PlayButton';
-import carImage from './Assets/car.webp'; // Путь к изображению машины
+import carImage from './Assets/purpleCar.webp'; // Путь к изображению машины
 import './Home.css';
 import { useUser } from '../UserContext'; // Импортируем контекст пользователя
 import { getUserByChatId, updateUserTimeGamesAdded, addRefFriend, updateUserFarmButtonRewards, updateUserScore } from '../api'; // Импортируем функции из api.js
@@ -324,6 +324,7 @@ const Home = ({ }) => {
                                     className="playerCarHome"
                                     alt="Player Car"
                                 />
+                                
                             )}
                         </div>
 
@@ -374,10 +375,10 @@ const Home = ({ }) => {
                             'Get Farm'
                         ) : rewardsUpdated ? (
                             <>
-                                <span style={{ position: 'absolute', right: '10px', top: '10px', fontSize: '16px' }}>
+                                <span style={{ position: 'absolute', right: '10px', fontSize: '13px' }}>
                                     {formatTime(timeLeft)}
                                 </span>
-                                <span style={{ display: 'block', marginTop: '5px', fontSize: '16px' }}>Farming {farmPoints}</span>
+                                <span style={{ display: 'block', fontSize: '16px' }}>Farming {farmPoints}</span>
                             </>
                         ) : (
                             'Start Farming'
