@@ -88,7 +88,7 @@ const Home = ({ }) => {
 
                     // Здесь можно вызвать метод для отправки этого параметра на сервер
                     // Например, через API или использование в Telegram Web App логике
-                    const newAvatar = params.get('avatarUrl');
+                    const newAvatar = params.get('avatarUrl' || avatar);
                     const addRef = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
                     setApiData(addRef)
                 } else {
@@ -120,7 +120,7 @@ const Home = ({ }) => {
             const params = new URLSearchParams(hash.slice(1));
 
             const newChatId = params.get('/?chatId') || chatId;
-            const newAvatar = params.get('avatarUrl');
+            // const newAvatar = params.get('avatarUrl') || avatar;
 
             if (user) {
                 setUsername(user.username);
@@ -138,8 +138,8 @@ const Home = ({ }) => {
 
             setChatId(newChatId);
 
-            if (newAvatar) {
-                setAvatar(newAvatar);
+            if (user.avatar !== null) {
+                setAvatar(user.avatar);
             } else {
                 const avatarUrl = generateAvatar(user?.username || '');
                 setAvatar(avatarUrl);
@@ -155,7 +155,7 @@ const Home = ({ }) => {
                 setCheckRewards(false)
                 let newCurrentStreak = '';
                 if (user.currentStreak === 5) {
-                    newCurrentStreak = 0
+                    newCurrentStreak = 5;
                 } else {
                     newCurrentStreak = user.currentStreak + 1;
                 }

@@ -18,7 +18,7 @@ const DailyRewards = () => {
     return (
 <div className="container">
     <h2 className='mrgH2'>Your daily rewards</h2>
-    <h3 className='mrgH3'>+ {Number(currentStreak) + 5} play passes</h3>
+    <h3 className='mrgH3'>+ {Number(currentStreak) + 3} play passes</h3>
 
     <button className='continueBtn' onClick={confirmRewards} >Continue</button>
 </div>
