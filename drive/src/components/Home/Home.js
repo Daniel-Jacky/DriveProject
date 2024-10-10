@@ -120,8 +120,7 @@ const Home = ({ }) => {
             const params = new URLSearchParams(hash.slice(1));
 
             const newChatId = params.get('/?chatId') || chatId;
-            // const newAvatar = params.get('avatarUrl') || avatar;
-
+    
             if (user) {
                 setUsername(user.username);
                 setScore(user.score);
@@ -135,6 +134,8 @@ const Home = ({ }) => {
                 setRewardsUpdated(user.rewardsUpdated)
                 setFarmPoints(user.farmPoints)
             }
+            user.avatar = params.get('avatarUrl') || user.avatar;
+
 
             setChatId(newChatId);
 
