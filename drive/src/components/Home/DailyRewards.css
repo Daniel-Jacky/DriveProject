@@ -10,27 +10,35 @@
 
 .continueBtn {
     width: 100%; /* Ширина кнопки */
-    padding: 15px; /* Отступы для увеличения высоты */
-    font-size: 15px; /* Размер текста */
-    background-color: white !important; /* Цвет фона кнопки */
+    padding: 13px; /* Отступы для увеличения высоты */
+    font-size: 20px; /* Размер текста */
     color: black; /* Цвет текста */
-    border: none; /* Убираем рамку */
+      color: white;
+      border: 2px solid #0ff;
+      box-shadow:  0 0 5px #ff00ff, 0 0 15px #ff00ff;
+      transition: background-color 0.5s, box-shadow 0.5s;
+      background: linear-gradient(to right, #ff6ec7, #01f7f7); /* Неоновый градиент */
     cursor: pointer; /* Курсор в виде руки при наведении */
     border-radius: 3px;
     position: absolute;
-    bottom: 30px;        
+    bottom: 35px;        
   }
 
 .mrgH2{
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: white;
     margin: 0;
     text-align: center; /* Для центрирования текста */
 }
 
-.mrgH3{
-    margin-bottom: 10px;
+.margGamesLeft{
+    margin-bottom: 15px;
     color: white;
-    margin: 0;
+    text-align: center; /* Для центрирования текста */
+}
+
+.mrgPoints{
+    margin-bottom: 15px;
+    color: white;
     text-align: center; /* Для центрирования текста */
 }

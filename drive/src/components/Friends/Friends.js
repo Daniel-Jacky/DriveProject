@@ -13,13 +13,13 @@ const Friends = () => {
   const [records, setRecords] = useState([]);
   const [isTouching, setIsTouching] = useState(false); // Отслеживаем касание
   const [lastTouchY, setLastTouchY] = useState(0); // Последняя позиция касания
-  const [gameLink, setПameLink] = useState(''); // Последняя позиция касания
+  const [gameLink, setNameLink] = useState(''); // Последняя позиция касания
   const listRef = useRef(null); // Реф для списка друзей
 
   useEffect(() => {
     const fetchData = async () => {
       const usersLink = await getInviteLink(chatId);
-      setПameLink(usersLink)
+      setNameLink(usersLink)
     };
     fetchData();
   }, [chatId]);
