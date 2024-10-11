@@ -5,7 +5,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     // Инициализируем состояния из localStorage, если данные там есть
     const [username, setUsername] = useState(localStorage.getItem('username') || '');
-    const [chatId, setChatId] = useState(localStorage.getItem('chatId') || '');
+    const [chatId, setChatId] = useState(localStorage.getItem('chatId') || null);
     const [avatar, setAvatar] = useState(localStorage.getItem('avatar') || '');
     const [gamesLeft, setGamesLeft] = useState(localStorage.getItem('gamesLeft') || '');
     const [currentStreak, setCurrentStreak] = useState(localStorage.getItem('currentStreak') || '');

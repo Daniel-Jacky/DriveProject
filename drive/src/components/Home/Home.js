@@ -32,7 +32,7 @@ const Home = ({ }) => {
         const fetchData = async () => {
             const hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
-            let newChatId = params.get('/?chatId') || params.get('id') || chatId;
+            let newChatId = params.get('/?chatId') || chatId;
             // ref
 
             const decodedUrl = decodeURIComponent(hash);
@@ -288,7 +288,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>14.5.18</h4>
+                    <h4>15.5.18</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
