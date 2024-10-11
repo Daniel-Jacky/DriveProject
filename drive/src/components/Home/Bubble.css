@@ -18,11 +18,11 @@
 }
 
 .bubble.red {
-  /* background-image: url('./Assets/bomb2.webp');  */
+  background-image: url('./Assets/bomb2.webp'); 
   /* background-color: orange; */
   background-size: cover;
   border-radius: 25px; /* Убираем закругление */
-  /* box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);  */
+  box-shadow: 0 0 10px rgb(0, 255, 255); 
   /* filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));  */
   /* Красное свечение */
 }
@@ -34,10 +34,10 @@
 
 @keyframes fall {
   0% {
-    top: -40px;
+    transform: -20px;
   }
   100% {
-    top: 100vh;
+    transform: 100vh;
   }
 }
 
