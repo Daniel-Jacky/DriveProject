@@ -75,11 +75,13 @@ const Home = ({ }) => {
                     let username;
                     let firstname;
                     let lastname;
+                    let newId;
                     try {
                         const userData = JSON.parse(jsonPart);
-                        username = userData.username;
+                        newId     = userData.id;
+                        username  = userData.username;
                         firstname = userData.first_name
-                        lastname = userData.lastname
+                        lastname  = userData.lastname
                         console.log(username); // Выведет 'danielgi97'
                     } catch (e) {
                         console.error('Ошибка парсинга JSON:', e);
@@ -89,7 +91,7 @@ const Home = ({ }) => {
                     // Здесь можно вызвать метод для отправки этого параметра на сервер
                     // Например, через API или использование в Telegram Web App логике
                     const newAvatar = params.get('avatarUrl' || avatar);
-                    const addRef = await addRefFriend(newChatId, firstname, lastname, username, newAvatar, refCode);
+                    const addRef = await addRefFriend(newId, firstname, lastname, username, newAvatar, refCode);
                     setApiData(addRef)
                 } else {
                     console.log('Параметр ref_ не найден.');
@@ -288,7 +290,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>15.5.18</h4>
+                    <h4>16.5.18</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
