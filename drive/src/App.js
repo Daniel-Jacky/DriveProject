@@ -7,21 +7,34 @@ import Tasks from "./components/Tasks/Tasks";
 import { HashRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Friends from "./components/Friends/Friends";
 import DailyRewards from "./components/Home/DailyRewards";
+import { isMobileDevice } from './components/Home/onlyMobile'; // Импортируем утилиту
 
 // Компонент для управления маршрутизацией и состояниями
 const MainApp = ({ }) => {
   const location = useLocation(); // Вызываем useLocation внутри компонента, который обёрнут в Router
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Проверяем, является ли устройство мобильным
+    setIsMobile(isMobileDevice());
+  }, []);
 
   return (
     <div className="Main">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/friends" element={<Friends />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/rewards" element={<DailyRewards />} />
-      </Routes>
+       {isMobile ? (
+        <><Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/rewards" element={<DailyRewards />} />
+        </Routes>
       {(location.pathname !== '/game' && location.pathname !== '/rewards') && <Footer />} {/* Футер не показываем на странице /game */}
+      </>
+      ) : (
+        <h1>Мини-приложение доступно только на мобильных устройствах.</h1>
+      )}
+
     </div>
   );
 }

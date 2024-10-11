@@ -28,12 +28,15 @@
 
 .inviteFrens {
   width: 100%; /* Ширина кнопки */
-  padding: 15px; /* Отступы для увеличения высоты */
+  padding: 13px; /* Отступы для увеличения высоты */
   font-size: 20px; /* Размер текста */
-  background-color: white !important; /* Цвет фона кнопки */
   color: black; /* Цвет текста */
   border: none; /* Убираем рамку */
-  border-radius: 10px; /* Скругленные углы */
+    color: white;
+    border: 2px solid #0ff;
+    box-shadow:  0 0 5px #ff00ff, 0 0 15px #ff00ff;
+    transition: background-color 0.5s, box-shadow 0.5s;
+    background: linear-gradient(to right, #ff6ec7, #01f7f7); /* Неоновый градиент */
   cursor: pointer; /* Курсор в виде руки при наведении */
   z-index: 1000;
   position: fixed; /* Фиксируем кнопку */

@@ -288,7 +288,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>10.5.18</h4>
+                    <h4>11.5.18</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
@@ -370,9 +370,7 @@ const Home = ({ }) => {
                         }}
                     >
                         {!rewardsUpdated && farmPoints > 0 ? (
-                            'Get Farm'
-                        ) : isCompleted ? (
-                            'Get Farm'
+                            'Get ' + farmPoints.toFixed() + ' points'
                         ) : rewardsUpdated ? (
                             <>
                                 <span style={{ position: 'absolute', right: '10px', fontSize: '13px' }}>
