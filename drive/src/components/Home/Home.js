@@ -93,6 +93,7 @@ const Home = ({ }) => {
                     const newAvatar = params.get('avatarUrl' || avatar);
                     const addRef = await addRefFriend(String(newId), firstname, lastname, username, newAvatar, refCode);
                     setApiData(addRef)
+                    setChatId(String(newId))
                 } else {
                     console.log('Параметр ref_ не найден.');
                 }
@@ -290,7 +291,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>19.5.19</h4>
+                    <h4>20.5.19</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
