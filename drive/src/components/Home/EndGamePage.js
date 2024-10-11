@@ -38,25 +38,48 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
   }, [chatId]);
 
 
+  useEffect(() => {
+    // Объявляем функцию обновления очков
+    const update = async () => {
+      try {
+        // Суммируем текущие и новые очки
+        const newScore = currentScore + score,
+        newTotalFarm = totalFarm + score;
+        // Обновляем очки, убедитесь, что у вас есть правильная функция updateUserScore
+        await updateUserScore(chatId, newScore, newGamesLeft, newTotalFarm);
+        
+        // Обновляем состояние
+        setGamesLeft(newGamesLeft);
+        setTotalFarm(newTotalFarm);
+      } catch (error) {
+        console.error('Ошибка при обновлении очков:', error);
+      }
+    };
+
+    // Вызываем функцию обновления
+    update();
+  }, [chatId, totalFarm, currentScore, score]);
+
+
   const sendGameStatus = async () => {
-    const newScore     = currentScore + score, // Суммируем текущие и новые очки
-          newTotalFarm = totalFarm + score;
-    setGamesLeft(newGamesLeft);
-    setTotalFarm(newTotalFarm);
-    await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
     navigate('/'); // Перенаправляем на главную страницу
     onRestart(); // Сначала перезапускаем игру
+    // const newScore     = currentScore + score, // Суммируем текущие и новые очки
+    //       newTotalFarm = totalFarm + score;
+    // setGamesLeft(newGamesLeft);
+    // setTotalFarm(newTotalFarm);
+    // await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
   };
 
   const restartGame = async (event) => {
     event.preventDefault(); // Останавливаем стандартное поведение кнопки
     onRestart(); // Сначала перезапускаем игру
     navigate('/game'); // Затем программно осуществляем навигацию на игру
-    const newScore     = currentScore + score, // Суммируем текущие и новые очки
-          newTotalFarm = totalFarm + score;
-    setGamesLeft(newGamesLeft);
-    setTotalFarm(newTotalFarm);
-    await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
+    // const newScore     = currentScore + score, // Суммируем текущие и новые очки
+    //       newTotalFarm = totalFarm + score;
+    // setGamesLeft(newGamesLeft);
+    // setTotalFarm(newTotalFarm);
+    // await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
   };
 
   const getResultMessage = (score) => {

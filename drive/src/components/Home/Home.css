@@ -227,3 +227,11 @@ h6{
     animation: glitch 1.5s ease-in-out 1, neonGlow 2s ease-in-out infinite;
     z-index: 9; /* Текст на заднем фоне */
 }
+
+.skeletonFriend-farming {
+  width: 100%;
+  padding: 15px 25px;
+  color: black; /* Цвет текста */
+  border: none; /* Убираем рамку */
+  border-radius: 10px; /* Скругленные углы */
+} 

@@ -336,52 +336,56 @@ const Home = ({ }) => {
                             </PlayButton>
                         )}
                     </div>
-                    <button
-                        className='homeFarmPoints'
-                        onClick={handleButtonClick}
-                        disabled={rewardsUpdated} // Кнопка будет недоступна, когда фарминг начался
-                        style={{
-                            background: rewardsUpdated
-                                ? `linear-gradient(to right, #ff6ec7 ${((8 * 60 * 60 - timeLeft) / (8 * 60 * 60)) * 100}%, #01f7f7 ${((8 * 60 * 60 - timeLeft) / (8 * 60 * 60)) * 100}%)`
-                                : 'linear-gradient(to right, #ff6ec7, #01f7f7)',
-                            color: rewardsUpdated ? 'black' : 'white',
-                            textShadow: '0px 0px 8px rgba(255, 255, 255, 0.8)',
-                            borderRadius: '15px',
-                            boxShadow: '0px 0px 20px rgba(255, 0, 255, 0.7), 0px 0px 20px rgba(0, 255, 255, 0.7)',
-                            fontSize: '18px',
-                            padding: '15px 25px',
-                            position: 'fixed',
-                            bottom: '80px',
-                            width: '100%',
-                            border: '2px solid #ff6ec7',
-                            cursor: rewardsUpdated ? 'not-allowed' : 'pointer', // Курсор изменяется, если кнопка неактивна
-                        }}
-                        onMouseEnter={() => {
-                            if (!rewardsUpdated) { // Анимация при наведении только если кнопка активна
-                                const btn = document.querySelector('.homeFarmPoints');
-                                btn.style.boxShadow = '0px 0px 25px rgba(255, 0, 255, 1), 0px 0px 25px rgba(0, 255, 255, 1)';
-                            }
-                        }}
-                        onMouseLeave={() => {
-                            if (!rewardsUpdated) { // Возвращаем исходное состояние только если кнопка активна
-                                const btn = document.querySelector('.homeFarmPoints');
-                                btn.style.boxShadow = '0px 0px 20px rgba(255, 0, 255, 0.7), 0px 0px 20px rgba(0, 255, 255, 0.7)';
-                            }
-                        }}
-                    >
-                        {!rewardsUpdated && farmPoints > 0 ? (
-                            'Get ' + farmPoints.toFixed() + ' points'
-                        ) : rewardsUpdated ? (
-                            <>
-                                <span style={{ position: 'absolute', right: '10px', fontSize: '13px' }}>
-                                    {formatTime(timeLeft)}
-                                </span>
-                                <span style={{ display: 'block', fontSize: '16px' }}>Farming {farmPoints}</span>
-                            </>
+                    {isLoadingSkeleton ? (
+                            <Skeleton className="skeletonFriend-farming" />
                         ) : (
-                            'Start Farming'
+                            <button
+                            className='homeFarmPoints'
+                            onClick={handleButtonClick}
+                            disabled={rewardsUpdated} // Кнопка будет недоступна, когда фарминг начался
+                            style={{
+                                background: rewardsUpdated
+                                    ? `linear-gradient(to right, #ff6ec7 ${((8 * 60 * 60 - timeLeft) / (8 * 60 * 60)) * 100}%, #01f7f7 ${((8 * 60 * 60 - timeLeft) / (8 * 60 * 60)) * 100}%)`
+                                    : 'linear-gradient(to right, #ff6ec7, #01f7f7)',
+                                color: rewardsUpdated ? 'black' : 'white',
+                                textShadow: '0px 0px 8px rgba(255, 255, 255, 0.8)',
+                                borderRadius: '15px',
+                                boxShadow: '0px 0px 20px rgba(255, 0, 255, 0.7), 0px 0px 20px rgba(0, 255, 255, 0.7)',
+                                fontSize: '18px',
+                                padding: '15px 25px',
+                                position: 'fixed',
+                                bottom: '80px',
+                                width: '100%',
+                                border: '2px solid #ff6ec7',
+                                cursor: rewardsUpdated ? 'not-allowed' : 'pointer', // Курсор изменяется, если кнопка неактивна
+                            }}
+                            onMouseEnter={() => {
+                                if (!rewardsUpdated) { // Анимация при наведении только если кнопка активна
+                                    const btn = document.querySelector('.homeFarmPoints');
+                                    btn.style.boxShadow = '0px 0px 25px rgba(255, 0, 255, 1), 0px 0px 25px rgba(0, 255, 255, 1)';
+                                }
+                            }}
+                            onMouseLeave={() => {
+                                if (!rewardsUpdated) { // Возвращаем исходное состояние только если кнопка активна
+                                    const btn = document.querySelector('.homeFarmPoints');
+                                    btn.style.boxShadow = '0px 0px 20px rgba(255, 0, 255, 0.7), 0px 0px 20px rgba(0, 255, 255, 0.7)';
+                                }
+                            }}
+                        >
+                            {!rewardsUpdated && farmPoints > 0 ? (
+                                'Get ' + farmPoints.toFixed() + ' points'
+                            ) : rewardsUpdated ? (
+                                <>
+                                    <span style={{ position: 'absolute', right: '10px', fontSize: '13px' }}>
+                                        {formatTime(timeLeft)}
+                                    </span>
+                                    <span style={{ display: 'block', fontSize: '16px' }}>Farming {farmPoints}</span>
+                                </>
+                            ) : (
+                                'Start Farming'
+                            )}
+                        </button>
                         )}
-                    </button>
 
                 </div>
             </div>

@@ -27,12 +27,14 @@ const removeBubbleFromPool = (bubble) => {
   bubblePool.push(bubble); // Возвращаем пузырь в пул
 };
 
+const playTime = 5;
+
 function Game({ onGameStatus }) {
   const navigate = useNavigate();
   const [bubbles, setBubbles] = useState([]);
   const [explosions, setExplosions] = useState([]);
   const [score, setLocalScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(playTime);
   const [playerPosition, setPlayerPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 1.3 });
   const [gameOver, setGameOver] = useState(false);
   const { setScore } = useUser();
@@ -162,7 +164,7 @@ function Game({ onGameStatus }) {
     setBubbles([]);
     setExplosions([]);
     setLocalScore(0);
-    setTimeLeft(30);
+    setTimeLeft(playTime);
     setPlayerPosition({ x: window.innerWidth / 2, y: window.innerHeight / 1.5 });
     removeFromLocalStorage('score');
     removeFromLocalStorage('timeLeft');
