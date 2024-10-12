@@ -182,8 +182,21 @@ const Home = ({ }) => {
 
             if (user.rewardsUpdated) {
 
-                const currentDate = new Date();
-                const gmtZeroDate = new Date(currentDate.getTime() + currentDate.getTimezoneOffset() * 60000);
+                // const currentDate = new Date();
+                // const gmtZeroDate = new Date(currentDate.getTime() + currentDate.getTimezoneOffset() * 60000);
+                // Получаем компоненты даты в формате UTC
+                const dateInLocalTimezone = new Date();
+                const year = dateInLocalTimezone.getUTCFullYear();
+                const month = dateInLocalTimezone.getUTCMonth(); // Месяц от 0 до 11
+                const day = dateInLocalTimezone.getUTCDate();
+                const hours = dateInLocalTimezone.getUTCHours();
+                const minutes = dateInLocalTimezone.getUTCMinutes();
+                const seconds = dateInLocalTimezone.getUTCSeconds();
+                const milliseconds = dateInLocalTimezone.getUTCMilliseconds();
+
+                // Создаем новый объект Date в UTC
+                const dateInUTC = new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds));
+                const gmtZeroDate = new Date(dateInUTC.getTime() + dateInUTC.getTimezoneOffset() * 60000);
                 const lastClickFarmBtn = new Date(user.lastTimeRewardsAdded);
                 
                 // Вычисление разницы во времени между двумя датами в миллисекундах
@@ -294,7 +307,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>23.5.19</h4>
+                    <h4>24.5.19</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
