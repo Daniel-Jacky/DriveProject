@@ -185,7 +185,7 @@ const Home = ({ }) => {
                 const currentDate = new Date(),
                     lastClickFarmBtn = new Date(user.lastTimeRewardsAdded),
                     isFarmAvailiable = currentDate - lastClickFarmBtn,
-                    isStreakDifferentInHours = (Math.floor(isFarmAvailiable / (1000))) - 10800;
+                    isStreakDifferentInHours = (Math.floor(isFarmAvailiable / (1000)));
                 const totalSeconds = 8 * 60 * 60;
                 const final = totalSeconds - isStreakDifferentInHours
                 const newFarmPoints = isStreakDifferentInHours / 1000
@@ -291,7 +291,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>21.5.19</h4>
+                    <h4>22.5.19</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
