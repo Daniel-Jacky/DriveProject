@@ -6,80 +6,48 @@ import { updateUserScore, getUserByChatId} from '../api'; // Импортиру�
 
 const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
   const { chatId, gamesLeft, setGamesLeft, totalFarm, setTotalFarm } = useUser();
-  const [currentScore, setCurrentScore] = useState(0); 
   const [newGamesLeft, setNewGamesLeft] = useState(gamesLeft);// Состояние для текущих очков
   const [isDecremented, setIsDecremented] = useState(false);
 
   // Уменьшаем newGamesLeft только один раз
   useEffect(() => {
-    const decrementGamesLeft = async () => {
+    const updateScoreAndDecrementGames = async () => {
       if (!isDecremented && gamesLeft > 0) {
-        let newGamesLeft = gamesLeft - 1;
-        setNewGamesLeft(newGamesLeft);  // Локально обновляем значение
-        setGamesLeft(newGamesLeft);     // Обновляем в UserContext
-        setIsDecremented(true);    // Отмечаем, что уменьшение произошло
+        try {
+          // Уменьшаем значение gamesLeft
+          let newGamesLeft = gamesLeft - 1;
+  
+          // Получаем текущие очки пользователя
+          const userData = await getUserByChatId(chatId);
+          const newScore = userData.score + score;
+          const newTotalFarm = Number(totalFarm) + Number(score);
+  
+          // Обновляем данные на сервере
+          await updateUserScore(chatId, newScore, newGamesLeft, newTotalFarm);
+  
+          // Обновляем локальное состояние
+          setNewGamesLeft(newGamesLeft);
+          setGamesLeft(newGamesLeft);
+          setTotalFarm(newTotalFarm);
+          setIsDecremented(true);
+        } catch (error) {
+          console.error('Ошибка при обновлении очков:', error);
+        }
       }
     };
-
-    decrementGamesLeft();
-  }, [chatId, gamesLeft, setGamesLeft, currentScore, isDecremented]);
-
-  useEffect(() => {
-    const getCurrentScore = async () => {
-      try {
-        const userData = await getUserByChatId(chatId);
-        setCurrentScore(userData.score || 0); // Устанавливаем текущее значение очков или 0
-      } catch (error) {
-        console.error('Ошибка при получении текущих очков:', error);
-      }
-    };
-
-    getCurrentScore();
-  }, [chatId]);
-
-
-  useEffect(() => {
-    // Объявляем функцию обновления очков
-    const update = async () => {
-      try {
-        // Суммируем текущие и новые очки
-        const newScore = currentScore + score,
-        newTotalFarm = totalFarm + score;
-        // Обновляем очки, убедитесь, что у вас есть правильная функция updateUserScore
-        await updateUserScore(chatId, newScore, newGamesLeft, newTotalFarm);
-        
-        // Обновляем состояние
-        setGamesLeft(newGamesLeft);
-        setTotalFarm(newTotalFarm);
-      } catch (error) {
-        console.error('Ошибка при обновлении очков:', error);
-      }
-    };
-
-    // Вызываем функцию обновления
-    update();
-  }, [chatId, totalFarm, currentScore, score]);
-
+  
+    updateScoreAndDecrementGames();
+  }, [chatId, gamesLeft, score, totalFarm, isDecremented]);
 
   const sendGameStatus = async () => {
     navigate('/'); // Перенаправляем на главную страницу
     onRestart(); // Сначала перезапускаем игру
-    // const newScore     = currentScore + score, // Суммируем текущие и новые очки
-    //       newTotalFarm = totalFarm + score;
-    // setGamesLeft(newGamesLeft);
-    // setTotalFarm(newTotalFarm);
-    // await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
   };
 
   const restartGame = async (event) => {
     event.preventDefault(); // Останавливаем стандартное поведение кнопки
     onRestart(); // Сначала перезапускаем игру
-    navigate('/game'); // Затем программно осуществляем навигацию на игру
-    // const newScore     = currentScore + score, // Суммируем текущие и новые очки
-    //       newTotalFarm = totalFarm + score;
-    // setGamesLeft(newGamesLeft);
-    // setTotalFarm(newTotalFarm);
-    // await updateUserScore(chatId, newScore,  newGamesLeft, newTotalFarm); // Обновляем очки
+    navigate('/game'); 
   };
 
   const getResultMessage = (score) => {

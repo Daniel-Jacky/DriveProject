@@ -2,13 +2,19 @@ import React from 'react'
 import './DailyRewards.css';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
+import { updateUserScore} from '../api'; // Импортируем функции из api.js
 
 const DailyRewards = () => {
     const navigate = useNavigate();
-    const { currentStreak, setCheckRewards, gamesLeft } = useUser();
+    const { currentStreak, setCheckRewards, chatId, score, gamesLeft, totalFarm } = useUser();
 
     const confirmRewards = () => {
-       
+        let streak = Number(currentStreak)
+        if(streak === 0){
+            streak = 1
+        }
+        const newScore = score + streak * 10
+        updateUserScore(chatId, newScore, gamesLeft, totalFarm)
         navigate('/'); // Перенаправляем на главную страницу
         setCheckRewards(true)
       };

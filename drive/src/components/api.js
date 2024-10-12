@@ -1,13 +1,14 @@
 // src/components/api.js
 import axios from 'axios';
 
-const API_URL            = 'https://fudg-test2.ru/users',
-      API_TASK_URL       = 'https://fudg-test2.ru/users',
-      API_TASK_CHECK_URL = 'https://fudg-test2.ru/taskcheck/goida/',
-      API_UPDATE_TASK    = 'https://fudg-test2.ru/users/tasks',
-      API_REF_FRIEND     = 'https://fudg-test2.ru/user/reg',
-      API_FRIENDS_LIST   = 'https://fudg-test2.ru//friends',
-      API_INVITE_FRIEND  = 'https://fudg-test2.ru/invites';
+const API_URL              = 'https://fudg-test2.ru/users',
+      API_TASK_URL         = 'https://fudg-test2.ru/users',
+      API_TASK_CHECK_URL   = 'https://fudg-test2.ru/taskcheck/goida/',
+      API_UPDATE_TASK      = 'https://fudg-test2.ru/users/tasks',
+      API_REF_FRIEND       = 'https://fudg-test2.ru/user/reg',
+      API_FRIENDS_LIST     = 'https://fudg-test2.ru//friends',
+      API_INVITE_FRIEND    = 'https://fudg-test2.ru/invites',
+      API_TIME_FROM_SERVER = 'https://fudg-test2.ru/time';
 
 // Функция для получения данных пользователя по chatId
 export const getUserByChatId = async (chatId) => {
@@ -16,6 +17,26 @@ export const getUserByChatId = async (chatId) => {
         return response.data; // Возвращаем полученные данные
     } catch (error) {
         console.error('Ошибка при получении данных:', error);
+        return null; // Возвращаем null в случае ошибки
+    }
+};
+
+export const getTimeFromServer = async () => {
+    try {  
+        const response = await axios.get(`${API_TIME_FROM_SERVER}`);
+        return response.data; // Возвращаем полученные данные
+    } catch (error) {
+        console.error('Ошибка при получении времени сервера:', error);
+        return null; // Возвращаем null в случае ошибки
+    }
+};
+
+export const getTimeDiff = async (chatId) => {
+    try {  
+        const response = await axios.get(`${API_TIME_FROM_SERVER}/${chatId}`);
+        return response.data; // Возвращаем полученные данные
+    } catch (error) {
+        console.error('Ошибка при получении времени сервера:', error);
         return null; // Возвращаем null в случае ошибки
     }
 };

@@ -27,7 +27,7 @@ const removeBubbleFromPool = (bubble) => {
   bubblePool.push(bubble); // Возвращаем пузырь в пул
 };
 
-const playTime = 30;
+const playTime = 5;
 
 function Game({ onGameStatus }) {
   const navigate = useNavigate();

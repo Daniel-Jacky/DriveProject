@@ -6,7 +6,7 @@ import PlayButton from './PlayButton/PlayButton';
 import carImage from './Assets/purpleCar.webp'; // Путь к изображению машины
 import './Home.css';
 import { useUser } from '../UserContext'; // Импортируем контекст пользователя
-import { getUserByChatId, updateUserTimeGamesAdded, addRefFriend, updateUserFarmButtonRewards, updateUserScore } from '../api'; // Импортируем функции из api.js
+import { getUserByChatId, updateUserTimeGamesAdded, addRefFriend, updateUserFarmButtonRewards, updateUserScore, getTimeFromServer, getTimeDiff } from '../api'; // Импортируем функции из api.js
 import { useNavigate } from 'react-router-dom';
 
 const Home = ({ }) => {
@@ -14,7 +14,7 @@ const Home = ({ }) => {
         username, setUsername, chatId, setChatId,
         score, setScore, avatar, setAvatar,
         gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, updatedToday, setUpdatedToday,
-        checkRewards, setCheckRewards, setLocalSaveScore, totalFarm, setTotalFarm, lastTimeRewardsAdded, setLastTimeRewardsAdded, rewardsUpdated, setRewardsUpdated,
+        checkRewards, setCheckRewards, setLocalSaveScore, totalFarm, setTotalFarm, rewardsUpdated, setRewardsUpdated,
         farmPoints, setFarmPoints
     } = useUser(); // Получаем данные пользователя и функции для их обновления
 
@@ -27,6 +27,8 @@ const Home = ({ }) => {
     const [isTouching, setIsTouching] = useState(false); // Отслеживаем касание
     const [lastTouchY, setLastTouchY] = useState(0); // Последняя позиция касания
     const [timeLeft, setTimeLeft] = useState(8 * 60 * 60); // 8 часов в секундах
+
+    const totalSeconds = 8 * 60 * 60;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -116,105 +118,82 @@ const Home = ({ }) => {
     }, []); // Пустой массив зависимостей, чтобы вызывать один раз при монтировании компонента
 
     useEffect(() => {
-        if (apiData) {
-            console.log(apiData)
-            const user = apiData;
-            const hash = window.location.hash;
-            const params = new URLSearchParams(hash.slice(1));
-
-            const newChatId = params.get('/?chatId') || chatId;
+        const fetchDataAndUpdateState = async () => {
+            if (apiData) {
+                console.log(apiData);
+                const user = apiData;
+                const hash = window.location.hash;
+                const params = new URLSearchParams(hash.slice(1));
     
-            if (user) {
-                setUsername(user.username);
-                setScore(user.score);
-                setLocalSaveScore(user.score)
-                setGamesLeft(user.gamesLeft);
-                setLastTimeGamesAdded(user.lastTimeGamesAdded)
-                setCurrentStreak(user.currentStreak)
-                setUpdatedToday(user.updatedToday)
-                setTotalFarm(user.totalFarm)
-                setLastTimeRewardsAdded(user.lastTimeRewardsAdded)
-                setRewardsUpdated(user.rewardsUpdated)
-                setFarmPoints(user.farmPoints)
-            }
-            user.avatar = params.get('avatarUrl') || user.avatar;
-
-
-            setChatId(newChatId);
-
-            if (user.avatar !== null) {
-                setAvatar(user.avatar);
-            } else {
-                const avatarUrl = generateAvatar(user?.username || '');
-                setAvatar(avatarUrl);
-                setGeneratedAvatar(avatarUrl);
-            }
-
-            const currentDate = new Date(),
-                lastStreak = new Date(user.lastTimeGamesAdded),
-                isStreak = currentDate - lastStreak,
-                isStreakDifferentInHours = Math.floor(isStreak / (1000 * 60 * 60));
-            // isStreakDifferentInHours = 25;
-            if (isStreakDifferentInHours > 24 && isStreakDifferentInHours < 48 && !user.updatedToday) {
-                setCheckRewards(false)
-                let newCurrentStreak = '';
-                if (user.currentStreak === 5) {
-                    newCurrentStreak = 5;
-                } else {
-                    newCurrentStreak = user.currentStreak + 1;
+                const newChatId = params.get('/?chatId') || chatId;
+        
+                if (user) {
+                    setUsername(user.username);
+                    setScore(user.score);
+                    setLocalSaveScore(user.score);
+                    setGamesLeft(user.gamesLeft);
+                    setLastTimeGamesAdded(user.lastTimeGamesAdded);
+                    setCurrentStreak(user.currentStreak);
+                    setUpdatedToday(user.updatedToday);
+                    setTotalFarm(user.totalFarm);
+                    setRewardsUpdated(user.rewardsUpdated);
+                    setFarmPoints(user.farmPoints);
                 }
-                const newGamesLeft = newCurrentStreak + user.gamesLeft + 5;
-                const newLastTimeGamesAdded = new Date();
-                const updateTime = updateUserTimeGamesAdded(chatId, newGamesLeft, newCurrentStreak, newLastTimeGamesAdded, !user.updatedToday);
-                setGamesLeft(newGamesLeft);
-                setCurrentStreak(newCurrentStreak);
-                setLastTimeGamesAdded(newLastTimeGamesAdded);
-            } else if (isStreakDifferentInHours > 48) {
-                setCheckRewards(false)
-                const newLastTimeGamesAdded = new Date();
-                const newGamesLeft = user.gamesLeft + 5;
-                const updateTime = updateUserTimeGamesAdded(chatId, newGamesLeft, 0, newLastTimeGamesAdded, !user.updatedToday);
-                setGamesLeft(gamesLeft);
-                setCurrentStreak(0)
-            } else {
-                setCheckRewards(true)
+    
+                user.avatar = params.get('avatarUrl') || user.avatar;
+                setChatId(newChatId);
+    
+                if (user.avatar !== null) {
+                    setAvatar(user.avatar);
+                } else {
+                    const avatarUrl = generateAvatar(user?.username || '');
+                    setAvatar(avatarUrl);
+                    setGeneratedAvatar(avatarUrl);
+                }
+    
+                const currentDate = new Date();
+                const lastStreak = new Date(user.lastTimeGamesAdded);
+                const isStreak = currentDate - lastStreak;
+                const isStreakDifferentInHours = Math.floor(isStreak / (1000 * 60 * 60));
+    
+                if (isStreakDifferentInHours > 24 && isStreakDifferentInHours < 48 && !user.updatedToday) {
+                    setCheckRewards(false);
+                    let newCurrentStreak = user.currentStreak === 5 ? 5 : user.currentStreak + 1;
+                    const newGamesLeft = newCurrentStreak + user.gamesLeft + 5;
+                    const newLastTimeGamesAdded = new Date();
+                    await updateUserTimeGamesAdded(chatId, newGamesLeft, newCurrentStreak, newLastTimeGamesAdded, !user.updatedToday);
+                    setGamesLeft(newGamesLeft);
+                    setCurrentStreak(newCurrentStreak);
+                    setLastTimeGamesAdded(newLastTimeGamesAdded);
+                } else if (isStreakDifferentInHours > 48) {
+                    setCheckRewards(false);
+                    const newLastTimeGamesAdded = new Date();
+                    const newGamesLeft = user.gamesLeft + 5;
+                    await updateUserTimeGamesAdded(chatId, newGamesLeft, 0, newLastTimeGamesAdded, !user.updatedToday);
+                    setGamesLeft(newGamesLeft);
+                    setCurrentStreak(0);
+                } else {
+                    setCheckRewards(true);
+                }
+    
+                if (user.rewardsUpdated) {
+                    const timeDiff = await getTimeDiff(chatId);
+                    console.log(timeDiff);
+                    const final = totalSeconds - timeDiff.secondsPasses;
+                    const newFarmPoints = timeDiff.secondsPasses / 1000
+                    const farmBtnInfo = updateUserFarmButtonRewards(chatId, user.lastTimeRewardsAdded, rewardsUpdated, newFarmPoints); // Обновляем очки
+                    setFarmPoints(newFarmPoints)
+                    setTimeLeft(final)
+                }
+    
+                console.log(`Chat ID: ${newChatId}, Username: ${user?.username || ''}`);
+                console.log(user);
             }
-
-            if (user.rewardsUpdated) {
-
-                // const currentDate = new Date();
-                // const gmtZeroDate = new Date(currentDate.getTime() + currentDate.getTimezoneOffset() * 60000);
-                // Получаем компоненты даты в формате UTC
-                const dateInLocalTimezone = new Date();
-                const year = dateInLocalTimezone.getUTCFullYear();
-                const month = dateInLocalTimezone.getUTCMonth(); // Месяц от 0 до 11
-                const day = dateInLocalTimezone.getUTCDate();
-                const hours = dateInLocalTimezone.getUTCHours();
-                const minutes = dateInLocalTimezone.getUTCMinutes();
-                const seconds = dateInLocalTimezone.getUTCSeconds();
-                const milliseconds = dateInLocalTimezone.getUTCMilliseconds();
-
-                // Создаем новый объект Date в UTC
-                const dateInUTC = new Date(Date.UTC(year, month, day, hours, minutes, seconds, milliseconds));
-                const gmtZeroDate = new Date(dateInUTC.getTime() + dateInUTC.getTimezoneOffset() * 60000);
-                const lastClickFarmBtn = new Date(user.lastTimeRewardsAdded);
-                
-                // Вычисление разницы во времени между двумя датами в миллисекундах
-                const isFarmAvailiable = gmtZeroDate.getTime() - lastClickFarmBtn.getTime();
-                const isStreakDifferentInHours = (Math.floor(isFarmAvailiable / (1000)));
-                const totalSeconds = 8 * 60 * 60;
-                const final = totalSeconds - isStreakDifferentInHours
-                const newFarmPoints = isStreakDifferentInHours / 1000
-                const farmBtnInfo = updateUserFarmButtonRewards(chatId, lastTimeRewardsAdded, rewardsUpdated, newFarmPoints); // Обновляем очки
-                setFarmPoints(newFarmPoints)
-                setTimeLeft(final)
-            }
-
-            console.log(`Chat ID: ${newChatId}, Username: ${user?.username || ''}`);
-            console.log(user)
-
-        }
+        };
+    
+        fetchDataAndUpdateState();
     }, [apiData, chatId, setChatId, setUsername, setScore, setAvatar, setGamesLeft, setLocalSaveScore]);
+    
 
     const generateAvatar = (username) => {
         if (!username) return 'https://dummyimage.com/100/cccccc/ffffff.png&text=?';
@@ -270,19 +249,21 @@ const Home = ({ }) => {
 
     const handleButtonClick = async () => {
 
+        let getTime = await getTimeFromServer();
+        let curDate = new Date(getTime.serverTime)
+
         if(farmPoints > 0){
-         await updateUserFarmButtonRewards(chatId, lastTimeRewardsAdded, rewardsUpdated, farmPoints);
+         await updateUserFarmButtonRewards(chatId, curDate, rewardsUpdated, farmPoints);
         const newScore = (Number(farmPoints) + Number(score)).toFixed()
 
          await updateUserScore(chatId, newScore,  gamesLeft, totalFarm);
          setFarmPoints(0);
          setScore(newScore);
         } else {
-            const lastClickOnFarmBtn = new Date();
             const isRewardsUpdated = true
-            const farmBtnInfo = await updateUserFarmButtonRewards(chatId, lastClickOnFarmBtn, isRewardsUpdated, farmPoints); // Обновляем очки
+            const farmBtnInfo = await updateUserFarmButtonRewards(chatId, curDate, isRewardsUpdated, farmPoints); // Обновляем очки
             setRewardsUpdated(isRewardsUpdated);
-            setLastTimeRewardsAdded(lastClickOnFarmBtn)
+            // setLastTimeRewardsAdded(curDate)
         }
        
     };
@@ -307,7 +288,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>24.5.19</h4>
+                    <h4>23.5.19</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
@@ -392,7 +373,7 @@ const Home = ({ }) => {
                             }}
                         >
                             {!rewardsUpdated ? (
-                                'Get ' + farmPoints.toFixed() + ' points'
+                                'Get ' + farmPoints + ' points'
                             ) : rewardsUpdated ? (
                                 <>
                                     <span style={{ position: 'absolute', right: '10px', fontSize: '13px' }}>
