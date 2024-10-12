@@ -182,10 +182,13 @@ const Home = ({ }) => {
 
             if (user.rewardsUpdated) {
 
-                const currentDate = new Date(),
-                    lastClickFarmBtn = new Date(user.lastTimeRewardsAdded),
-                    isFarmAvailiable = currentDate - lastClickFarmBtn,
-                    isStreakDifferentInHours = (Math.floor(isFarmAvailiable / (1000)));
+                const currentDate = new Date();
+                const gmtZeroDate = new Date(currentDate.getTime() + currentDate.getTimezoneOffset() * 60000);
+                const lastClickFarmBtn = new Date(user.lastTimeRewardsAdded);
+                
+                // Вычисление разницы во времени между двумя датами в миллисекундах
+                const isFarmAvailiable = gmtZeroDate.getTime() - lastClickFarmBtn.getTime();
+                const isStreakDifferentInHours = (Math.floor(isFarmAvailiable / (1000)));
                 const totalSeconds = 8 * 60 * 60;
                 const final = totalSeconds - isStreakDifferentInHours
                 const newFarmPoints = isStreakDifferentInHours / 1000
@@ -291,7 +294,7 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>22.5.19</h4>
+                    <h4>23.5.19</h4>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
