@@ -27,7 +27,7 @@ const Friends = () => {
 
   const inviteFriend = () => {
     const inviteLink = gameLink
-    const message = `Привет! Я приглашаю тебя поиграть в Драйв!`;
+    const message = ``;
     window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
   };
 

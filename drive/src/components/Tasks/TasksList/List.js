@@ -51,7 +51,7 @@ const List = () => {
         setScore(newScore);
         setLocalSaveScore(newScore);
       } else {
-        window.open(`https://t.me/hoochYou`);
+        window.open(`https://t.me/alldrivecrypto`);
       }
     } else if (record.reason === "farm3000") {
       if (Number(totalFarm) >= 3000) {

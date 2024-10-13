@@ -15,7 +15,7 @@ const Home = ({ }) => {
         score, setScore, avatar, setAvatar,
         gamesLeft, setGamesLeft, currentStreak, setCurrentStreak, lastTimeGamesAdded, setLastTimeGamesAdded, updatedToday, setUpdatedToday,
         checkRewards, setCheckRewards, setLocalSaveScore, totalFarm, setTotalFarm, rewardsUpdated, setRewardsUpdated,
-        farmPoints, setFarmPoints
+        farmPoints, setFarmPoints, firstname, setFirstname 
     } = useUser(); // Получаем данные пользователя и функции для их обновления
 
 
@@ -128,6 +128,13 @@ const Home = ({ }) => {
                 const newChatId = params.get('/?chatId') || chatId;
         
                 if (user) {
+
+                      if (user.username === null) {
+                        user.username = user.firstname;
+                      } else if (user.username === null && user.firstname === null){
+                        user.username = user.lastname
+                      }
+
                     setUsername(user.username);
                     setScore(user.score);
                     setLocalSaveScore(user.score);
@@ -138,6 +145,7 @@ const Home = ({ }) => {
                     setTotalFarm(user.totalFarm);
                     setRewardsUpdated(user.rewardsUpdated);
                     setFarmPoints(user.farmPoints);
+                    setFirstname(firstname)
                 }
     
                 user.avatar = params.get('avatarUrl') || user.avatar;
@@ -289,12 +297,14 @@ const Home = ({ }) => {
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <h4>24.5.19</h4>
+                    <h5>
+                    {chatId === '197337640' || chatId === '6578624309' ? <h5>25.5.19</h5> : ''}
+                        </h5>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
                         <div className="user-info">
                             <h2 className="User">
-                                {isLoadingSkeleton ? <Skeleton width={150} /> : username || 'Guest'}
+                                {isLoadingSkeleton ? <Skeleton width={150} /> : username || firstname || 'Guest'}
                             </h2>
                             {isLoadingSkeleton ? (
                                 <Skeleton circle={true} height={100} width={100} />

@@ -18,7 +18,7 @@ console.log(sortedRecords)
               <div className='iconAndTask'>
                 <img src={record.avatar} alt="User Avatar" className="friends-avatar" />
                 <div className='tasksText'>
-                  <h5 className='whiteText'>{record.username.length <= 1 ? record.firstname : record.username}</h5> {/* Display friend's name */}
+                  <h5 className='whiteText'>{record.username === null ? record.firstname : record.username}</h5> {/* Display friend's name */}
                 </div>
               </div>
               <h5 className='frensPoints'>{record.score} D</h5> {/* Display friend's points */}
