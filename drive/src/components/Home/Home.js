@@ -159,7 +159,7 @@ const Home = ({ }) => {
                 if (isStreakDifferentInHours > 24 && isStreakDifferentInHours < 48 && !user.updatedToday) {
                     setCheckRewards(false);
                     let newCurrentStreak = user.currentStreak === 5 ? 5 : user.currentStreak + 1;
-                    const newGamesLeft = newCurrentStreak + user.gamesLeft + 5;
+                    const newGamesLeft = newCurrentStreak + user.gamesLeft + 3;
                     const newLastTimeGamesAdded = new Date();
                     await updateUserTimeGamesAdded(chatId, newGamesLeft, newCurrentStreak, newLastTimeGamesAdded, !user.updatedToday);
                     setGamesLeft(newGamesLeft);
@@ -229,7 +229,7 @@ const Home = ({ }) => {
         let interval;
         if (rewardsUpdated) {
             interval = setInterval(() => {
-                setFarmPoints((prevPoints) => {
+                setFarmPoints( (prevPoints) => {
                     const currentPoints = Number(prevPoints) || 0; // Убедитесь, что prevPoints — это число
                     return (currentPoints + 0.001).toFixed(3); // Добавляем 0.001 и округляем
                 });
@@ -253,17 +253,18 @@ const Home = ({ }) => {
         let curDate = new Date(getTime.serverTime)
 
         if(farmPoints > 0){
-         await updateUserFarmButtonRewards(chatId, curDate, rewardsUpdated, farmPoints);
         const newScore = (Number(farmPoints) + Number(score)).toFixed()
-
          await updateUserScore(chatId, newScore,  gamesLeft, totalFarm);
-         setFarmPoints(0);
+         const updateFarmPoints = 0;
+         await updateUserFarmButtonRewards(chatId, curDate, rewardsUpdated, updateFarmPoints);
          setScore(newScore);
+
+         const updateData = await getUserByChatId(chatId)
+         setApiData(updateData);
         } else {
             const isRewardsUpdated = true
             const farmBtnInfo = await updateUserFarmButtonRewards(chatId, curDate, isRewardsUpdated, farmPoints); // Обновляем очки
             setRewardsUpdated(isRewardsUpdated);
-            // setLastTimeRewardsAdded(curDate)
         }
        
     };
@@ -372,7 +373,7 @@ const Home = ({ }) => {
                                 }
                             }}
                         >
-                            {!rewardsUpdated ? (
+                            {!rewardsUpdated && farmPoints > 0 ? (
                                 'Get ' + farmPoints + ' points'
                             ) : rewardsUpdated ? (
                                 <>

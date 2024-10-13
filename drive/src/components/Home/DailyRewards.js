@@ -6,17 +6,18 @@ import { updateUserScore} from '../api'; // Импортируем функци�
 
 const DailyRewards = () => {
     const navigate = useNavigate();
-    const { currentStreak, setCheckRewards, chatId, score, gamesLeft, totalFarm } = useUser();
+    const { currentStreak, setCheckRewards, chatId, score, gamesLeft, totalFarm, setScore } = useUser();
 
-    const confirmRewards = () => {
+    const confirmRewards = async () => {
         let streak = Number(currentStreak)
         if(streak === 0){
             streak = 1
         }
         const newScore = score + streak * 10
-        updateUserScore(chatId, newScore, gamesLeft, totalFarm)
+        await updateUserScore(chatId, newScore, gamesLeft, totalFarm)
+        setScore(newScore)
         navigate('/'); // Перенаправляем на главную страницу
-        setCheckRewards(true)
+        setCheckRewards(true) 
       };
 
       
