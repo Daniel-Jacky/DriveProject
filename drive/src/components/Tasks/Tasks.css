@@ -1,6 +1,12 @@
 .whiteTextTitle{
     color: white !important;
     text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .whiteTextTitleBottom{
+    color: white !important;
+    text-align: center;
   }
 
 .title{

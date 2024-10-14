@@ -85,7 +85,8 @@ const Friends = () => {
     <div className='friends-container'>
       <div className='title'>
         <h2 className='whiteText'>Crew</h2>
-        <h7 className='whiteTextTitle'>No one will conquer Drive City alone. Bring along your comrades and go on a journey together</h7>
+        <h7 className='whiteTextTitle'>No one will conquer Drive City alone.</h7>
+        <h7 className='whiteTextTitleBottom'>Bring along your comrades and go on a journey together</h7>
       </div>
 
       {loading ? (
