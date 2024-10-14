@@ -37,7 +37,7 @@ const Friends = () => {
     
       for (let i = 0; i < getFriends.length; i++) {
         const elem = getFriends[i];
-        if (elem.avatar === null) {
+        if (elem.avatar === null || elem.avatar === '') {
           const avatarUrl = generateAvatar(elem?.username || elem?.firstname);
           elem.avatar = avatarUrl;
         }
