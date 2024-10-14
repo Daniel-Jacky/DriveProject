@@ -60,7 +60,7 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
     } else if (score >= 50) {
       return 'Good!';
     } else if (score >= 30) {
-      return 'You can more!';
+      return 'You can do more!';
     } else {
       return 'Keep trying!';
     }
@@ -74,7 +74,7 @@ const EndGamePage = ({ score, navigate, onGameStatus, onRestart }) => {
       </div>
       <div className='endBtn'>
         <button onClick={sendGameStatus} className='homeBackBtn'>Back to homepage</button>
-        <button onClick={restartGame} className='playAnotherTime' disabled={newGamesLeft <= 0}>Play ({newGamesLeft} left)</button>
+        <button onClick={restartGame} className='playAnotherTime' disabled={newGamesLeft <= 0}>Rides ({newGamesLeft} left)</button>
       </div>
     </div>
   );

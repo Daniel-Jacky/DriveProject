@@ -17,7 +17,7 @@ const Footer = () => {
         </Link>
         <Link to="/friends" className="footer-icon">
           <FaUserFriends />
-          <span className="icon-label">Friends</span>
+          <span className="icon-label">Crew</span>
         </Link>
       </div>
     </footer>

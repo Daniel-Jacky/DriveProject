@@ -10,7 +10,7 @@ console.log(sortedRecords)
     <div>
       <ul className='coor'>
         <h6 className='countFriends'>
-          {records.length} {sortedRecords.length <= 1 ? 'Friend' : 'Friends'}
+          {records.length} {sortedRecords.length <= 1 ? 'fellow driver' : 'fellow drivers'}
         </h6>
         {sortedRecords.map(record => (
           <li key={record.id}>

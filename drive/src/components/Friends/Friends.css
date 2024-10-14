@@ -98,3 +98,8 @@
   margin-right: 10px;
   font-size: 24px;
 }
+
+.whiteTextTitle{
+  color: white !important;
+  text-align: center;
+}

@@ -319,7 +319,7 @@ const Home = ({ }) => {
                     <div className="playArea">
                         <div className="dropGameBox">
                             <h4 className="dropGame">
-                                {isLoadingSkeleton ? <Skeleton width={100} /> : 'Drop game'}
+                                {isLoadingSkeleton ? <Skeleton width={100} /> : 'Rides left'}
                             </h4>
                             <h4 className="timeToPlay">
                                 {isLoadingSkeleton ? <Skeleton width={50} /> : gamesLeft}

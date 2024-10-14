@@ -7,7 +7,7 @@ const Tasks = () => {
     <div className='tasksBar'>
       <div className='title'>
       <h2 className='whiteText'>Tasks</h2>
-      <h7 className='whiteText'>Here will be a text about new tasks</h7>
+      <h7 className='whiteTextTitle'>Life in Drive City is no simple task. These tasks, however, will make it easier...</h7>
       </div>   
       <List />
     </div>

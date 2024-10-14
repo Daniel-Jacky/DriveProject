@@ -27,7 +27,7 @@ const Friends = () => {
 
   const inviteFriend = () => {
     const inviteLink = gameLink
-    const message = ``;
+    const message = `Hi! Join my crew in Drive and take a chance to become a legendary driver yourself!`;
     window.open(`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(message)}`);
   };
 
@@ -84,8 +84,8 @@ const Friends = () => {
   return (
     <div className='friends-container'>
       <div className='title'>
-        <h2 className='whiteText'>Friends</h2>
-        <h7 className='whiteText'>Invite your friends for more Drive points!</h7>
+        <h2 className='whiteText'>Crew</h2>
+        <h7 className='whiteTextTitle'>No one will conquer Drive City alone. Bring along your comrades and go on a journey together</h7>
       </div>
 
       {loading ? (
@@ -111,7 +111,7 @@ const Friends = () => {
             <FriendsList records={records} setRecords={setRecords} />
           </div>
           <button className='inviteFrens' onClick={inviteFriend}>
-            Invite a friend
+          Assemble a crew
           </button>
         </>
       )}
