@@ -26,6 +26,7 @@ const Home = ({ }) => {
     const listRef = useRef(null); // Реф для списка друзей
     const [isTouching, setIsTouching] = useState(false); // Отслеживаем касание
     const [lastTouchY, setLastTouchY] = useState(0); // Последняя позиция касания
+    const [showBotNoti, setShowBotNoti] = useState(false);
     const [timeLeft, setTimeLeft] = useState(8 * 60 * 60); // 8 часов в секундах
 
     const totalSeconds = 8 * 60 * 60;
@@ -146,6 +147,10 @@ const Home = ({ }) => {
                     setRewardsUpdated(user.rewardsUpdated);
                     setFarmPoints(user.farmPoints);
                     setFirstname(firstname)
+                }
+
+                if(user.recievedButtons === false){
+                    setShowBotNoti(true)
                 }
     
                 user.avatar = params.get('avatarUrl') || user.avatar;
@@ -286,10 +291,28 @@ const Home = ({ }) => {
 
     const isCompleted = timeLeft === 0;
 
+    const handleSubscribeNotification = () => {
+        setShowBotNoti(false); 
+        window.open(`https://t.me/drive_official_bot`);
+    };
+
+    const handleCloseNotification = () => {
+        setShowBotNoti(false); // Закрываем уведомление
+    };
+
 
     return (
         <SkeletonTheme baseColor="#8b8b8b" highlightColor="#f0f0f0">
             <div className="App">
+            {showBotNoti && (
+                    <div className="notification">
+                        <p>Don't forget to subscribe to our bot!</p>
+                        <div className='notiBtns'>
+                        <button onClick={handleSubscribeNotification}>Subscribe</button>   
+                        <button onClick={handleCloseNotification}>Close</button> 
+                         </div>
+                    </div>
+                )}
                 <div
                     className="home-list"
                     ref={listRef}
@@ -298,7 +321,7 @@ const Home = ({ }) => {
                     onTouchEnd={handleTouchEnd}
                 >
                     <h5>
-                    {chatId === '197337640' || chatId === '6578624309' ? <h5>25.5.19</h5> : ''}
+                    {chatId === '197337640' || chatId === '6578624309' ? <h5>26.5.19</h5> : ''}
                         </h5>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">

@@ -240,3 +240,54 @@ h6{
   border: none; /* Убираем рамку */
   border-radius: 10px; /* Скругленные углы */
 } 
+
+.notification {
+  background: linear-gradient(135deg, #ff3cac, #784ba0, #2b86c5);
+  color: #fff;
+  padding: 5px;
+  border-radius: 20px;
+  position: fixed;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 90%;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  animation: neonGlow 1.5s ease-in-out infinite alternate;
+}
+
+
+.notification button {
+  padding: 5px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+
+
+  color: #000000;
+  border: 2px solid #0ff;
+  box-shadow:  0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  transition: background-color 0.5s, box-shadow 0.5s;
+}
+
+.notification button:hover {
+  background-color: #00ffcc; /* Неоново-зелёный цвет для эффекта наведения */
+  transform: scale(1.1); /* Лёгкое увеличение */
+}
+
+.notiBtns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+p{
+  font-family: 'Monton'; /* Шрифт в стиле неона */
+}
