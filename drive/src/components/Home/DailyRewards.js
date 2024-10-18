@@ -14,7 +14,10 @@ const DailyRewards = () => {
             streak = 1
         }
         const newScore = score + streak * 10
-        await updateUserScore(chatId, newScore, gamesLeft, totalFarm)
+        const hash = window.location.hash;
+            const params = new URLSearchParams(hash.slice(1));
+            let newChatId = params.get('/?chatId') || chatId;
+        await updateUserScore(newChatId, newScore, gamesLeft, totalFarm)
         setScore(newScore)
         navigate('/'); // Перенаправляем на главную страницу
         setCheckRewards(true) 
