@@ -35,14 +35,15 @@ const Home = ({ }) => {
         const fetchData = async () => {
             const hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
-            let newChatId = params.get('/?chatId') || chatId;
+            let newChatId = params.get('/?chatId') || chatId || '593869313';
             // ref
 
             const decodedUrl = decodeURIComponent(hash);
             const startParamPos = decodedUrl.indexOf('start_param=');
 
             // Если параметр найден, извлекаем его значение
-            const user = await getUserByChatId(newChatId);    // Проверим, что chatId присутствует в базе, если не присутвует создаем по реф ссылке
+            const user = await getUserByChatId(newChatId); 
+            setChatId(newChatId)   // Проверим, что chatId присутствует в базе, если не присутвует создаем по реф ссылке
             if (user !== null) {
                 setApiData(user)
             } else if (startParamPos !== -1) {
@@ -163,7 +164,7 @@ const Home = ({ }) => {
                     setAvatar(avatarUrl);
                     setGeneratedAvatar(avatarUrl);
                 }
-    
+
                 const currentDate = new Date();
                 const lastStreak = new Date(user.lastTimeGamesAdded);
                 const isStreak = currentDate - lastStreak;
@@ -175,6 +176,12 @@ const Home = ({ }) => {
                     const newGamesLeft = newCurrentStreak + user.gamesLeft + 3;
                     const newLastTimeGamesAdded = new Date();
                     await updateUserTimeGamesAdded(chatId, newGamesLeft, newCurrentStreak, newLastTimeGamesAdded, !user.updatedToday);
+                   
+
+                    const newScore = user.score + newCurrentStreak * 10
+                    setScore(newScore)
+                    await updateUserScore(newChatId, newScore, newGamesLeft, totalFarm)
+        
                     setGamesLeft(newGamesLeft);
                     setCurrentStreak(newCurrentStreak);
                     setLastTimeGamesAdded(newLastTimeGamesAdded);
@@ -214,10 +221,6 @@ const Home = ({ }) => {
     };
 
     if (!checkRewards) {
-        const hash = window.location.hash;
-        const params = new URLSearchParams(hash.slice(1));
-        let newChatId = params.get('/?chatId') || chatId;
-        setChatId(newChatId);
         console.log(checkRewards + 'uppp')
         navigate('/rewards')
     }
@@ -325,7 +328,7 @@ const Home = ({ }) => {
                     onTouchEnd={handleTouchEnd}
                 >
                     <h5>
-                    {chatId === '197337640' || chatId === '6578624309' ? <h5>27.5.19</h5> : ''}
+                    {chatId === '197337640' || chatId === '6578624309' ? <h5>28.5.19</h5> : ''}
                         </h5>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">

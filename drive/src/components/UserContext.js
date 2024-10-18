@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
     const [chatId, setChatId] = useState(localStorage.getItem('chatId') || null);
     const [avatar, setAvatar] = useState(localStorage.getItem('avatar') || '');
     const [gamesLeft, setGamesLeft] = useState(localStorage.getItem('gamesLeft') || '');
-    const [currentStreak, setCurrentStreak] = useState(localStorage.getItem('currentStreak') || '');
+    const [currentStreak, setCurrentStreak] = useState(localStorage.getItem('currentStreak') || 0);
     const [lastTimeGamesAdded, setLastTimeGamesAdded] = useState(localStorage.getItem('lastTimeGamesAdded') || '');
     const [updatedToday, setUpdatedToday] = useState(localStorage.getItem('updatedToday') || '');
     const [checkRewards, setCheckRewards] = useState(localStorage.getItem('checkRewards') || '');
