@@ -1,6 +1,6 @@
 import React from 'react'
 import './Footer.css';
-import { FaHome, FaTasks, FaUserFriends } from 'react-icons/fa';
+import { FaHome, FaTasks, FaUserFriends, FaWallet, FaShoppingCart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -18,6 +18,14 @@ const Footer = () => {
         <Link to="/friends" className="footer-icon">
           <FaUserFriends />
           <span className="icon-label">Crew</span>
+        </Link>
+        <Link to="/wallet" className="footer-icon">
+          <FaWallet />
+          <span className="icon-label">Wallet</span>
+        </Link>
+        <Link to="/shop" className="footer-icon">
+          <FaShoppingCart />
+          <span className="icon-label">NFT Shop</span>
         </Link>
       </div>
     </footer>

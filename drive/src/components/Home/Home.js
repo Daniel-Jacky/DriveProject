@@ -35,7 +35,7 @@ const Home = ({ }) => {
         const fetchData = async () => {
             const hash = window.location.hash;
             const params = new URLSearchParams(hash.slice(1));
-            let newChatId = params.get('/?chatId') || chatId || '593869313';
+            let newChatId = params.get('/?chatId') || chatId;
             // ref
 
             const decodedUrl = decodeURIComponent(hash);
@@ -328,7 +328,7 @@ const Home = ({ }) => {
                     onTouchEnd={handleTouchEnd}
                 >
                     <h5>
-                    {chatId === '197337640' || chatId === '6578624309' ? <h5>28.5.19</h5> : ''}
+                    {chatId === '197337640' || chatId === '6578624308' ? <h5>28.5.19</h5> : ''}
                         </h5>
                     <div class="neon-text">Welcome to Drive</div>
                     <div className="NameAndStat">
