@@ -19,14 +19,14 @@ const Footer = () => {
           <FaUserFriends />
           <span className="icon-label">Crew</span>
         </Link>
-        <Link to="/wallet" className="footer-icon">
+        {/* <Link to="/wallet" className="footer-icon">
           <FaWallet />
           <span className="icon-label">Wallet</span>
         </Link>
         <Link to="/shop" className="footer-icon">
           <FaShoppingCart />
           <span className="icon-label">NFT Shop</span>
-        </Link>
+        </Link> */}
       </div>
     </footer>
     );
